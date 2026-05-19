@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Task Intelligence and Steering Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #0a2540;
+    --ink-2: #425466;
+    --ink-3: #697386;
+    --line: #d6dde6;
+    --line-2: #cbd3df;
+    --paper: #ffffff;
+    --soft: #eaf6ee;
+    --axis: #0a2540;
+    --yellow: #b15c00;
+    --blue: #2f6df6;
+    --magenta: #b8326b;
+    --green: #00875a;
+    --cyan: #0c6fa6;
+    --orange: #ed5b2c;
+    --purple: #6b3fc8;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    margin: 0;
+    min-height: 100%;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    display: block;
+    overflow: hidden;
+  }
+
+  .slide {
+    width: 100vw;
+    height: 100vh;
+    min-width: 0;
+    min-height: 0;
+    background: var(--bg);
+    overflow: hidden;
+    position: relative;
+    padding: 0;
+  }
+
+  .slide::before {
+    content: none;
+  }
+
+  .timeline {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .chart-title {
+    fill: var(--ink);
+    font-size: 33px;
+    font-weight: 400;
+  }
+
+  .axis-label {
+    fill: var(--ink);
+    font-size: 25px;
+    font-weight: 400;
+  }
+
+  .tick-label {
+    fill: var(--ink);
+    font-size: 25px;
+    font-weight: 500;
+  }
+
+  .y-label {
+    fill: var(--ink);
+    font-size: 23px;
+    font-weight: 400;
+  }
+
+  .series-label {
+    font-size: 21px;
+    font-weight: 600;
+    line-height: 1.12;
+  }
+
+  .axis-line,
+  .tick-line {
+    stroke: var(--axis);
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .line {
+    fill: none;
+    stroke-width: 3.4;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .dot {
+    stroke: none;
+  }
+
+  .future-divider {
+    stroke: var(--line-2);
+    stroke-width: 2.2;
+    stroke-dasharray: 7 10;
+  }
+
+  .steering-heading,
+  .task-heading {
+    fill: var(--ink);
+    font-size: 34px;
+    font-weight: 800;
+  }
+
+  .time-label {
+    fill: var(--ink-3);
+    font-size: 18px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+  }
+
+  .steering-text {
+    fill: var(--ink);
+    font-size: 22px;
+    line-height: 1.14;
+    font-weight: 700;
+  }
+
+  .steer-icon {
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .steering-text {
+    text-wrap: balance;
+  }
+
+  .steer-card {
+    fill: var(--paper);
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+
+  .section-head {
+    fill: var(--soft);
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+
+  .title-arrow {
+    fill: none;
+    stroke: var(--ink);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-panel {
+    stroke: none;
+  }
+
+  .panel-seam {
+    stroke: var(--ink);
+    stroke-width: 2;
+  }
+
+  @media print {
+    @page {
+      size: 16in 9in;
+      margin: 0;
+    }
+
+    html,
+    body {
+      width: 16in;
+      height: 9in;
+      background: var(--bg);
+    }
+
+    .slide {
+      width: 16in;
+      height: 9in;
+      min-width: 0;
+      min-height: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <main class="slide" aria-label="Task Intelligence and Steering Intelligence slide">
+    <svg class="timeline" viewBox="0 0 1600 840" preserveAspectRatio="xMidYMid meet" role="img" aria-labelledby="chart-title chart-desc">
+      <title id="chart-title">Task intelligence benchmark progress extending into steering intelligence.</title>
+      <desc id="chart-desc">A single paper-style timeline from 2020 through years beyond 2025. Benchmark accuracy lines fill the task-intelligence era, and four steering-intelligence capabilities appear after 2025.</desc>
+
+      <text class="time-label" x="500" y="22" text-anchor="middle">Today</text>
+      <text class="time-label" x="1195" y="22" text-anchor="middle">Next frontier</text>
+      <rect class="section-head" x="325" y="32" width="350" height="60" rx="12"></rect>
+      <rect class="section-head" x="1000" y="32" width="390" height="60" rx="12"></rect>
+      <path class="title-arrow" d="M795 62 H875"></path>
+      <path d="M894 62 L875 52 L875 72 Z" fill="var(--ink)"></path>
+      <text class="task-heading" x="500" y="73" text-anchor="middle">Task Intelligence</text>
+      <text class="steering-heading" x="1195" y="73" text-anchor="middle">Steering Intelligence</text>
+
+      <line class="axis-line" x1="160" y1="760" x2="1534" y2="760"></line>
+      <path d="M1556 760 L1533 748 L1533 772 Z" fill="var(--axis)"></path>
+      <line class="axis-line" x1="160" y1="760" x2="160" y2="118"></line>
+      <path d="M160 96 L148 121 L172 121 Z" fill="var(--axis)"></path>
+      <line class="future-divider" x1="847" y1="112" x2="847" y2="760"></line>
+
+      <g class="y-axis">
+        <line class="tick-line" x1="146" y1="760" x2="176" y2="760"></line>
+        <line class="tick-line" x1="146" y1="635" x2="176" y2="635"></line>
+        <line class="tick-line" x1="146" y1="510" x2="176" y2="510"></line>
+        <line class="tick-line" x1="146" y1="385" x2="176" y2="385"></line>
+        <line class="tick-line" x1="146" y1="260" x2="176" y2="260"></line>
+        <line class="tick-line" x1="146" y1="135" x2="176" y2="135"></line>
+
+        <text class="y-label" x="130" y="771" text-anchor="end">0</text>
+        <text class="y-label" x="130" y="646" text-anchor="end">20</text>
+        <text class="y-label" x="130" y="521" text-anchor="end">40</text>
+        <text class="y-label" x="130" y="396" text-anchor="end">60</text>
+        <text class="y-label" x="130" y="271" text-anchor="end">80</text>
+        <text class="y-label" x="130" y="146" text-anchor="end">100</text>
+      </g>
+
+      <text class="axis-label" text-anchor="middle" transform="translate(55 448) rotate(-90)">Accuracy</text>
+
+      <g class="x-axis">
+        <line class="tick-line" x1="205" y1="747" x2="205" y2="773"></line>
+        <line class="tick-line" x1="333" y1="747" x2="333" y2="773"></line>
+        <line class="tick-line" x1="462" y1="747" x2="462" y2="773"></line>
+        <line class="tick-line" x1="590" y1="747" x2="590" y2="773"></line>
+        <line class="tick-line" x1="719" y1="747" x2="719" y2="773"></line>
+        <line class="tick-line" x1="847" y1="747" x2="847" y2="773"></line>
+        <line class="tick-line" x1="975" y1="747" x2="975" y2="773"></line>
+        <line class="tick-line" x1="1104" y1="747" x2="1104" y2="773"></line>
+        <line class="tick-line" x1="1232" y1="747" x2="1232" y2="773"></line>
+        <line class="tick-line" x1="1361" y1="747" x2="1361" y2="773"></line>
+        <line class="tick-line" x1="1489" y1="747" x2="1489" y2="773"></line>
+
+        <text class="tick-label" x="205" y="824" text-anchor="middle">2020</text>
+        <text class="tick-label" x="333" y="824" text-anchor="middle">2021</text>
+        <text class="tick-label" x="462" y="824" text-anchor="middle">2022</text>
+        <text class="tick-label" x="590" y="824" text-anchor="middle">2023</text>
+        <text class="tick-label" x="719" y="824" text-anchor="middle">2024</text>
+        <text class="tick-label" x="847" y="824" text-anchor="middle">2025</text>
+        <text class="tick-label" x="975" y="824" text-anchor="middle">2026</text>
+        <text class="tick-label" x="1104" y="824" text-anchor="middle">2027</text>
+        <text class="tick-label" x="1232" y="824" text-anchor="middle">2028</text>
+        <text class="tick-label" x="1361" y="824" text-anchor="middle">2029</text>
+        <text class="tick-label" x="1489" y="824" text-anchor="middle">2030</text>
+      </g>
+
+      <g stroke-linecap="round" stroke-linejoin="round">
+        <path class="line" stroke="var(--yellow)" d="M268 311 L457 285 L489 248 L564 229 L621 192"></path>
+        <path class="line" stroke="var(--blue)" d="M249 479 L280 448 L451 385 L503 323 L558 285 L615 210 L791 154"></path>
+        <path class="line" stroke="var(--magenta)" d="M382 541 L488 404 L507 323 L563 229 L615 166 L758 147"></path>
+        <path class="line" stroke="var(--green)" d="M331 717 L520 442 L608 360 L677 235 L816 166"></path>
+        <path class="line" stroke="var(--purple)" d="M697 748 L758 717 L795 522 L821 467 L834 397 L847 265"></path>
+      </g>
+
+      <g>
+        <circle class="dot" cx="268" cy="311" r="6.5" fill="var(--yellow)"></circle>
+        <circle class="dot" cx="457" cy="285" r="6.5" fill="var(--yellow)"></circle>
+        <circle class="dot" cx="489" cy="248" r="6.5" fill="var(--yellow)"></circle>
+        <circle class="dot" cx="564" cy="229" r="6.5" fill="var(--yellow)"></circle>
+        <circle class="dot" cx="621" cy="192" r="6.5" fill="var(--yellow)"></circle>
+
+        <circle class="dot" cx="249" cy="479" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="280" cy="448" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="451" cy="385" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="503" cy="323" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="558" cy="285" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="615" cy="210" r="6.5" fill="var(--blue)"></circle>
+        <circle class="dot" cx="791" cy="154" r="6.5" fill="var(--blue)"></circle>
+
+        <circle class="dot" cx="382" cy="541" r="6.5" fill="var(--magenta)"></circle>
+        <circle class="dot" cx="488" cy="404" r="6.5" fill="var(--magenta)"></circle>
+        <circle class="dot" cx="507" cy="323" r="6.5" fill="var(--magenta)"></circle>
+        <circle class="dot" cx="563" cy="229" r="6.5" fill="var(--magenta)"></circle>
+        <circle class="dot" cx="615" cy="166" r="6.5" fill="var(--magenta)"></circle>
+        <circle class="dot" cx="758" cy="147" r="6.5" fill="var(--magenta)"></circle>
+
+        <circle class="dot" cx="331" cy="717" r="6.5" fill="var(--green)"></circle>
+        <circle class="dot" cx="520" cy="442" r="6.5" fill="var(--green)"></circle>
+        <circle class="dot" cx="608" cy="360" r="6.5" fill="var(--green)"></circle>
+        <circle class="dot" cx="677" cy="235" r="6.5" fill="var(--green)"></circle>
+        <circle class="dot" cx="816" cy="166" r="6.5" fill="var(--green)"></circle>
+
+        <circle class="dot" cx="697" cy="748" r="6.5" fill="var(--purple)"></circle>
+        <circle class="dot" cx="758" cy="717" r="6.5" fill="var(--purple)"></circle>
+        <circle class="dot" cx="795" cy="522" r="6.5" fill="var(--purple)"></circle>
+        <circle class="dot" cx="821" cy="467" r="6.5" fill="var(--purple)"></circle>
+        <circle class="dot" cx="834" cy="397" r="6.5" fill="var(--purple)"></circle>
+        <circle class="dot" cx="847" cy="265" r="6.5" fill="var(--purple)"></circle>
+      </g>
+
+      <g class="series-label">
+        <text fill="var(--yellow)" x="176" y="220">Trivia questions</text>
+        <text fill="var(--yellow)" x="198" y="255">(TriviaQA)</text>
+
+        <text fill="var(--blue)" x="190" y="390">Various exams</text>
+        <text fill="var(--blue)" x="220" y="425">(MMLU)</text>
+
+        <text fill="var(--magenta)" x="316" y="528">Grade-school</text>
+        <text fill="var(--magenta)" x="306" y="563">math (GSM8K)</text>
+
+        <text fill="var(--green)" x="372" y="634">Competition</text>
+        <text fill="var(--green)" x="366" y="669">math (MATH)</text>
+
+        <text fill="var(--purple)" x="625" y="658">SWE tasks</text>
+        <text fill="var(--purple)" x="625" y="693">(SWE-bench Verified)</text>
+      </g>
+
+      <g class="steering-capability">
+        <rect class="steer-card" x="885" y="196" width="590" height="76" rx="12"></rect>
+        <path class="icon-panel" fill="var(--soft)" d="M897 197 H945 V271 H897 Q886 271 886 260 V208 Q886 197 897 197 Z"></path>
+        <line class="panel-seam" x1="945" y1="197" x2="945" y2="271"></line>
+        <g class="steer-icon" stroke="var(--ink)" transform="translate(890 210)">
+          <path d="M8 34 C 16 20, 27 30, 40 12"></path>
+          <path d="M35 12 H40 V17"></path>
+          <circle cx="12" cy="33" r="3.5"></circle>
+          <circle cx="24" cy="27" r="3.5"></circle>
+          <path d="M12 41 H36"></path>
+        </g>
+        <text class="steering-text" x="975" y="242">
+          <tspan x="975" dy="0">Navigate long horizons with uncertainty</tspan>
+        </text>
+      </g>
+
+      <g class="steering-capability">
+        <rect class="steer-card" x="885" y="316" width="590" height="76" rx="12"></rect>
+        <path class="icon-panel" fill="var(--soft)" d="M897 317 H945 V391 H897 Q886 391 886 380 V328 Q886 317 897 317 Z"></path>
+        <line class="panel-seam" x1="945" y1="317" x2="945" y2="391"></line>
+        <g class="steer-icon" stroke="var(--ink)" transform="translate(890 330)">
+          <circle cx="21" cy="21" r="10"></circle>
+          <path d="M29 29 L39 39"></path>
+          <path d="M8 10 L12 14"></path>
+          <path d="M35 9 L31 14"></path>
+          <path d="M7 32 L13 29"></path>
+          <path d="M21 5 V10"></path>
+        </g>
+        <text class="steering-text" x="975" y="362">
+          <tspan x="975" dy="0">Acquire information in noisy environments</tspan>
+        </text>
+      </g>
+
+      <g class="steering-capability">
+        <rect class="steer-card" x="885" y="436" width="590" height="76" rx="12"></rect>
+        <path class="icon-panel" fill="var(--soft)" d="M897 437 H945 V511 H897 Q886 511 886 500 V448 Q886 437 897 437 Z"></path>
+        <line class="panel-seam" x1="945" y1="437" x2="945" y2="511"></line>
+        <g class="steer-icon" stroke="var(--ink)" transform="translate(890 450)">
+          <path d="M38 18 A15 15 0 0 0 12 13"></path>
+          <path d="M38 8 V18 H28"></path>
+          <path d="M10 30 A15 15 0 0 0 36 35"></path>
+          <path d="M10 40 V30 H20"></path>
+          <path d="M24 16 V24 L30 28"></path>
+        </g>
+        <text class="steering-text" x="975" y="482">
+          <tspan x="975" dy="0">Adapt to a changing world</tspan>
+        </text>
+      </g>
+
+      <g class="steering-capability">
+        <rect class="steer-card" x="885" y="556" width="590" height="76" rx="12"></rect>
+        <path class="icon-panel" fill="var(--soft)" d="M897 557 H945 V631 H897 Q886 631 886 620 V568 Q886 557 897 557 Z"></path>
+        <line class="panel-seam" x1="945" y1="557" x2="945" y2="631"></line>
+        <g class="steer-icon" stroke="var(--ink)" transform="translate(890 570)">
+          <circle cx="24" cy="24" r="5"></circle>
+          <circle cx="11" cy="15" r="4"></circle>
+          <circle cx="37" cy="15" r="4"></circle>
+          <circle cx="13" cy="36" r="4"></circle>
+          <circle cx="35" cy="36" r="4"></circle>
+          <path d="M15 17 L20 22"></path>
+          <path d="M33 17 L28 22"></path>
+          <path d="M17 34 L21 28"></path>
+          <path d="M31 34 L27 28"></path>
+        </g>
+        <text class="steering-text" x="975" y="602">
+          <tspan x="975" dy="0">Coordinate many decisions towards one goal</tspan>
+        </text>
+      </g>
+    </svg>
+  </main>
+</body>
+</html>

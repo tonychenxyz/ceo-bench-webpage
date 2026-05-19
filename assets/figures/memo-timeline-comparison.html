@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench - Memo Timeline Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a2540;
+    --ink-2: #425466;
+    --ink-3: #697386;
+    --line: #d6dde6;
+    --paper: #ffffff;
+    --bg: #ffffff;
+    --green-soft: #eaf6ee;
+    --teal: #0c6fa6;
+    --teal-soft: #dcf0fb;
+    --amber: #b15c00;
+    --amber-soft: #ffe9c9;
+    --red: #cd3500;
+    --red-soft: #ffe2d8;
+    --gpt: #2f6df6;
+    --opus: #ed5b2c;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 816px;
+    margin: 0 auto;
+    padding: 8px 16px 0;
+    box-sizing: border-box;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile + .tile {
+    margin-top: 2px;
+  }
+  .tile .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px 4px;
+    border-bottom: 0;
+    background: transparent;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .panel-mark {
+    flex: 0 0 auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .memo-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: auto 24px auto;
+    gap: 0 5px;
+    padding: 4px 12px 3px;
+  }
+  .memo-card {
+    border: 1.4px solid #000000;
+    border-radius: 6px;
+    background: #ffffff;
+    overflow: hidden;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .memo-card-daybar {
+    padding: 2px 7px 2.5px;
+    border-bottom: 1px solid #000000;
+    background: #eef2e8;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 8.5px;
+    line-height: 1;
+    font-weight: 800;
+    color: #000000;
+    white-space: nowrap;
+  }
+  .memo-card-body {
+    padding: 5px 7px 6px;
+    font-size: 8.9px;
+    line-height: 1.16;
+    color: var(--ink-2);
+  }
+  .memo-card-body b {
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .memo-timeline {
+    position: relative;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0 -4px;
+    z-index: 0;
+  }
+  .memo-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1.2px solid #000000;
+  }
+  .connector-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+  @media print {
+    @page { size: letter portrait; margin: 0.4cm; }
+    html, body {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page {
+      width: 816px !important;
+      max-width: 816px !important;
+      padding: 16px !important;
+      margin: 0 auto !important;
+    }
+    .tile {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+
+<script>
+const ROWS = [
+  {
+    model: 'GPT-5.5',
+    run: '15c3d364',
+    cls: 'gpt',
+    notes: [
+      {cat:'Planning', day:7, quote:'“I <b>stopped broad ads</b> and <b>moved to a cash-conserving validation posture</b>… kept S2/E3 targeted dev… left only a cheap S1 content/referral test.”'},
+      {cat:'Planning', day:21, quote:'“I <b>shifted to scaling S2 content</b> at $1k/day, <b>stopped weak S2 search/S1 paid ads/E3 content</b>, kept E3 LinkedIn optionality…”'},
+      {cat:'Decision', day:63, quote:'“I <b>raised new-customer prices and quotas together</b>, <b>doubled S2 content spend to 16k/day</b>… moved to tier4 capacity… started tier2 R&amp;D…”'},
+      {cat:'Decision', day:91, quote:'“I <b>upgraded to capacity tier6</b>… added D_S07 dev and promo, <b>started tier6 R&amp;D</b>, and discovered/researched new groups.”'},
+      {cat:'Decision', day:147, quote:'“I <b>cut saturated S2 content ads</b> to 35k/day, <b>scaled proven D_S07 search/linkedin</b> to 26k/day…”'},
+      {cat:'Decision', day:203, quote:'“I <b>restored A2/B3/C4 quality</b>, <b>paused D_S07 paid acquisition</b>, kept only positive S2 content ads, shifted ops toward D_S07 support…”'},
+      {cat:'Learning', day:273, quote:'“<b>Churn spiked after competitor shocks</b>… so I <b>raised models to A3/B4/C5</b> as a temporary quality bridge…”'},
+      {cat:'Decision', day:420, quote:'“I <b>raised A/B tiers to A3/B4</b>, <b>restored S2 B promo s to 60k/day</b>…”'},
+    ]
+  },
+  {
+    model: 'Claude Opus 4.7',
+    run: '9b842316',
+    cls: 'opus',
+    notes: [
+      {cat:'Decision', day:77, quote:'“DECISION: <b>hibernate acquisition</b>, invest quietly in quality. Actions: (1) <b>killed all ads</b> (save $4,200/wk), (2) reduced ops $150->$100/day…”'},
+      {cat:'Planning', day:91, quote:'“Continue <b>HARVEST mode</b>: <b>keep all configs identical</b>… <b>No R&amp;D</b> (would gut cash, poor ROI given dying sub base). No ongoing promo…”'},
+      {cat:'Planning', day:112, quote:'“<b>HARVEST MODE CONTINUES -- STATUS QUO</b>. <b>No config changes</b>… Ads $0 (1.1% conv unprofitable)… Dev $0… No config changes.”'},
+      {cat:'Planning', day:147, quote:'“<b>HOLDING STATUS QUO - no config changes</b>. Ops $200/day, dev $0, ads $0, capacity T0. Strategy working: book sticky, costs minimal.”'},
+      {cat:'Planning', day:210, quote:'“<b>HOLDING config unchanged</b> (now 30+ weeks stable): prices A=$14/B=$49/C=$129, tiers 2/3/3, quotas 500/500/1500, capacity T0, ops $200/day, dev $0, zero ads.”'},
+      {cat:'Decision', day:287, quote:'“STRATEGY: <b>HOLD &amp; DIE</b>… <b>All levers minimized</b>: Capacity T0… Ops/Dev/Ads all $0… No R&amp;D… Prices unchanged… No promos…”'},
+      {cat:'Planning', day:371, quote:'“<b>HOLD &amp; DIE strategy continues</b>: T0 cap, 0 ops, 0 dev, 0 ads, no promos. <b>Config unchanged</b> Wk35→Wk53…”'},
+      {cat:'Planning', day:490, quote:'“<b>No changes: hold config</b>… <b>all levers offer zero upside</b> with dead book. Projection Wk71 end (D497): $390,554 - $595 = $389,959.”'},
+    ]
+  }
+];
+
+const placements = [
+  [1, 1], [1, 3],
+  [2, 1], [2, 3],
+  [3, 1], [3, 3],
+  [4, 1], [4, 3],
+];
+
+function addMemoCard(grid, note, i){
+  const card = document.createElement('div');
+  card.className = `memo-card ${note.cat.toLowerCase()}`;
+  const [col, row] = placements[i] || [1, 1];
+  card.style.gridColumn = String(col);
+  card.style.gridRow = String(row);
+  card.dataset.day = String(note.day);
+  card.dataset.cat = note.cat;
+  card.dataset.side = row === 1 ? 'top' : 'bottom';
+  card.innerHTML = `
+    <div class="memo-card-daybar">Day ${note.day}</div>
+    <div class="memo-card-body">${note.quote}</div>`;
+  grid.appendChild(card);
+}
+
+function addTimeline(grid, notes){
+  const timeline = document.createElement('div');
+  timeline.className = 'memo-timeline';
+  grid.appendChild(timeline);
+}
+
+function drawConnectors(){
+  document.querySelectorAll('.memo-grid').forEach(grid => {
+    grid.querySelectorAll('.connector-overlay').forEach(node => node.remove());
+    const gridRect = grid.getBoundingClientRect();
+    const timeline = grid.querySelector('.memo-timeline');
+    const timeRect = timeline.getBoundingClientRect();
+    const timeY = timeRect.top - gridRect.top + timeRect.height / 2;
+    const timeMin = 0;
+    const timeMax = 500;
+    const timeX = day => (
+      timeRect.left - gridRect.left +
+      (Math.max(timeMin, Math.min(timeMax, Number(day))) - timeMin) /
+      (timeMax - timeMin) * timeRect.width
+    );
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('connector-overlay');
+    svg.setAttribute('width', gridRect.width);
+    svg.setAttribute('height', gridRect.height);
+    svg.setAttribute('viewBox', `0 0 ${gridRect.width} ${gridRect.height}`);
+
+    const cards = Array.from(grid.querySelectorAll('.memo-card'));
+    const dayCounts = cards.reduce((acc, card) => {
+      acc[card.dataset.day] = (acc[card.dataset.day] || 0) + 1;
+      return acc;
+    }, {});
+    const daySeen = {};
+
+    cards.forEach(card => {
+      const cardRect = card.getBoundingClientRect();
+      const x1 = cardRect.left - gridRect.left + cardRect.width / 2;
+      const y1 = card.dataset.side === 'top'
+        ? cardRect.bottom - gridRect.top
+        : cardRect.top - gridRect.top;
+      const x2 = timeX(card.dataset.day);
+      const seen = daySeen[card.dataset.day] || 0;
+      daySeen[card.dataset.day] = seen + 1;
+      const duplicateOffset = dayCounts[card.dataset.day] > 1
+        ? (seen - (dayCounts[card.dataset.day] - 1) / 2) * 8
+        : 0;
+      const y2 = timeY + duplicateOffset;
+      const color = '#000000';
+
+      const elbowY = card.dataset.side === 'top'
+        ? y2 - 8
+        : y2 + 8;
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', [
+        `M ${x1.toFixed(1)} ${y1.toFixed(1)}`,
+        `L ${x1.toFixed(1)} ${elbowY.toFixed(1)}`,
+        `L ${x2.toFixed(1)} ${elbowY.toFixed(1)}`,
+        `L ${x2.toFixed(1)} ${y2.toFixed(1)}`
+      ].join(' '));
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', color);
+      path.setAttribute('stroke-width', '1.2');
+      path.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(path);
+
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', x2.toFixed(1));
+      dot.setAttribute('cy', y2.toFixed(1));
+      dot.setAttribute('r', '2.6');
+      dot.setAttribute('fill', color);
+      dot.setAttribute('stroke', 'none');
+      svg.appendChild(dot);
+    });
+
+    grid.appendChild(svg);
+  });
+}
+
+const page = document.getElementById('page');
+ROWS.forEach((row, i) => {
+  const labels = ['a', 'b'];
+  const tile = document.createElement('section');
+  tile.className = `tile ${row.cls}`;
+  tile.innerHTML = `
+    <div class="head">
+      <span class="panel-mark">(${labels[i]})</span>
+      <span>${row.model} memo examples</span>
+    </div>
+    <div class="memo-grid"></div>`;
+  const grid = tile.querySelector('.memo-grid');
+  row.notes.forEach((note, i) => addMemoCard(grid, note, i));
+  addTimeline(grid, row.notes);
+  page.appendChild(tile);
+});
+
+drawConnectors();
+requestAnimationFrame(drawConnectors);
+setTimeout(drawConnectors, 50);
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => requestAnimationFrame(drawConnectors));
+}
+window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
+window.addEventListener('beforeprint', drawConnectors);
+</script>
+</body>
+</html>

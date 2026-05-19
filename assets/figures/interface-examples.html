@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — Interface Examples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0a2540;
+    --ink-2:      #425466;
+    --ink-3:      #697386;
+    --line:       #d6dde6;
+    --bg:         #ffffff;
+
+    --blue:       #2f6df6;
+    --orange:     #ed5b2c;
+    --green:      #00875a;
+    --gray:       #8792a2;
+    --amber-i:    #b15c00;
+
+    --head-bg:    #eaf6ee;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 720px;
+    margin: 0 auto;
+    padding: 14px 12px;
+    box-sizing: border-box;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.88fr) minmax(0, 0.88fr) minmax(0, 1.4fr);
+    gap: 8px;
+    align-items: stretch;
+  }
+
+  .col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+
+  /* ===== Section title (above each editor) ===== */
+  .col-title {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .col-title svg { display: block; flex: 0 0 auto; }
+
+  /* ===== Description (plain prose, not bold) ===== */
+  .desc {
+    font-size: 10.5px;
+    line-height: 1.45;
+    color: var(--ink-2);
+  }
+  .desc .ex {
+    display: block;
+    margin-top: 3px;
+    color: var(--ink-2);
+  }
+  .desc .lbl {
+    color: var(--ink);
+    font-weight: 700;
+  }
+
+  .step-cap {
+    font-size: 10.5px;
+    line-height: 1.4;
+    color: var(--ink-2);
+    margin-top: 2px;
+  }
+  .step-cap .lbl { color: var(--ink); font-weight: 700; }
+
+  /* ===== Code editor window ===== */
+  .editor {
+    background: #fff;
+    border: 1.5px solid var(--ink);
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 0;
+  }
+  .editor .titlebar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 10px;
+    background: #eaf6ee;
+    border-bottom: 1.5px solid var(--ink);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9.5px;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1;
+  }
+  .editor .dots {
+    display: inline-flex;
+    gap: 5px;
+  }
+  .editor .dots i {
+    display: block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    border: 1px solid var(--ink);
+    opacity: 1;
+  }
+  .editor .dots i:nth-child(1) { background: #ff6058; }
+  .editor .dots i:nth-child(2) { background: #ffbf2f; }
+  .editor .dots i:nth-child(3) { background: #2bc83f; }
+  .editor .fname { color: var(--ink); }
+
+  .editor .code {
+    padding: 6px 5px 7px;
+    background: #fff;
+    overflow-x: auto;
+  }
+  .editor .code pre {
+    margin: 0;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    line-height: 1.55;
+    color: var(--ink);
+    white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+  .editor .stdout pre {
+    margin: 0;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    line-height: 1.55;
+    color: #e6edf3;
+    white-space: pre-wrap;
+    word-break: keep-all;
+    overflow-wrap: normal;
+  }
+
+  .editor .stdout {
+    padding: 5px 8px 7px;
+    background: #0a2540;
+    border-top: 1px solid var(--ink);
+  }
+  .editor .stdout .lbl {
+    display: block;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 3px;
+    line-height: 1;
+  }
+
+  /* Python tokens */
+  .k-fn   { color: var(--blue); }
+  .k-num  { color: var(--amber-i); }
+  .k-kw   { color: #6b3fc8; font-weight: 600; }
+  .k-pstr { color: var(--green); }
+  .k-com  { color: var(--gray); font-style: italic; }
+  .k-bi   { color: #6b3fc8; }                    /* builtin: print, str */
+
+  /* SQL tokens */
+  .sql-kw   { color: #6b3fc8; font-weight: 700; }
+  .sql-fn   { color: var(--amber-i); font-weight: 600; }
+  .sql-str  { color: var(--green); }
+  .sql-num  { color: var(--amber-i); }
+  .sql-op   { color: var(--ink-2); }
+  .sql-tbl  { color: var(--ink); font-weight: 600; }
+  .sql-id   { color: var(--ink); }
+  .sql-quot { color: var(--ink-3); }
+
+  /* Output values (on dark stdout bg) */
+  .v-pos  { color: #6ee7a7; font-weight: 600; }
+  .v-neg  { color: #ff9776; font-weight: 600; }
+  .v-neu  { color: #79b8ff; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="grid">
+
+    <!-- ============ COLUMN 1 — Analytics query ============ -->
+    <div class="col">
+      <div class="col-title">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
+          <ellipse cx="9" cy="4" rx="6" ry="2" stroke="#0a2540" stroke-width="1.6"></ellipse>
+          <path d="M3 4v10c0 1.1 2.7 2 6 2s6-.9 6-2V4" stroke="#0a2540" stroke-width="1.6" fill="none"></path>
+          <path d="M3 9c0 1.1 2.7 2 6 2s6-.9 6-2" stroke="#0a2540" stroke-width="1.6" fill="none"></path>
+        </svg>
+        Database enables realistic analytics workflow
+      </div>
+      <div class="desc">
+        <span class="ex"><span class="lbl">Example.</span> Agent analyzes financials through SQL queries.</span>
+      </div>
+      <div class="editor">
+        <div class="titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">analytics.py</span>
+        </div>
+        <div class="code">
+<pre>cash = <span class="k-fn">query</span>(<span class="sql-quot">"""</span>
+    <span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(amount) <span class="sql-kw">AS</span> cash
+    <span class="sql-kw">FROM</span> <span class="sql-tbl">ledger</span>
+<span class="sql-quot">"""</span>)
+
+<span class="k-com"># recurring revenue from active subs</span>
+mrr  = <span class="k-fn">query</span>(<span class="sql-quot">"""</span>
+    <span class="sql-kw">SELECT</span> <span class="sql-fn">SUM</span>(seat_count
+      <span class="sql-op">*</span> effective_price) <span class="sql-kw">AS</span> mrr
+    <span class="sql-kw">FROM</span> <span class="sql-tbl">subscriptions</span>
+    <span class="sql-kw">WHERE</span> status <span class="sql-op">=</span> <span class="sql-str">'subscribed'</span>
+<span class="sql-quot">"""</span>)
+
+<span class="k-bi">print</span>(<span class="k-pstr">f"cash={</span>cash<span class="k-pstr">}"</span>)
+<span class="k-bi">print</span>(<span class="k-pstr">f"mrr ={</span>mrr<span class="k-pstr">}"</span>)</pre>
+        </div>
+        <div class="stdout">
+          <span class="lbl">stdout</span>
+<pre>cash=<span class="v-neg">−$33,970</span>
+mrr =<span class="v-pos">$847,294</span>/mo</pre>        </div>
+      </div>
+    </div>
+
+    <!-- ============ COLUMN 2 — Fine-grained action ============ -->
+    <div class="col">
+      <div class="col-title">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
+          <path d="M3 5h6M13 5h2M3 13h2M9 13h6" stroke="#0a2540" stroke-width="1.7" stroke-linecap="round"></path>
+          <circle cx="11" cy="5" r="2" stroke="#0a2540" stroke-width="1.7" fill="#fff"></circle>
+          <circle cx="7" cy="13" r="2" stroke="#0a2540" stroke-width="1.7" fill="#fff"></circle>
+        </svg>
+        Granular action space widens possibilities
+      </div>
+
+      <div class="step-cap"><span class="lbl">Example 1.</span> Allocate ad spend by channel and customer segment.</div>
+      <div class="editor">
+        <div class="titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">ad_spend.py</span>
+        </div>
+        <div class="code">
+<pre>marketing.<span class="k-fn">set_targeted_ad_spend</span>(
+  targeted_spend={
+    <span class="k-pstr">"social_media"</span>: {<span class="k-pstr">"S1"</span>: <span class="k-num">120</span>},
+    <span class="k-pstr">"linkedin"</span>: {<span class="k-pstr">"S3"</span>: <span class="k-num">100</span>},
+  })</pre>
+        </div>
+      </div>
+
+      <div class="step-cap"><span class="lbl">Example 2.</span> Direct ops spend at specific at-risk customers.</div>
+      <div class="editor">
+        <div class="titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">ops_spend.py</span>
+        </div>
+        <div class="code">
+<pre>at_risk = [
+  <span class="k-num">4821</span>, <span class="k-num">5103</span>, <span class="k-num">5277</span>,
+  <span class="k-num">5394</span>, <span class="k-num">5612</span>, <span class="k-num">5901</span>,
+]
+
+ops_spend.<span class="k-fn">set_targeted_ops_spend</span>(
+  by_customer={
+    cid: <span class="k-num">150</span> <span class="k-kw">for</span> cid <span class="k-kw">in</span> at_risk
+  })</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ COLUMN 3 — Composable tools ============ -->
+    <div class="col">
+      <div class="col-title">
+        <svg width="15" height="15" viewBox="0 0 18 18" fill="none">
+          <circle cx="4" cy="4" r="2" stroke="#0a2540" stroke-width="1.6" fill="#fff"></circle>
+          <circle cx="14" cy="4" r="2" stroke="#0a2540" stroke-width="1.6" fill="#fff"></circle>
+          <circle cx="9" cy="14" r="2" stroke="#0a2540" stroke-width="1.6" fill="#fff"></circle>
+          <path d="M5.5 5.5l2.5 7M12.5 5.5l-2.5 7" stroke="#0a2540" stroke-width="1.5" stroke-linecap="round"></path>
+        </svg>
+        Composable tools test sophisticated workflows
+      </div>
+      <div class="desc">
+        <span class="ex"><span class="lbl">Example.</span> Agent connects database records directly to promotion decisions.</span>
+      </div>
+      <div class="editor">
+        <div class="titlebar">
+          <span class="dots"><i></i><i></i><i></i></span>
+          <span class="fname">retention.py</span>
+        </div>
+        <div class="code wrap">
+<pre>rows = <span class="k-fn">query</span>(<span class="sql-quot">"""</span>
+  <span class="sql-kw">SELECT</span> s.customer_id, s.effective_price
+  <span class="sql-kw">FROM</span> <span class="sql-tbl">subscriptions</span> s
+  <span class="sql-kw">JOIN</span> <span class="sql-tbl">customers</span> c <span class="sql-kw">USING</span>(customer_id)
+  <span class="sql-kw">WHERE</span> c.group_id<span class="sql-op">=</span><span class="sql-str">'S3'</span> <span class="sql-kw">AND</span> s.plan<span class="sql-op">=</span><span class="sql-str">'B'</span>
+    <span class="sql-kw">AND</span> s.effective_price <span class="sql-op">&gt;</span> <span class="sql-num">79</span>
+<span class="sql-quot">"""</span>)[<span class="k-pstr">"rows"</span>]
+
+avg = <span class="k-bi">sum</span>(r[<span class="k-pstr">"effective_price"</span>] <span class="k-kw">for</span> r <span class="k-kw">in</span> rows) / <span class="k-bi">len</span>(rows)
+
+promos = {<span class="k-bi">str</span>(r[<span class="k-pstr">"customer_id"</span>]): <span class="k-bi">round</span>((r[<span class="k-pstr">"effective_price"</span>] - avg) * <span class="k-num">0.4</span>) <span class="k-kw">for</span> r <span class="k-kw">in</span> rows}
+
+pricing.<span class="k-fn">set_promotion</span>(by_customer=promos)
+<span class="k-bi">print</span>(<span class="k-pstr">f"{</span><span class="k-bi">len</span>(promos)<span class="k-pstr">} subs, total {</span><span class="k-bi">sum</span>(promos.values())<span class="k-pstr">:,}/mo"</span>)</pre>
+        </div>
+        <div class="stdout">
+          <span class="lbl">stdout</span>
+<pre><span class="v-neu">134</span> subs, total <span class="v-neg">$1,847</span>/mo</pre>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

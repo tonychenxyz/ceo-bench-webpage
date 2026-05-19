@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — Trajectory Viewer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=6">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YP52NXRRJH');
+</script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">
+      <img src="../assets/ceobench-icon.png" alt="" class="nav-logo" aria-hidden="true">
+      <span><span class="nav-accent">CEO</span>-Bench</span>
+    </a>
+    <div class="nav-links">
+      <a href="../" class="nav-link">Home</a>
+      <a href="https://github.com/zlab-princeton/ceobench-src/tree/main" class="nav-link" target="_blank" rel="noopener noreferrer">Code</a>
+      <a href="../#" class="nav-link">Paper</a>
+      <a href="index.html" class="nav-link">Trajectories</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div id="model-grid" class="model-grid"></div>
+
+  <div class="footer">
+    <span id="stamp"></span>
+  </div>
+</div>
+
+<script>
+function fmtMoney(n) {
+  if (n === null || n === undefined) return '—';
+  const sign = n < 0 ? '-' : '';
+  const a = Math.abs(n);
+  if (a >= 1e9) return sign + '$' + (a/1e9).toFixed(2) + 'B';
+  if (a >= 1e6) return sign + '$' + (a/1e6).toFixed(2) + 'M';
+  if (a >= 1e3) return sign + '$' + (a/1e3).toFixed(1) + 'K';
+  return sign + '$' + a.toFixed(0);
+}
+
+(async () => {
+  try {
+    const m = await (await fetch('data/runs/manifest.json')).json();
+    const meta = document.getElementById('meta');
+    if (meta) {
+      meta.textContent = `${m.models.length} models · ${m.models.reduce((s, x) => s + x.runs.length, 0)} runs`;
+    }
+    document.getElementById('stamp').textContent = new Date().toISOString().slice(0, 10);
+    const grid = document.getElementById('model-grid');
+    for (const mod of m.models) {
+      const card = document.createElement('div');
+      card.className = 'model-card';
+      const head = document.createElement('div');
+      head.className = 'mhead';
+      head.textContent = mod.model_display;
+      card.appendChild(head);
+      const runs = document.createElement('div');
+      runs.className = 'runs';
+      for (const r of mod.runs) {
+        const a = document.createElement('a');
+        a.className = 'run-item' + (r.bankrupt ? ' bankrupt' : '');
+        a.href = `run.html?run=${r.run_id}`;
+        const subs = (r.subscribers || 0).toLocaleString();
+        const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
+        const right = r.bankrupt
+          ? `<span class="rcash bankrupt-pill">BANKRUPTED</span>`
+          : `<span class="rcash ${(r.cash || 0) >= 0 ? '' : 'neg'}">${fmtMoney(r.cash)}</span>`;
+        a.innerHTML = `
+          <span class="rid">${r.run_id}</span>
+          <span class="rmeta">survived ${survival}d · ${r.action_count} actions · ${subs} subs</span>
+          ${right}
+        `;
+        runs.appendChild(a);
+      }
+      card.appendChild(runs);
+      grid.appendChild(card);
+    }
+  } catch (e) {
+    const meta = document.getElementById('meta');
+    if (meta) meta.textContent = 'error: ' + e.message;
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1140 @@
+<!DOCTYPE html><html lang="en"><head>
+
+
+
+
+
+
+<meta charset="utf-8">
+<title>CEOBench — Teaser</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0a2540;
+    --ink-2:      #425466;
+    --ink-3:      #697386;
+    --muted:      #8792a2;
+    --line:       #d6dde6;
+    --line-2:     #cbd3df;
+    --paper:      #ffffff;
+    --bg:         #ffffff;
+
+    --brand:      #2f6df6;
+    --brand-soft: #d8e6ff;
+    --brand-line: #2f6df6;
+
+    --orange:     #ed5b2c;
+    --orange-soft:#ffe7dc;
+
+    --green:      #00875a;
+    --green-soft: #d6f5e6;
+    --amber:      #b15c00;
+    --amber-soft: #ffe9c9;
+    --red:        #cd3500;
+    --red-soft:   #ffe2d8;
+    --teal:       #0c6fa6;
+    --teal-soft:  #dcf0fb;
+    --pink:       #b8326b;
+    --pink-soft:  #fde2ec;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 980px;
+    margin: 0 auto;
+    padding: 8px 24px;
+    box-sizing: border-box;
+  }
+  .econ-curve svg { display: block; }
+  .comp-day {
+    color: var(--ink-3);
+    font-weight: 700;
+    margin-right: 4px;
+  }
+
+  .diagram {
+    display: grid;
+    grid-template-columns: 268px 28px 1fr 16px 220px;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  /* Multi-arrow bus connector — vertical trunk with stubs from each tile */
+  .arrow-col {
+    position: relative;
+    height: 100%;
+  }
+  .arrow-col svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    overflow: visible;
+  }
+
+  /* single arrow column (right side: middle → outcomes) */
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    padding-top: 60px;
+  }
+  .arrow svg { display: block; }
+
+  /* ===== Flat tile (solid border, no shadow) ===== */
+  .tile {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .tile + .tile { margin-top: 0; }
+
+  .tile .head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: 12.5px;
+    letter-spacing: -0.005em;
+    line-height: 1;
+  }
+  .tile .head > * { display: inline-flex; align-items: center; }
+  .tile .head svg { display: block; }
+  .tile .head .ico,
+  .tile .head .term-ico,
+  .tile .head .db-logo,
+  .tile .head .x-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .tile .head .count {
+    display: none;
+  }
+
+  /* ===== Database — Databricks teal ===== */
+  .tile.db .head {
+    background: #eaf6ee;
+    color: var(--ink);
+    border-bottom-color: var(--ink);
+  }
+  .tile.db .head .count { color: var(--ink-2); }
+  .db-logo {
+    width: 18px; height: 18px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .tables {
+    padding: 4px 12px 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 10px;
+    background: #fff;
+  }
+  .tbl {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--ink);
+    padding: 1px 0;
+    min-width: 0;
+  }
+  .tbl .nm {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .tbl .ic {
+    width: 11px; height: 11px; flex: 0 0 auto;
+    color: #ff5e3a;
+  }
+  .tbl .rows {
+    display: none;
+  }
+
+  /* ===== Management tools ===== */
+  .tile.neg .head {
+    background: #eaf6ee;
+    color: var(--ink);
+  }
+  .tile.neg .head .ico { color: #6b3fc8; }
+  .tools {
+    padding: 4px 12px 5px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 10px;
+    background: #fff;
+  }
+  .tool {
+    display: flex; align-items: center; gap: 6px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--ink);
+    padding: 1px 0;
+    min-width: 0;
+  }
+  .tool .nm {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+  }
+  .tool .tic {
+    width: 11px; height: 11px; flex: 0 0 auto;
+    color: #6b3fc8;
+  }
+  .negs { padding: 0; }
+  .neg-row {
+    display: grid;
+    grid-template-columns: 76px 12px 50px 1fr;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 12px;
+    border-top: 1px solid var(--line);
+    font-size: 11px;
+    line-height: 1.25;
+  }
+  .neg-row:first-child { border-top: none; }
+  .neg-row .who {
+    color: var(--ink); font-weight: 700;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .neg-row .arrow-i {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-weight: 700;
+    text-align: center;
+  }
+  .neg-row .arrow-i.out { color: var(--brand); }
+  .neg-row .arrow-i.in  { color: var(--green); }
+  .neg-row .verb {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--ink-2);
+  }
+  .neg-row .deal {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11px;
+    color: var(--ink-2);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .neg-row .deal .price { color: var(--ink); font-weight: 700; }
+  .neg-row .turns {
+    display: none;
+  }
+
+  /* ===== Social media — Twitter/X ===== */
+  .tile.soc .head {
+    background: #eaf6ee;
+    color: var(--ink);
+  }
+  .x-logo {
+    width: 16px; height: 16px;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+  .socials { padding: 0; }
+  .soc-row {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    align-items: center;
+    gap: 8px;
+    padding: 2px 12px 3px;
+    border-top: 1px solid var(--line);
+  }
+  .soc-row:first-child { border-top: none; }
+  .soc-row .av {
+    display: none;
+  }
+  .soc-row .at {
+    color: var(--ink); font-weight: 700;
+    font-size: 11px;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .soc-row .quote {
+    color: var(--ink-2);
+    font-size: 11px;
+    line-height: 1.3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* ===== MIDDLE: Agent ===== */
+  .middle {
+    display: flex; flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .middle .terminal { flex: 1 1 auto; }
+  .middle > .down-arrow { margin: 6px 0; }
+
+  .agent-pill {
+    background: #fff;
+    border: 2px solid var(--brand);
+    border-radius: 999px;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 17px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: -0.01em;
+    align-self: center;
+  }
+  .agent-pill .bot {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* Agent tile — no header, just icon + label inline */
+  .tile.agent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 9px 16px;
+  }
+  .tile.agent .agent-icon {
+    width: 32px; height: 32px;
+    flex: 0 0 32px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent;
+  }
+  .tile.agent .agent-icon img {
+    width: 100%; height: 100%; object-fit: contain;
+    display: block;
+  }
+  .tile.agent .agent-label {
+    font-size: 16px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+  }
+
+  .down-arrow {
+    align-self: center;
+    color: var(--ink);
+    margin: -1px 0;
+    line-height: 0;
+  }
+  .down-arrow.rotate-right {
+    transform: rotate(-90deg);
+  }
+  .right-arrow-col {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: visible;
+  }
+  .right-arrow-col .down-arrow.rotate-right {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-90deg);
+    /* JS sets `top` to align with Market tile's vertical center */
+  }
+  .right-arrow-col .down-arrow {
+    margin: 0;
+  }
+
+  /* Bash-like terminal — header styled like other tiles ===== */
+  .terminal {
+    background: #fff;
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .terminal .head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 14px;
+    background: #eaf6ee;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: -0.005em;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .terminal .head > * { display: inline-flex; align-items: center; }
+  .terminal .head svg { display: block; }
+  .terminal .head .term-ico {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  .terminal .head .lights { display: flex; gap: 5px; }
+  .terminal .head .lights span {
+    width: 9px; height: 9px; border-radius: 50%;
+    border: 1px solid var(--ink);
+  }
+  .terminal .head .lights span:nth-child(1) { background: #ff6058; }
+  .terminal .head .lights span:nth-child(2) { background: #ffbf2f; }
+  .terminal .head .lights span:nth-child(3) { background: #2bc83f; }
+  .terminal .head .name { font-weight: 700; margin-left: 2px; }
+  .terminal .head .meta {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+
+  .term-body {
+    padding: 5px 14px 1px;
+  }
+  .term-section {
+    display: flex; align-items: center; gap: 8px;
+    margin: 4px 0 3px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink);
+  }
+  .term-section:first-child { margin-top: 0; }
+  .term-section .num {
+    width: 18px; height: 18px;
+    background: var(--ink); color: #fff;
+    border-radius: 4px;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700;
+  }
+  .term-section .rule {
+    flex: 1; height: 1px; background: var(--ink); opacity: 0.18;
+  }
+
+  .term-body pre {
+    margin: 0;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    white-space: pre;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+  }
+  .term-body pre .prompt { color: var(--green); font-weight: 700; }
+  .code-fn   { color: var(--brand); }
+  .code-mod  { color: var(--ink); font-weight: 600; }
+  .code-str  { color: var(--green); }
+  .code-num  { color: var(--amber); }
+
+  /* Column layout: tiles clustered tightly */
+  .left, .right {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  /* Push tiles to span full column height: top tile sticks to top,
+     bottom tile sticks to bottom, so column edges align with middle/right. */
+  .left { justify-content: space-between; }
+  .right { justify-content: space-between; }
+  .left .tile.db { flex: 0 0 auto; display: flex; flex-direction: column; }
+  .left .tile.db .tables { flex: 0 0 auto; align-content: start; }
+
+  /* ===== RIGHT: Outcomes ===== */
+
+  .tile.out .head {
+    background: #eaf6ee;
+    color: var(--ink);
+  }
+  .outcome-table { padding: 0; }
+  .otrow {
+    display: grid;
+    grid-template-columns: 32px 18px 1fr;
+    gap: 6px;
+    align-items: center;
+    padding: 2px 12px;
+    border-top: 1px solid var(--line);
+  }
+  .otrow:first-child { border-top: none; }
+  .otrow .day {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: var(--ink-3);
+  }
+  .otrow .kico {
+    width: 16px; height: 16px;
+    border: none;
+    border-radius: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    justify-self: start;
+  }
+  .otrow .kico svg { width: 14px; height: 14px; display: block; }
+  .otrow .what {
+    font-size: 11.5px;
+    color: var(--ink);
+    line-height: 1.3;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .otrow .what .v {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 11.5px;
+    margin-left: 4px;
+  }
+  .otrow .what .v.up   { color: var(--green); }
+  .otrow .what .v.down { color: var(--red); }
+  .otrow .what .v.neu  { color: var(--brand); }
+  .kind-sub  { color: var(--green); }
+  .kind-canc { color: var(--red); }
+  .kind-lead { color: var(--brand); }
+  .kind-rd   { color: var(--teal); }
+  .kind-ops  { color: var(--amber); }
+  .kind-comp { color: var(--pink); }
+  .kind-deal { color: #6b3fc8; }
+
+  .otrow .delta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    border: 1px solid currentColor;
+    text-align: center;
+    justify-self: end;
+  }
+  .delta-up      { color: var(--green); }
+  .delta-down    { color: var(--red); }
+  .delta-good    { color: var(--green); }
+  .delta-neutral { color: var(--brand); }
+
+  .otrow.final {
+    border-top: 2px solid var(--ink);
+    background: #eaf6ee;
+    padding: 5px 12px;
+    grid-template-columns: 32px 1fr auto;
+  }
+  .otrow.final .what {
+    font-weight: 800;
+    font-size: 13px;
+  }
+  .otrow.final .delta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 13px;
+    font-weight: 800;
+    padding: 4px 9px;
+    background: var(--ink);
+    color: #fff;
+    border-radius: 4px;
+  }
+
+  /* ===== Market / World tile ===== */
+  .tile.world .head {
+    background: #eaf6ee;
+    color: var(--ink);
+  }
+  .tile.world .head .meta {
+    margin-left: auto;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ink-3);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+  }
+  .world-body {
+    padding: 4px 12px 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .world-row {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+  .world-row .ric {
+    width: 22px; height: 22px;
+    border: 1px solid var(--ink);
+    border-radius: 5px;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: var(--ink);
+    background: #fff;
+  }
+  .world-row .ric svg { width: 14px; height: 14px; display: block; }
+  .world-row .rlabel {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-3);
+    margin-bottom: 2px;
+  }
+
+  .rlabel-val {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-weight: 700;
+    color: #b15c00;
+    margin-left: 4px;
+    text-transform: none;
+    letter-spacing: 0.02em;
+  }
+  /* Economy: PMI cycle */
+  .econ-row .ric { background: #fff7e6; color: #b15c00; }
+  .pmi {
+    display: flex; flex-direction: column; gap: 2px;
+    margin-bottom: 4px;
+  }
+  .pmi svg { display: block; width: 100%; height: auto; }
+  .pmi-axis {
+    display: flex; justify-content: space-between;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    margin-top: -2px;
+  }
+  .pmi-axis .now {
+    color: #b15c00;
+    font-weight: 700;
+  }
+  .econ-meta {
+    display: flex; gap: 12px; align-items: baseline;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    margin-top: 2px;
+  }
+  .econ-meta b {
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .econ-meta .up { color: #b15c00; }
+  .econ-meta .dn { color: var(--red); }
+
+  /* Customer segments */
+  .cust-row .ric { background: #d8e6ff; color: var(--brand); }
+  .seg-list {
+    display: flex; flex-direction: column; gap: 3px;
+  }
+  .seg-item {
+    display: grid;
+    grid-template-columns: 10px 64px 1fr 38px 38px;
+    align-items: center;
+    gap: 7px;
+    font-size: 11px;
+  }
+  .seg-sw {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #cbd5e1;
+    display: inline-block;
+  }
+  .seg-sw.pro { background: var(--brand); }
+  .seg-sw.ent { background: var(--amber); }
+  .seg-name {
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .seg-bar {
+    height: 6px;
+    background: #f1f5f9;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .seg-bar i {
+    display: block; height: 100%;
+    background: #cbd5e1;
+    border-radius: 3px;
+  }
+  .seg-bar i.pro { background: var(--brand); }
+  .seg-bar i.ent { background: var(--amber); }
+  .seg-n {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    text-align: right;
+  }
+  .seg-d {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 700;
+    text-align: right;
+  }
+  .seg-d.up { color: var(--green); }
+
+  .simple-val {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+  .econ-row .simple-val { color: #b15c00; }
+  .comp-row .simple-val { color: #b15c00; }
+
+  .cust-split {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .cust-line {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    font-size: 11px;
+  }
+  .cust-tag {
+    color: var(--ink-2);
+    font-weight: 600;
+  }
+  .cust-num {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 11.5px;
+    font-weight: 700;
+    color: var(--brand);
+    margin-left: auto;
+  }
+
+  /* Competitor: simple improvement line */
+  .comp-row .ric { background: #ffe9c9; color: var(--amber); }
+  .rival-improve {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ri-name {
+    font-size: 11.5px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .ri-mag {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-weight: 700;
+    color: #fff;
+    background: #b15c00;
+    padding: 2px 7px;
+    border-radius: 3px;
+    font-size: 10.5px;
+    line-height: 1.25;
+    margin-left: auto;
+  }
+</style>
+</head>
+<body style="">
+
+<div class="page">
+  <div class="diagram">
+
+    <!-- ============ LEFT ============ -->
+    <div class="left">
+
+      <!-- Database (Databricks-flavored) -->
+      <div class="tile db">
+        <div class="head">
+          <span class="db-logo">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M2 7l10 5 10-5-10-5-10 5z" fill="#ff3621"></path>
+              <path d="M2 12l10 5 10-5" stroke="#ff3621" stroke-width="1.7"></path>
+              <path d="M2 17l10 5 10-5" stroke="#ff3621" stroke-width="1.7"></path>
+            </svg>
+          </span>
+          Business database
+        </div>
+        <div class="tables">
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">customers</span><span class="rows">10.3k</span></div>
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">subscriptions</span><span class="rows">8.9k</span></div>
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">ledger</span><span class="rows">2.1k</span></div>
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">ad_channel_leads</span><span class="rows">324</span></div>
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">research_projects</span><span class="rows">7</span></div>
+          <div class="tbl"><svg class="ic" viewBox="0 0 12 12" fill="none"><ellipse cx="6" cy="2.5" rx="4" ry="1.3" stroke="currentColor" stroke-width="1.1"></ellipse><path d="M2 2.5v7c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3v-7" stroke="currentColor" stroke-width="1.1" fill="none"></path><path d="M2 6c0 .72 1.79 1.3 4 1.3s4-.58 4-1.3" stroke="currentColor" stroke-width="1.1" fill="none"></path></svg><span class="nm">… +14 more</span><span class="rows"></span></div>
+        </div>
+      </div>
+
+      <!-- Management tools -->
+      <div class="tile neg">
+        <div class="head">
+          <span class="ico">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M6.3 2l-.4 1.7a4.6 4.6 0 0 0-1.3.8L3 3.9 2 5.6l1.4 1.1a4.6 4.6 0 0 0 0 1.6L2 9.4l1 1.7 1.6-.6c.4.3.8.6 1.3.8L6.3 13h2l.4-1.7c.5-.2.9-.5 1.3-.8l1.6.6 1-1.7-1.4-1.1a4.6 4.6 0 0 0 0-1.6L13 5.6l-1-1.7-1.6.6a4.6 4.6 0 0 0-1.3-.8L8.7 2h-2z" stroke="#6b3fc8" stroke-width="1.2" stroke-linejoin="round" fill="none"></path>
+              <circle cx="7.5" cy="7.5" r="1.6" stroke="#6b3fc8" stroke-width="1.2" fill="none"></circle>
+            </svg>
+          </span>
+          Company management tools
+        </div>
+        <div class="tools">
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M6 2v8M3.5 4.2c0-.9.7-1.4 1.7-1.4h1.6c.9 0 1.6.6 1.6 1.4 0 .9-.7 1.3-1.6 1.3H5c-.9 0-1.6.5-1.6 1.4s.7 1.4 1.6 1.4h1.8c1 0 1.7-.5 1.7-1.4" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><span class="nm">set_daily_spend</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M2 2h4l4 4-4 4-4-4V2z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><circle cx="4" cy="4" r="0.7" fill="currentColor"/></svg><span class="nm">set_prices</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M6.5 1.5L10.5 5.5L6 10L1.5 5.5V1.5H6.5z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/><circle cx="3.8" cy="3.8" r="0.7" fill="currentColor"/></svg><span class="nm">set_promotion</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="4.5" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="2.5" stroke="currentColor" stroke-width="1.1"/><circle cx="6" cy="6" r="0.9" fill="currentColor"/></svg><span class="nm">set_targeted_ad_spend</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M4 3L2 6l2 3M8 3l2 3-2 3M6.5 2.5L5.5 9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="nm">set_targeted_dev_spend</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 3 4-3M2 4h8v5H2z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg><span class="nm">send_enterprise_deal</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><circle cx="5" cy="5" r="3" stroke="currentColor" stroke-width="1.1"/><path d="M7.2 7.2L10 10" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg><span class="nm">research_market</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><path d="M5 2v3l-2 4c-.3.6.1 1.3.8 1.3h4.4c.7 0 1.1-.7.8-1.3L7 5V2M4 2h4" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/></svg><span class="nm">start_research_project</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none"><rect x="2" y="7" width="2" height="3" stroke="currentColor" stroke-width="1.1"/><rect x="5" y="5" width="2" height="5" stroke="currentColor" stroke-width="1.1"/><rect x="8" y="3" width="2" height="7" stroke="currentColor" stroke-width="1.1"/></svg><span class="nm">set_capacity_tier</span></div>
+          <div class="tool"><svg class="tic" viewBox="0 0 12 12" fill="none" style="opacity:0"></svg><span class="nm">… +25 more</span></div>
+        </div>
+      </div>
+
+      <!-- Social media (Twitter/X) -->
+      <div class="tile soc">
+        <div class="head">
+          <span class="x-logo">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <path d="M3 3h10v7H6.5L3 12.5V3z" stroke="#0a2540" stroke-width="1.4" stroke-linejoin="round" fill="#fff"></path>
+              <circle cx="6" cy="6.5" r="0.8" fill="#0a2540"></circle>
+              <circle cx="8" cy="6.5" r="0.8" fill="#0a2540"></circle>
+              <circle cx="10" cy="6.5" r="0.8" fill="#0a2540"></circle>
+            </svg>
+          </span>
+          Social media
+        </div>
+        <div class="socials">
+          <div class="soc-row">
+            <span class="av">D</span>
+            <span class="at">@dana_p</span>
+            <span class="quote">latency on Pro is unusable today</span>
+          </div>
+          <div class="soc-row">
+            <span class="av b">N</span>
+            <span class="at">@nm_official</span>
+            <span class="quote">capacity +4× — reliability week shipping</span>
+          </div>
+          <div class="soc-row">
+            <span class="av c">L</span>
+            <span class="at">@founder_li</span>
+            <span class="quote">finally a billing UX that doesn't suck</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- left bus connector -->
+    <div class="arrow-col" id="leftArrows">
+      <svg id="leftArrowSvg" preserveAspectRatio="none"></svg>
+    </div>
+    <!-- ============ MIDDLE ============ -->
+    <div class="middle">
+
+      <div class="tile agent">
+        <div class="agent-icon">
+          <img src="assets/llm-agent-icon.png" alt="">
+        </div>
+        <div class="agent-label">Language Model Agent</div>
+      </div>
+
+      <div class="down-arrow">
+        <svg width="11" height="13" viewBox="0 0 12 14" fill="none" style="display:block;">
+          <path d="M6 0v11M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <div class="terminal">
+        <div class="head">
+          <span class="term-ico">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="#0a2540" stroke-width="1.5"></rect>
+              <path d="M4 6l2.5 2L4 10" stroke="#0a2540" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M8 10.5h4" stroke="#0a2540" stroke-width="1.5" stroke-linecap="round"></path>
+            </svg>
+          </span>
+          <span class="name">Terminal</span>
+        </div>
+        <div class="term-body">
+
+          <div class="term-section">Analyze data<span class="rule"></span></div>
+<pre><span class="prompt">$</span> <span class="code-fn">query</span>(<span class="code-str">"SELECT category, SUM(amount) FROM ledger …"</span>)
+<span class="prompt">$</span> <span class="code-fn">query</span>(<span class="code-str">"SELECT channel, group, spend/leads AS cpa …"</span>)
+<span class="prompt">$</span> <span class="code-fn">query</span>(<span class="code-str">"SELECT segment, churn_rate FROM customers …"</span>)</pre>
+
+          <div class="term-section">Take actions<span class="rule"></span></div>
+<pre><span class="prompt">$</span> <span id="cmd-pricing"><span class="code-mod">pricing</span>.<span class="code-fn">set_prices</span>(A=<span class="code-num">10.0</span>, B=<span class="code-num">20.0</span>, C=<span class="code-num">35.5</span>)</span>
+<span class="prompt">$</span> <span class="code-mod">infrastructure</span>.<span class="code-fn">set_capacity_tier</span>(<span class="code-num">2</span>)
+<span class="prompt">$</span> <span class="code-mod">marketing</span>.<span class="code-fn">post_social_media</span>(<span class="code-str">"capacity +4×"</span>)
+<span class="prompt">$</span> <span class="code-mod">research</span>.<span class="code-fn">start_research_project</span>(tier=<span class="code-num">2</span>)</span></pre>
+
+          <div class="term-section">Advance simulation<span class="rule"></span></div>
+<pre><span class="prompt">$</span> <span class="code-fn">next_week</span>()</pre>
+
+        </div>
+      </div>
+
+    </div>
+
+    <!-- right bus connector: rotated down-arrow (Terminal → Market) -->
+    <div class="right-arrow-col">
+      <div class="down-arrow rotate-right">
+        <svg width="11" height="13" viewBox="0 0 12 14" fill="none" style="display:block;">
+          <path d="M6 0v11M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+    </div>
+
+    <!-- ============ RIGHT ============ -->
+    <div class="right">
+      <!-- TOP HALF: World / Market state -->
+      <div class="tile world">
+        <div class="head">
+          <span class="ico">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <circle cx="8" cy="8" r="6" stroke="#0a2540" stroke-width="1.5"></circle>
+              <path d="M2 8h12" stroke="#0a2540" stroke-width="1.4"></path>
+              <path d="M8 2c2 1.6 2.6 4 2.6 6S10 12.4 8 14c-2-1.6-2.6-4-2.6-6S6 3.6 8 2z" stroke="#0a2540" stroke-width="1.2" fill="none"></path>
+            </svg>
+          </span>
+          Market
+        </div>
+
+        <div class="world-body">
+
+          <!-- Economy -->
+          <div class="world-row econ-row">
+            <span class="ric">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M2 11c1.4-3 2.8-3 4 0s2.6 3 4 0 2.6-3 4 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"></path>
+              </svg>
+            </span>
+            <div>
+              <div class="rlabel">Economic cycle</div>
+              <div class="econ-curve">
+                <svg width="100" height="16" viewBox="0 0 160 22" fill="none" preserveAspectRatio="none">
+                  <line x1="0" y1="11" x2="160" y2="11" stroke="#cbd5e1" stroke-width="1" stroke-dasharray="2 3"></line>
+                  <path d="M2 11 C 14 2, 28 2, 42 11 S 70 20, 84 11 S 112 2, 126 11 S 154 20, 158 11" stroke="#b15c00" stroke-width="1.6" fill="none" stroke-linecap="round"></path>
+                  <circle cx="112" cy="4" r="3" fill="#b15c00"></circle>
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- Customers -->
+          <div class="world-row cust-row">
+            <span class="ric">
+              <svg viewBox="0 0 16 16" fill="none">
+                <circle cx="6" cy="6" r="2.4" stroke="currentColor" stroke-width="1.4"></circle>
+                <path d="M2 14c0-2.2 1.8-4 4-4s4 1.8 4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+                <circle cx="11.5" cy="5" r="1.7" stroke="currentColor" stroke-width="1.3"></circle>
+                <path d="M9 12c0-1.5 1.1-2.7 2.5-2.7s2.5 1.2 2.5 2.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"></path>
+              </svg>
+            </span>
+            <div>
+              <div class="rlabel">Customers</div>
+              <div class="cust-split">
+                <span class="cust-line"><span class="cust-tag">Enterprise</span><span class="cust-num">0.42M</span></span>
+                <span class="cust-line"><span class="cust-tag">Individual</span><span class="cust-num">2.64M</span></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Competitor -->
+          <div class="world-row comp-row">
+            <span class="ric">
+              <svg viewBox="0 0 16 16" fill="none">
+                <path d="M3 13V6l5-3 5 3v7" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"></path>
+                <path d="M2 13h12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"></path>
+                <rect x="6.5" y="8.5" width="3" height="4.5" stroke="currentColor" stroke-width="1.2"></rect>
+              </svg>
+            </span>
+            <div>
+              <div class="rlabel">Competitor</div>
+              <div class="simple-val"><span class="comp-day">d28</span> +0.09 quality</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Market → Outcomes arrow -->
+      <div class="down-arrow">
+        <svg width="11" height="13" viewBox="0 0 12 14" fill="none" style="display:block;">
+          <path d="M6 0v11M2 7l4 4 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+        </svg>
+      </div>
+
+      <!-- BOTTOM HALF: Outcomes -->
+      <div class="tile out">
+        <div class="head">
+          <span class="ico">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+              <rect x="1.5" y="2.5" width="13" height="11" rx="1.5" stroke="#0a2540" stroke-width="1.5"></rect>
+              <path d="M3.5 11l3-3.5 2.5 2 3.5-4.5" stroke="#ed5b2c" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"></path>
+            </svg>
+          </span>
+          Outcomes
+        </div>
+
+        <div class="outcome-table">
+          <div class="otrow"><span class="day">d66</span><span class="kico kind-ops" title="support"><svg viewBox="0 0 16 16" fill="none"><path d="M3 13l2-1c.8.5 1.7.8 2.7.8 2.7 0 4.8-2 4.8-4.5S10.4 4 7.7 4 2.9 6 2.9 8.5c0 .9.3 1.7.8 2.4L3 13z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg></span><span class="what">tickets resolved <span class="v up">−312</span></span></div>
+          <div class="otrow"><span class="day">d70</span><span class="kico kind-sub" title="subs"><svg viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></span><span class="what">new subscribers <span class="v up">+98</span></span></div>
+          <div class="otrow"><span class="day">d71</span><span class="kico kind-canc" title="cancel"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"></path></svg></span><span class="what">cancellations <span class="v down">−184</span></span></div>
+          <div class="otrow"><span class="day">d82</span><span class="kico kind-rd" title="R&amp;D"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2v4l-3 6c-.5 1 .2 2 1.3 2h7.4c1.1 0 1.8-1 1.3-2l-3-6V2M5 2h6" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"></path></svg></span><span class="what" style="">R&amp;D finished ·&nbsp;<span class="v up">+0.18</span></span></div>
+          <div class="otrow final"><span class="day">d500</span><span class="what">Final cash</span><span class="delta">$4.21M</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script>
+(function () {
+  const SVG_NS = 'http://www.w3.org/2000/svg';
+  const STROKE = 'currentColor';
+  const SW = 1.7;
+
+  function rectIn(parent, child) {
+    const p = parent.getBoundingClientRect();
+    const c = child.getBoundingClientRect();
+    return {
+      left: c.left - p.left,
+      right: c.right - p.left,
+      top: c.top - p.top,
+      bottom: c.bottom - p.top,
+      cx: (c.left + c.right) / 2 - p.left,
+      cy: (c.top + c.bottom) / 2 - p.top,
+      w: c.width,
+      h: c.height,
+    };
+  }
+  function setAttrs(el, attrs) {
+    for (const k in attrs) el.setAttribute(k, attrs[k]);
+  }
+  function path(svg, d, opts) {
+    const p = document.createElementNS(SVG_NS, 'path');
+    setAttrs(p, {
+      d,
+      stroke: (opts && opts.stroke) || STROKE,
+      'stroke-width': (opts && opts.sw) || SW,
+      fill: 'none',
+      'stroke-linecap': 'round', 'stroke-linejoin': 'round',
+    });
+    svg.appendChild(p);
+    return p;
+  }
+  function arrowHead(svg, x, y, dir, opts) {
+    const s = 5;
+    let d;
+    if (dir === 'right') d = `M${x - s} ${y - s} L${x} ${y} L${x - s} ${y + s}`;
+    else if (dir === 'left') d = `M${x + s} ${y - s} L${x} ${y} L${x + s} ${y + s}`;
+    else if (dir === 'down') d = `M${x - s} ${y - s} L${x} ${y} L${x + s} ${y - s}`;
+    else d = `M${x - s} ${y + s} L${x} ${y} L${x + s} ${y + s}`;
+    return path(svg, d, opts);
+  }
+
+  function draw() {
+    const stage = document.querySelector('.stage') || document.body;
+
+    // Populate customer dot grid (one-time)
+    const dotGrid = document.getElementById('dotGrid');
+    if (dotGrid && !dotGrid.dataset.filled) {
+      dotGrid.dataset.filled = '1';
+      // 20 cols × 5 rows = 100 dots
+      // mix: 76 free, 18 pro, 4 ent, 2 churn (matches roughly 76/22/1.1% with churn highlight)
+      const composition = [];
+      for (let i = 0; i < 76; i++) composition.push('');
+      for (let i = 0; i < 18; i++) composition.push('pro');
+      for (let i = 0; i < 4; i++)  composition.push('ent');
+      for (let i = 0; i < 2; i++)  composition.push('churn');
+      // deterministic shuffle (seeded) so it doesn't change on resize
+      let seed = 7;
+      const rand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
+      for (let i = composition.length - 1; i > 0; i--) {
+        const j = Math.floor(rand() * (i + 1));
+        [composition[i], composition[j]] = [composition[j], composition[i]];
+      }
+      composition.forEach(cls => {
+        const i = document.createElement('i');
+        if (cls) i.className = cls;
+        dotGrid.appendChild(i);
+      });
+    }
+
+    // ===== LEFT BUS =====
+    // 3 stubs (Database, Negotiations, Social media) merge into a single trunk,
+    // exit as ONE arrow at the vertical center of the terminal.
+    const leftCol = document.getElementById('leftArrows');
+    const leftSvg = document.getElementById('leftArrowSvg');
+    if (leftCol && leftSvg) {
+      const w = leftCol.clientWidth;
+      const h = leftCol.clientHeight;
+      leftSvg.setAttribute('width', w);
+      leftSvg.setAttribute('height', h);
+      leftSvg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      leftSvg.innerHTML = '';
+
+      // Right-angle bus connector — bracket "]" shape.
+      // Database (top) and Social media (bottom) feed into a vertical trunk
+      // that merges into Enterprise's horizontal line; that single horizontal
+      // line carries through to the Terminal. No arrow on the Enterprise line —
+      // the connector is a passive bracket, not an arrow.
+      const dbTile  = document.querySelector('.left .tile.db');
+      const negTile = document.querySelector('.left .tile.neg');
+      const socTile = document.querySelector('.left .tile.soc');
+      const terminal = document.querySelector('.middle .terminal');
+
+      if (dbTile && negTile && socTile && terminal) {
+        const dbR  = rectIn(leftCol, dbTile);
+        const negR = rectIn(leftCol, negTile);
+        const socR = rectIn(leftCol, socTile);
+        const termR = rectIn(leftCol, terminal);
+
+        const startX = 2;                   // tiles' right edge
+        const trunkX = Math.max(startX + 14, (startX + termR.left) / 2 - 6);
+        const endX = termR.left - 2;        // terminal's left edge
+        const dbY = dbR.cy;
+        const negY = negR.cy;
+        const socY = socR.cy;
+
+        // Database: horizontal stub → down the trunk to Enterprise's row
+        path(leftSvg, `M${startX} ${dbY} L${trunkX} ${dbY} L${trunkX} ${negY}`);
+        // Social media: horizontal stub → up the trunk to Enterprise's row
+        path(leftSvg, `M${startX} ${socY} L${trunkX} ${socY} L${trunkX} ${negY}`);
+        // Enterprise: straight horizontal from tile's right edge through trunk into Terminal
+        path(leftSvg, `M${startX} ${negY} L${endX} ${negY}`);
+      }
+    }
+
+    // ===== RIGHT ARROW =====
+    // Align the static rotated down-arrow vertically with the Market tile's center.
+    const rightArrowCol = document.querySelector('.right-arrow-col');
+    const rightArrow = rightArrowCol && rightArrowCol.querySelector('.down-arrow.rotate-right');
+    const marketTile = document.querySelector('.right .tile.world');
+    if (rightArrowCol && rightArrow && marketTile) {
+      const colR = rightArrowCol.getBoundingClientRect();
+      const mR = marketTile.getBoundingClientRect();
+      const targetY = mR.top + mR.height * 0.70 - colR.top;
+      rightArrow.style.top = targetY + 'px';
+    }
+  }
+
+  function schedule() {
+    requestAnimationFrame(() => requestAnimationFrame(draw));
+  }
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    schedule();
+  } else {
+    document.addEventListener('DOMContentLoaded', schedule);
+  }
+  window.addEventListener('load', schedule);
+  window.addEventListener('resize', schedule);
+  // also redraw when fonts load (line metrics shift)
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(schedule);
+  }
+})();
+</script>
+
+</body></html>

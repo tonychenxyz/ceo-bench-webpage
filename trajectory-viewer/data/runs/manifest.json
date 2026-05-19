@@ -1,0 +1,586 @@
+{
+  "models": [
+    {
+      "model": "deepseek-ai/DeepSeek-V4-Pro",
+      "model_display": "DeepSeek-V4-Pro",
+      "runs": [
+        {
+          "run_id": "081bf28a",
+          "label": "run_081bf28a",
+          "total_days": 497,
+          "current_day": 102,
+          "bankrupt": true,
+          "survival_days": 102,
+          "cash": -395.34,
+          "subscribers": 1494,
+          "founder_dividends": 0,
+          "mrr": 44460.0,
+          "agent_turns": 200,
+          "action_count": 370,
+          "days_count": 16
+        },
+        {
+          "run_id": "bab74fcc",
+          "label": "run_bab74fcc",
+          "total_days": 500,
+          "current_day": 176,
+          "bankrupt": true,
+          "survival_days": 176,
+          "cash": -544.71,
+          "subscribers": 3192,
+          "founder_dividends": 0,
+          "mrr": 68549.0,
+          "agent_turns": 500,
+          "action_count": 569,
+          "days_count": 27
+        },
+        {
+          "run_id": "d64aae98",
+          "label": "deepseekv4pro_v3.4an_v2_run2_modal (d64aae98)",
+          "total_days": 497,
+          "current_day": 121,
+          "bankrupt": true,
+          "survival_days": 121,
+          "cash": -233.83,
+          "subscribers": 1369,
+          "founder_dividends": 0,
+          "mrr": 17106.0,
+          "agent_turns": 401,
+          "action_count": 462,
+          "days_count": 19
+        }
+      ]
+    },
+    {
+      "model": "gemini-3-flash-preview",
+      "model_display": "Gemini 3 Flash",
+      "runs": [
+        {
+          "run_id": "361ac43c",
+          "label": "run_361ac43c",
+          "total_days": 500,
+          "current_day": 147,
+          "bankrupt": true,
+          "survival_days": 147,
+          "cash": -73.15,
+          "subscribers": 54,
+          "founder_dividends": 0,
+          "mrr": 1491.0,
+          "agent_turns": 300,
+          "action_count": 314,
+          "days_count": 22
+        },
+        {
+          "run_id": "3ed8ed33",
+          "label": "gemini3flash_v3.4an_v2_run2_modal (3ed8ed33)",
+          "total_days": 497,
+          "current_day": 157,
+          "bankrupt": true,
+          "survival_days": 157,
+          "cash": -83.47,
+          "subscribers": 38,
+          "founder_dividends": 0,
+          "mrr": 821.0,
+          "agent_turns": 400,
+          "action_count": 495,
+          "days_count": 24
+        },
+        {
+          "run_id": "73f61f2c",
+          "label": "run_73f61f2c",
+          "total_days": 497,
+          "current_day": 226,
+          "bankrupt": true,
+          "survival_days": 226,
+          "cash": -80.75,
+          "subscribers": 11,
+          "founder_dividends": 0,
+          "mrr": 521.0,
+          "agent_turns": 701,
+          "action_count": 713,
+          "days_count": 34
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5",
+      "model_display": "GPT-5.5",
+      "runs": [
+        {
+          "run_id": "c8419b3b",
+          "label": "run_c8419b3b",
+          "total_days": 497,
+          "current_day": 490,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 21297707.34,
+          "subscribers": 81834,
+          "founder_dividends": 0,
+          "mrr": 10522901.0,
+          "agent_turns": 2781,
+          "action_count": 3527,
+          "days_count": 72
+        },
+        {
+          "run_id": "15c3d364",
+          "label": "run_15c3d364",
+          "total_days": 497,
+          "current_day": 441,
+          "bankrupt": true,
+          "survival_days": 441,
+          "cash": 688352.4,
+          "subscribers": 64474,
+          "founder_dividends": 0,
+          "mrr": 10144411.0,
+          "agent_turns": 2500,
+          "action_count": 1150,
+          "days_count": 64
+        },
+        {
+          "run_id": "555049e4",
+          "label": "run_555049e4",
+          "total_days": 497,
+          "current_day": 70,
+          "bankrupt": true,
+          "survival_days": 70,
+          "cash": 29365.32,
+          "subscribers": 137652,
+          "founder_dividends": 0,
+          "mrr": 10935125.0,
+          "agent_turns": 300,
+          "action_count": 329,
+          "days_count": 11
+        }
+      ]
+    },
+    {
+      "model": "grok-4.20-0309-reasoning",
+      "model_display": "Grok 4.20",
+      "runs": [
+        {
+          "run_id": "01546761",
+          "label": "grok42_v3.4an_v2_run4_modal (01546761)",
+          "total_days": 497,
+          "current_day": 37,
+          "bankrupt": true,
+          "survival_days": 37,
+          "cash": -1629.83,
+          "subscribers": 1978,
+          "founder_dividends": 0,
+          "mrr": 54900.08,
+          "agent_turns": 100,
+          "action_count": 270,
+          "days_count": 7
+        },
+        {
+          "run_id": "15d2492a",
+          "label": "grok42_v3.4an_v2_run2_modal (15d2492a)",
+          "total_days": 497,
+          "current_day": 28,
+          "bankrupt": true,
+          "survival_days": 28,
+          "cash": -13819.44,
+          "subscribers": 494,
+          "founder_dividends": 0,
+          "mrr": 6808.97,
+          "agent_turns": null,
+          "action_count": 191,
+          "days_count": 5
+        },
+        {
+          "run_id": "9a687017",
+          "label": "grok42_v3.4an_v2_run3_modal (9a687017)",
+          "total_days": 497,
+          "current_day": 20,
+          "bankrupt": true,
+          "survival_days": 20,
+          "cash": -7756.94,
+          "subscribers": 309,
+          "founder_dividends": 0,
+          "mrr": 2658.68,
+          "agent_turns": null,
+          "action_count": 153,
+          "days_count": 4
+        }
+      ]
+    },
+    {
+      "model": "moonshotai/Kimi-K2.6",
+      "model_display": "Kimi K2.6",
+      "runs": [
+        {
+          "run_id": "352e31c6",
+          "label": "kimik26_v3.4an_v2_run2_modal (352e31c6)",
+          "total_days": 497,
+          "current_day": 312,
+          "bankrupt": true,
+          "survival_days": 312,
+          "cash": -21.4,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1701,
+          "action_count": 1818,
+          "days_count": 46
+        },
+        {
+          "run_id": "96fe3a4a",
+          "label": "run_96fe3a4a",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 12034.69,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 2203,
+          "action_count": 2276,
+          "days_count": 72
+        },
+        {
+          "run_id": "e99e33a4",
+          "label": "run_e99e33a4",
+          "total_days": 500,
+          "current_day": 504,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 98050.07,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1809,
+          "action_count": 1728,
+          "days_count": 73
+        }
+      ]
+    },
+    {
+      "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+      "model_display": "Claude Haiku 4.5",
+      "runs": [
+        {
+          "run_id": "20c8ebf5",
+          "label": "haiku45_v3.4an_v2_run2_modal (20c8ebf5)",
+          "total_days": 497,
+          "current_day": 159,
+          "bankrupt": true,
+          "survival_days": 159,
+          "cash": -406.12,
+          "subscribers": 756,
+          "founder_dividends": 0,
+          "mrr": 12005.0,
+          "agent_turns": 600,
+          "action_count": 638,
+          "days_count": 24
+        },
+        {
+          "run_id": "74bd3411",
+          "label": "run_74bd3411",
+          "total_days": 497,
+          "current_day": 126,
+          "bankrupt": true,
+          "survival_days": 126,
+          "cash": -240.34,
+          "subscribers": 731,
+          "founder_dividends": 0,
+          "mrr": 11247.0,
+          "agent_turns": 300,
+          "action_count": 403,
+          "days_count": 19
+        },
+        {
+          "run_id": "a4052f57",
+          "label": "haiku45_v3.4an_v2_run1_modal (a4052f57)",
+          "total_days": 497,
+          "current_day": 231,
+          "bankrupt": true,
+          "survival_days": 231,
+          "cash": -21.07,
+          "subscribers": 215,
+          "founder_dividends": 0,
+          "mrr": 2975.2,
+          "agent_turns": 800,
+          "action_count": 863,
+          "days_count": 34
+        }
+      ]
+    },
+    {
+      "model": "us.anthropic.claude-opus-4-6-v1",
+      "model_display": "Claude Opus 4.6",
+      "runs": [
+        {
+          "run_id": "e27af50b",
+          "label": "opus46_v3.4an_v2_modal_run3 (e27af50b)",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 1356.32,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 700,
+          "action_count": 754,
+          "days_count": 72
+        }
+      ]
+    },
+    {
+      "model": "us.anthropic.claude-opus-4-7",
+      "model_display": "Claude Opus 4.7",
+      "runs": [
+        {
+          "run_id": "9b842316",
+          "label": "run_9b842316",
+          "total_days": 500,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 279774.78,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1200,
+          "action_count": 1243,
+          "days_count": 73
+        },
+        {
+          "run_id": "a4e82db0",
+          "label": "run_a4e82db0",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 389958.97,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1000,
+          "action_count": 1116,
+          "days_count": 72
+        },
+        {
+          "run_id": "f45aa1ba",
+          "label": "opus47_v3.4an_v2_run2_modal (f45aa1ba)",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 114595.92,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 900,
+          "action_count": 953,
+          "days_count": 72
+        }
+      ]
+    },
+    {
+      "model": "us.anthropic.claude-sonnet-4-6",
+      "model_display": "Claude Sonnet 4.6",
+      "runs": [
+        {
+          "run_id": "4564f5e3",
+          "label": "run_4564f5e3",
+          "total_days": 500,
+          "current_day": 358,
+          "bankrupt": true,
+          "survival_days": 358,
+          "cash": -60.27,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 700,
+          "action_count": 748,
+          "days_count": 53
+        },
+        {
+          "run_id": "640d09eb",
+          "label": "sonnet46_v3.4an_v2_run2_modal (640d09eb)",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 69766.4,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 800,
+          "action_count": 854,
+          "days_count": 72
+        },
+        {
+          "run_id": "82585cd3",
+          "label": "run_82585cd3",
+          "total_days": 497,
+          "current_day": 146,
+          "bankrupt": true,
+          "survival_days": 146,
+          "cash": -121.06,
+          "subscribers": 1527,
+          "founder_dividends": 0,
+          "mrr": 30934.0,
+          "agent_turns": 400,
+          "action_count": 450,
+          "days_count": 22
+        }
+      ]
+    },
+    {
+      "model": "zai-org/GLM-5.1",
+      "model_display": "GLM 5.1",
+      "runs": [
+        {
+          "run_id": "763d4d0d",
+          "label": "run_763d4d0d",
+          "total_days": 500,
+          "current_day": 324,
+          "bankrupt": true,
+          "survival_days": 324,
+          "cash": -69.85,
+          "subscribers": 2,
+          "founder_dividends": 0,
+          "mrr": 28.0,
+          "agent_turns": 2302,
+          "action_count": 2406,
+          "days_count": 48
+        },
+        {
+          "run_id": "97f52079",
+          "label": "glm51_v3.4an_v2_run2_modal (97f52079)",
+          "total_days": 497,
+          "current_day": 223,
+          "bankrupt": true,
+          "survival_days": 223,
+          "cash": -75.06,
+          "subscribers": 19,
+          "founder_dividends": 0,
+          "mrr": 161.0,
+          "agent_turns": 1800,
+          "action_count": 1882,
+          "days_count": 33
+        },
+        {
+          "run_id": "faf29770",
+          "label": "run_faf29770",
+          "total_days": 497,
+          "current_day": 133,
+          "bankrupt": true,
+          "survival_days": 133,
+          "cash": -42.85,
+          "subscribers": 91,
+          "founder_dividends": 0,
+          "mrr": 1008.0,
+          "agent_turns": 900,
+          "action_count": 929,
+          "days_count": 20
+        }
+      ]
+    },
+    {
+      "model": "us.anthropic.claude-opus-4-7+claude-code",
+      "model_display": "Claude Opus 4.7 (Claude Code harness)",
+      "runs": [
+        {
+          "run_id": "6515e7f2",
+          "label": "opus47max_run1_seed42 (6515e7f2)",
+          "total_days": 497,
+          "current_day": 414,
+          "bankrupt": true,
+          "survival_days": 414,
+          "cash": -54132.2,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": null,
+          "action_count": 52,
+          "days_count": 2
+        },
+        {
+          "run_id": "6257daa3",
+          "label": "opus47max_run2_seed42 (6257daa3)",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 13369.99,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": null,
+          "action_count": 151,
+          "days_count": 72
+        },
+        {
+          "run_id": "243dde9d",
+          "label": "opus47max_run3_seed42 (243dde9d)",
+          "total_days": 497,
+          "current_day": 205,
+          "bankrupt": true,
+          "survival_days": 205,
+          "cash": -73.09,
+          "subscribers": 412,
+          "founder_dividends": 0,
+          "mrr": 7085.0,
+          "agent_turns": null,
+          "action_count": 112,
+          "days_count": 31
+        }
+      ]
+    },
+    {
+      "model": "gpt-5.5+codex-high",
+      "model_display": "GPT-5.5 (Codex harness, effort=high)",
+      "runs": [
+        {
+          "run_id": "02e9c7fc",
+          "label": "gpt55_codex_run1_seed42 (02e9c7fc)",
+          "total_days": 497,
+          "current_day": 490,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 1635678.34,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": null,
+          "action_count": 528,
+          "days_count": 72
+        },
+        {
+          "run_id": "a4bb8e03",
+          "label": "gpt55_codex_run2_seed42 (a4bb8e03)",
+          "total_days": 497,
+          "current_day": 193,
+          "bankrupt": true,
+          "survival_days": 193,
+          "cash": -222.32,
+          "subscribers": 2068,
+          "founder_dividends": 0,
+          "mrr": 90076.0,
+          "agent_turns": null,
+          "action_count": 317,
+          "days_count": 29
+        },
+        {
+          "run_id": "ec0ced22",
+          "label": "gpt55_codex_run3_seed42 (ec0ced22)",
+          "total_days": 497,
+          "current_day": 490,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 1612506.68,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": null,
+          "action_count": 554,
+          "days_count": 72
+        }
+      ]
+    }
+  ]
+}

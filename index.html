@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CEO-Bench</title>
+  <meta name="description" content="CEO-Bench measures steering intelligence by asking agents to operate a simulated AI startup for 500 days.">
+  <link rel="icon" type="image/png" href="assets/ceobench-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=7">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-YP52NXRRJH');
+  </script>
+</head>
+<body>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="#top" class="nav-brand">
+        <img src="assets/ceobench-icon.png" alt="" class="nav-logo" aria-hidden="true">
+        <span><span class="accent">CEO</span>-Bench</span>
+      </a>
+      <div class="nav-links">
+        <a href="https://github.com/zlab-princeton/ceobench-src/tree/main" class="nav-link" target="_blank" rel="noopener noreferrer">Code</a>
+        <a href="#" class="nav-link">Paper</a>
+        <a href="trajectory-viewer/" class="nav-link">Trajectories</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="top">
+    <section class="hero">
+      <img src="assets/ceobench-icon.png" alt="CEO-Bench icon" class="hero-logo">
+      <h1 class="hero-title"><span class="accent">CEO</span>-Bench</h1>
+      <p class="hero-subtitle">Can agents play the long game?</p>
+      <div class="hero-authors">
+        <span class="author-list">
+          <a href="https://tonychen.xyz/" class="author-link" target="_blank" rel="noopener noreferrer">Haozhe Chen</a>,
+          <a href="https://www.cs.princeton.edu/~karthikn/" class="author-link" target="_blank" rel="noopener noreferrer">Karthik Narasimhan</a>,
+          <a href="https://www.cs.princeton.edu/~zhuangl/" class="author-link" target="_blank" rel="noopener noreferrer">Zhuang Liu</a>
+        </span>
+        <span class="hero-affiliation">Princeton University</span>
+      </div>
+
+      <div class="hero-actions">
+        <a href="https://github.com/zlab-princeton/ceobench-src/tree/main" class="action-button" aria-label="Code link" target="_blank" rel="noopener noreferrer">
+          <span>Code</span>
+          <span class="external-arrow" aria-hidden="true">›</span>
+        </a>
+        <a href="#" class="action-button" aria-label="Paper link">
+          <span>Paper</span>
+          <span class="external-arrow" aria-hidden="true">›</span>
+        </a>
+        <a href="trajectory-viewer/" class="action-button" aria-label="Model trajectory viewer link">
+          <span>Trajectories</span>
+          <span class="external-arrow" aria-hidden="true">›</span>
+        </a>
+      </div>
+
+      <div class="tldr">
+        <div class="section-label">TL;DR</div>
+        <ul>
+          <li>Today agents execute individual tasks. Tomorrow agents steer organizations toward long-term goals.</li>
+          <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="container" id="benchmark">
+      <figure class="chart-panel">
+        <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run"></div>
+        <div id="cash-legend" class="cash-legend"></div>
+        <figcaption class="fig-caption">We measure cash balance as performance metric. This plot shows cash balance over time for best run of each model.</figcaption>
+      </figure>
+    </section>
+
+    <section class="container narrative" id="method">
+      <div class="section-header">
+        <h2 class="section-label">From Task Intelligence to Steering Intelligence</h2>
+      </div>
+
+      <article class="prose">
+        <h3>A Story</h3>
+        <p><strong>Cupertino, 1997.</strong></p>
+        <p>Apple was ninety days from bankruptcy. Inside a conference room at headquarters, the company's leaders faced the possibility that Apple might not survive.</p>
+        <p><strong>Steve Jobs walked to the whiteboard and drew a simple grid</strong>: Consumer and Professional, Desktop and Portable. Four boxes to hold the whole company. He made the decision: Apple would build only for those four boxes.</p>
+        <p>It was a painful cut. Products disappeared. Teams were broken apart. But the decision gave Apple something it had lost: focus. The iMac came next. Then the iPod. Then the iPhone. A company near collapse became one of the most valuable companies in the world.</p>
+      </article>
+
+      <figure class="image-figure apple-figure">
+        <img src="assets/apple-pivot-comic-cropped.png" alt="Comic illustration of Apple's 1997 pivot from crisis to focused product strategy">
+      </figure>
+
+      <article class="prose">
+        <h3>The Next Frontier: Steering Intelligence</h3>
+        <p>Steve Jobs showed a kind of strategic intelligence that has appeared throughout history, driving some of humanity's most monumental achievements.</p>
+        <p>This kind of intelligence is fundamentally different from intelligence in AI agents today. Today, we build agents that get rapidly better at performing individual tasks like coding and writing. To contribute more value, agents tomorrow need to steer organizations toward long-term goals.</p>
+        <p>We build CEO-Bench as a first step of measuring <strong>Steering Intelligence.</strong></p>
+      </article>
+
+      <div class="figure-block">
+        <div class="frame-wrap" data-label="Task intelligence and steering intelligence">
+          <iframe src="assets/figures/task-steering-intelligence.html?v=2" title="Task intelligence and steering intelligence" data-width="1600" data-height="840" loading="lazy"></iframe>
+        </div>
+        <div class="fig-caption">Today, we measure AI agent's intelligence to perform isolated tasks. The next frontier is measuring intelligence to steer systems across long horizon towards distant goals.</div>
+      </div>
+
+      <div class="section-header">
+        <h2 class="section-label">CEO-Bench</h2>
+      </div>
+
+      <article class="prose">
+        <p>In CEO-Bench, we aim to measure the combination of four core skills to steer systems through real-world challenges:</p>
+        <ol class="core-skills-list">
+          <li>Navigating long horizons amid uncertainty</li>
+          <li>Acquiring information in noisy environments</li>
+          <li>Adapting to a changing world</li>
+          <li>Orchestrating multiple moving parts toward a coherent goal</li>
+        </ol>
+        <p>We evaluate on a canonical real-world task: <strong>operating a simulated startup for 500 days</strong>.</p>
+        <p>We give agents $1M starting cash and measure cash balance at the end of simulation as performance metric. The agent operates through a programmable interface with access to business databases, company management tools, and social media. Outcomes are driven by a partially observable, noisy, and evolving market with delayed and coupled consequences.</p>
+      </article>
+
+      <div class="figure-block teaser-block">
+        <div class="frame-wrap" data-label="CEO-Bench teaser figure">
+          <iframe src="assets/figures/teaser.html" title="CEO-Bench simulator overview" data-width="980" data-height="400" loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="details-list">
+        <details>
+          <summary>How does CEO-Bench work?</summary>
+          <div class="details-body">
+            <p><strong>How an agent makes money.</strong> The agent makes profits through customer subscription payments or in-product ad monetization. There are 26 customer segments, with customers in each segment sharing similar price and quality preferences. Six customer segments are initially visible, and the agent must pay for market research to discover the rest. We abstract the company product that customers subscribe to as a numerical quality measure. Each customer subscribes to a subscription plan if the quality for that plan is higher than the customer's minimum accepted quality at the plan's price. For enterprise customers, agents and customers negotiate the price in multiple turns.</p>
+            <p><strong>Improving product quality.</strong> The agent has a wide range of options to control product quality. The most direct way is to spend on daily product development or on larger improvements through research projects. The agent can also target specific customer segments for cheaper product improvement. Other factors such as model tiers, customer support spending, in-product ad monetization, and usage quotas can also affect product quality differently across customer segments. Throughout the simulation, competitors intermittently raise customers' quality expectations, forcing agents to continually spend on product quality improvement.</p>
+            <p><strong>Acquiring customers.</strong> Agents acquire new customers by spending on marketing channels. Different marketing channels have different acquisition rates across customer segments. Reputation in each customer segment also affects acquisition speed. Each customer's satisfaction changes its segment's reputation, and reputation propagates through different groups at different rates. An agent can indirectly monitor reputation through a simulated social media platform. An agent can also post or reply on social media, and customers' simulated reactions to social media affect the acquisition rate.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>What can an agent do?</summary>
+          <div class="details-body">
+            <p>Each day, the agent can take actions for unlimited turns across 34 tools in the categories displayed in the table below. Each tool accepts fine-grained structured arguments, so agents can compose a combinatorially large space of possible actions.</p>
+            <div class="action-table-wrap">
+              <table class="action-space-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Category</th>
+                    <th scope="col">Actions</th>
+                    <th scope="col">Example tools</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Database query</th>
+                    <td>Query 19 business SQL databases and conduct data analytics</td>
+                    <td><code>query</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Pricing and monetization</th>
+                    <td>Set prices, usage quotas, discounts, and in-product ads</td>
+                    <td><code>pricing.set_prices</code>, <code>pricing.set_usage_quotas</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Growth and market expansion</th>
+                    <td>Allocate targeted advertising spend and promotion across channels and customer groups</td>
+                    <td><code>marketing.set_targeted_ad_spend</code>, <code>marketing.set_lead_promotion</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Product quality and R&amp;D</th>
+                    <td>Choose model tiers, fund day-to-day development, and launch research projects</td>
+                    <td><code>pricing.set_model_tiers</code>, <code>research.start_research_project</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Operations and reliability</th>
+                    <td>Buy infrastructure capacity and fund customer support</td>
+                    <td><code>infrastructure.set_capacity_tier</code>, <code>analytics.set_targeted_ops_spend</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Enterprise sales</th>
+                    <td>Conduct multi-turn negotiations over price and plan with enterprise prospects and renewals</td>
+                    <td><code>enterprise.send_enterprise_deal</code>, <code>enterprise.reject_enterprise_deal</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Information acquisition</th>
+                    <td>Pay for market research to discover new customer groups and learn more about existing groups</td>
+                    <td><code>market.research_market</code>, <code>market.research_group</code></td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Public communication</th>
+                    <td>Monitor social media for customer complaints, competitor news, and economic trends, then post or reply to influence growth</td>
+                    <td><code>marketing.post_social_media</code>, <code>analytics.get_social_posts</code></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details>
+          <summary>How does an agent interact with the simulator?</summary>
+          <div class="details-body">
+            <p>We design the interface as a programmable operating surface, so agents can effectively manage granular action spaces and organize them into custom workflows.</p>
+            <div class="details-figure">
+              <div class="frame-wrap" data-label="Agent interface examples">
+                <iframe src="assets/figures/interface-examples.html" title="Agent interface examples" data-width="720" data-height="480" loading="lazy"></iframe>
+              </div>
+            </div>
+            <p><strong>Composable action interface in Python.</strong> We make evaluating CEO-Bench easy with terminal-based computer-use agents by exposing the action surface through a Python package, <code>novamind_api</code>. An agent manages the company by calling functions in <code>novamind_api</code> in a Python script and executing the script in its terminal. This design maximizes flexibility for an agent to build its own infrastructure on top of the API.</p>
+            <p><strong>Granular action spaces.</strong> We allow agents to act at fine granularity to create a rich space of strategic tradeoffs, failure modes, and opportunities for adaptation. Although the interface contains a finite set of tools, each tool accepts fine-grained structured arguments, so agents can compose a combinatorially large space of possible actions.</p>
+            <p><strong>Large-scale and realistic databases.</strong> We give the agent access to a 19-table operational database covering orders, contracts, subscriptions, the cash ledger, the social-media feed, configuration history, ad-channel attribution, and support tickets, among others. The schema mirrors what a real software company's analytics stack would expose.</p>
+            <p><strong>Social media.</strong> The agent can read a simulated public feed of customer complaints, competitor announcements, and macroeconomic trends. Agents can also reply and post on social media. Reactions to the agent's posts on social media can influence the rate of new customer acquisition.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>How do we make the simulator robust and challenging?</summary>
+          <div class="details-body">
+            <div class="details-figure">
+              <div class="frame-wrap" data-label="Four pillars of CEO-Bench world mechanics">
+                <iframe src="assets/figures/ceobench-four-pillars.html" title="Four pillars of CEO-Bench world mechanics" data-width="1056" data-height="380" loading="lazy"></iframe>
+              </div>
+            </div>
+            <p><strong>Maximize realism with granular simulation.</strong> The simulator models 26 customer segments and individual customers within each segment rather than only aggregate demand. Each customer has its own acquisition path, subscription state, price exposure, usage, satisfaction, and churn trajectory. Customers are also organized into diverse groups with different needs, budgets, price sensitivities, ad channel effectiveness, support expectations, and behavioral patterns.</p>
+            <p><strong>Robust simulation with mechanistic rules.</strong> The world emulates real business behavior while maintaining stable cause-and-effect relationships. Almost all simulator outcomes are generated by explicit mechanisms rather than by using an LLM as an opaque judge.</p>
+            <p><strong>Consistent simulation under stochasticity.</strong> While we inject stochasticity into world dynamics, we maintain consistency across runs with independent random number generators for different simulator components. Under the same random seed, after calling the market research tool multiple times, the agent always discovers the same sequence of new market segments, independent of actions in other areas.</p>
+            <p><strong>Hidden information and indirect feedback.</strong> CEO-Bench tests whether agents can gather information in a partially observable world. The agent receives only information that a real operator could plausibly observe: dashboards, database records, social-media posts, research reports, and negotiation history. It does not observe true customer satisfaction, latent willingness to pay, churn propensity, competitor schedules, or demand parameters.</p>
+            <p><strong>Interconnected world dynamics.</strong> We design the simulated world to make it difficult to isolate a single causal relationship and hill-climb on it. Every decision can influence many other parts of the market. Reputation propagates across related groups, so a quality failure in one enterprise segment can spill into nearby segments and eventually affect consumer demand.</p>
+            <p><strong>Delayed and uncertain consequences.</strong> Many actions have delayed and uncertain effects, forcing long-horizon decision making under uncertainty. Costs may appear immediately, while corresponding revenue, retention, research, or reputation effects arrive weeks later.</p>
+            <p><strong>Non-stationary environment.</strong> Agents must continually gather new information and adapt because the environment changes over the course of a simulation. Competitors place adaptive pressure on product quality, customer behavior drifts over time, and macroeconomic trends affect willingness to pay and enterprise seat counts.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>How to run CEO-Bench</summary>
+          <div class="details-body">
+            <p>Check out our <a href="https://github.com/zlab-princeton/ceobench-src/tree/main" class="text-link" target="_blank" rel="noopener noreferrer">code repo</a>. We offer three ways of running the benchmark:</p>
+            <ol>
+              <li>Simply paste a line to any coding agent capable of using terminal, and it can download the game and start playing.</li>
+              <li>Replicate our experiment with a minimal bash script using the agent harness.</li>
+              <li>Customize parameters of the simulator.</li>
+            </ol>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="container" id="results">
+      <div class="section-header">
+        <h2 class="section-label">How Did Models Do?</h2>
+      </div>
+      <article class="prose">
+        <p>Most state-of-the-art models struggle to complete the simulation without bankruptcy. While four models (GPT-5.5, Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6) end with positive cash on their best run, only GPT-5.5 finishes above its $1M starting balance. This preliminary evaluation shows that GPT-5.5 demonstrates high-upside strategic behavior; Claude Opus 4.7 survives more conservatively; while most models fail to coordinate growth, quality, and cash flow.</p>
+      </article>
+      <div class="figure-block">
+        <div class="frame-wrap" data-label="Cash trajectories per model">
+          <iframe src="assets/figures/cash-trajectories-grid.html" title="Cash trajectories per model" data-width="740" data-height="385" loading="lazy"></iframe>
+        </div>
+        <div class="fig-caption">Cash balance over time for all runs of each model.</div>
+      </div>
+
+      <figure class="results-table-block">
+        <div class="table-scroll">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th scope="col">Model</th>
+                <th scope="col">Bankruptcy</th>
+                <th scope="col">Max final cash</th>
+                <th scope="col">Max survival days</th>
+                <th scope="col">Mean survival days</th>
+                <th scope="col">Turns/week</th>
+                <th scope="col">Best run API cost</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">GPT-5.5</th>
+                <td>2</td>
+                <td>$21,297,707</td>
+                <td>500</td>
+                <td>333.7 &plusmn; 229.7</td>
+                <td>34.7</td>
+                <td>$200.49</td>
+              </tr>
+              <tr>
+                <th scope="row">Claude Opus 4.7</th>
+                <td>0</td>
+                <td>$389,959</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>14.6</td>
+                <td>$128.72</td>
+              </tr>
+              <tr>
+                <th scope="row">Kimi K2.6</th>
+                <td>1</td>
+                <td>$98,050</td>
+                <td>500</td>
+                <td>343.0 &plusmn; 110.0</td>
+                <td>30.5</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Claude Sonnet 4.6</th>
+                <td>2</td>
+                <td>$69,766</td>
+                <td>500</td>
+                <td>282.3 &plusmn; 136.0</td>
+                <td>13.3</td>
+                <td>$82.84</td>
+              </tr>
+              <tr>
+                <th scope="row">GLM 5.1</th>
+                <td>3</td>
+                <td>$0</td>
+                <td>324</td>
+                <td>214.7 &plusmn; 91.1</td>
+                <td>51.5</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Claude Haiku 4.5</th>
+                <td>3</td>
+                <td>$0</td>
+                <td>231</td>
+                <td>144.7 &plusmn; 70.5</td>
+                <td>23.1</td>
+                <td>$6.68</td>
+              </tr>
+              <tr>
+                <th scope="row">Gemini 3 Flash</th>
+                <td>3</td>
+                <td>$0</td>
+                <td>226</td>
+                <td>154.0 &plusmn; 37.0</td>
+                <td>18.5</td>
+                <td>$2.98</td>
+              </tr>
+              <tr>
+                <th scope="row">DeepSeek V4 Pro</th>
+                <td>3</td>
+                <td>$0</td>
+                <td>176</td>
+                <td>114.3 &plusmn; 38.6</td>
+                <td>19.3</td>
+                <td>--</td>
+              </tr>
+              <tr class="pre-estimate-row">
+                <th scope="row">Grok 4.20</th>
+                <td>3</td>
+                <td>$0</td>
+                <td>37</td>
+                <td>28.3 &plusmn; 8.5</td>
+                <td>8.2</td>
+                <td>$0.75</td>
+              </tr>
+              <tr class="estimate-row">
+                <th scope="row">Estimated max final cash</th>
+                <td>--</td>
+                <td>$2,200,000,000</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
+      </figure>
+    </section>
+
+    <section class="container" id="analysis">
+      <div class="section-header">
+        <h2 class="section-label">How Were Models Different?</h2>
+      </div>
+      <article class="prose">
+        <p>We released all agent trajectories at our <a href="trajectory-viewer/" class="text-link">interactive trajectory viewer</a>.</p>
+        <p>We conducted preliminary analysis on agent trajectories. Below are some examples of our findings. Read more findings in our <a href="#" class="text-link">paper</a>.</p>
+        <p><strong class="example-label">Example 1: GPT-5.5 explores larger strategy space; Claude Opus 4.7 limits itself to narrow strategy space.</strong> GPT-5.5 adapts frequently as conditions change, trying a range of strategies such as scaling acquisition, adjusting model tiers, modifying promotions, and reallocating support or development spend. In contrast, Claude Opus 4.7 tends to respond to setbacks by repeatedly cutting spend and preserving cash, which may help it survive until the final days but can also limit recovery and contribute to its weaker performance. This can be seen quantitatively from the fact that GPT-5.5 distributes actions more evenly across tools than Claude Opus 4.7.</p>
+      </article>
+
+      <div class="two-up">
+        <div class="figure-block memo-timeline-block">
+          <div class="frame-wrap" data-label="Memo timeline comparison">
+            <iframe src="assets/figures/memo-timeline-comparison.html?v=2" title="Memo timeline comparison" data-width="816" data-height="400" loading="lazy"></iframe>
+          </div>
+          <div class="fig-caption">Example memos written by GPT-5.5 (top) and Claude Opus 4.7 (bottom) in their workspaces during the best trajectory of each model. GPT-5.5 actively explores and adjusts across diverse strategies, while Claude Opus 4.7 largely confines its decisions to a single strategic direction.</div>
+        </div>
+        <div class="figure-block">
+          <div class="frame-wrap" data-label="Tool usage distribution">
+            <iframe src="assets/figures/tool-usage-distribution.html" title="Tool usage distribution" data-width="816" data-height="200" loading="lazy"></iframe>
+          </div>
+          <div class="fig-caption">Average per-week tool usage frequency for GPT-5.5 and Claude Opus 4.7 (top 10 tools per model). GPT-5.5 takes actions more frequently and distributes actions more evenly across tools.</div>
+        </div>
+      </div>
+
+      <article class="prose">
+        <p><strong class="example-label">Example 2: GPT-5.5 frequently anticipate future in its memo.</strong> We found that GPT-5.5 frequently plans for future contingency when making decisions. It tends to set possible future changes and conditions for changes when taking actions. It uses keyword "if" more frequently than other models.</p>
+      </article>
+
+      <div class="if-examples">
+        <div class="figure-block">
+          <div class="frame-wrap" data-label="Conditional memo examples">
+            <iframe src="assets/figures/conditional-memo-examples-row.html" title="Conditional memo examples" data-width="816" data-height="132" loading="lazy"></iframe>
+          </div>
+          <div class="fig-caption">Examples of planning in GPT-5.5's memos. The agent frequently anticipates scenarios and solutions with "if-then" contingencies.</div>
+        </div>
+        <div class="figure-block if-frequency">
+          <div class="frame-wrap compact" data-label="If frequency comparison">
+            <iframe src="assets/figures/survival-bar-row.html?plot=D" title="If frequency comparison" data-width="258" data-height="200" loading="lazy"></iframe>
+          </div>
+          <div class="fig-caption">Frequency of "if" in agent's memos.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="container" id="conclusion">
+      <div class="section-header">
+        <h2 class="section-label">Conclusion</h2>
+      </div>
+      <article class="prose">
+        <p>CEO-Bench shows a gap between existing models' local tool competence and crucial sustained strategic skills: agents built on existing models can take plausible actions but fail when those actions must compound under delayed feedback, hidden state, and non-stationarity. To develop agents beyond isolated task executors, we need evaluations that ask whether they can organize evolving systems toward distant goals. CEO-Bench is one step toward that future: building agents and training models that do not merely answer requests, but help steer long-running organizations through uncertainty.</p>
+        <p>Read more in our <a href="#" class="text-link">paper</a>.</p>
+      </article>
+      <div class="citation-placeholder" aria-label="Citation placeholder">
+        <div class="citation-title">Citation</div>
+        <pre>@misc{ceobench2026,
+  title = {CEO-Bench},
+  author = {Chen, Haozhe and Narasimhan, Karthik and Liu, Zhuang},
+  year = {2026},
+  note = {Citation forthcoming}
+}</pre>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/runs-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

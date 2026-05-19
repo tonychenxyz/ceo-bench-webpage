@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — Run Trace</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css?v=8">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-YP52NXRRJH');
+</script>
+</head>
+<body>
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="../" class="nav-brand">
+      <img src="../assets/ceobench-icon.png" alt="" class="nav-logo" aria-hidden="true">
+      <span><span class="nav-accent">CEO</span>-Bench</span>
+    </a>
+    <div class="nav-links">
+      <a href="../" class="nav-link">Home</a>
+      <a href="https://github.com/zlab-princeton/ceobench-src/tree/main" class="nav-link" target="_blank" rel="noopener noreferrer">Code</a>
+      <a href="../#" class="nav-link">Paper</a>
+      <a href="index.html" class="nav-link">Trajectories</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+  <div class="header run-header">
+    <div class="run-heading">
+      <div class="run-title-row">
+        <a href="index.html" class="back-button">All runs</a>
+        <h1><span id="model-name">…</span></h1>
+      </div>
+      <p class="sub" id="run-sub">loading…</p>
+    </div>
+  </div>
+
+  <!-- Cash chart -->
+  <div class="tile">
+    <div class="head">
+      <span class="panel-mark">a</span>
+      <span><b>Cash balance</b> · running cash up to selected day</span>
+      <span class="lbl" id="cash-lbl">USD</span>
+    </div>
+    <div class="body" id="cash-body" style="position:relative;"></div>
+  </div>
+
+  <!-- Customer-by-segment chart -->
+  <div class="tile">
+    <div class="head">
+      <span class="panel-mark">b</span>
+      <span><b>Stacked groups</b> (S1/S2/S3 individual, E1+ enterprise seats)</span>
+      <span class="lbl" id="subs-lbl">SEATS</span>
+    </div>
+    <div class="body" id="subs-body" style="position:relative;"></div>
+  </div>
+
+  <!-- Day nav -->
+  <div class="day-nav">
+    <span class="label">Day</span>
+    <button id="prev-day" title="Previous day (←)">◀</button>
+    <select id="day-select"></select>
+    <button id="next-day" title="Next day (→)">▶</button>
+    <span class="label" style="margin-left:18px">Cash</span>
+    <span class="stat" id="day-cash">—</span>
+    <span class="label">Subs</span>
+    <span class="stat" id="day-subs">—</span>
+    <span class="label">Actions</span>
+    <span class="stat" id="day-actions">—</span>
+  </div>
+
+  <!-- Day content -->
+  <div id="day-content"></div>
+
+  <div class="footer">
+    <span id="run-footer-id"></span>
+    <span id="run-footer-stamp"></span>
+  </div>
+</div>
+
+<script src="js/render.js?v=3"></script>
+</body>
+</html>

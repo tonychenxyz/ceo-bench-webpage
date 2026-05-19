@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — Conditional Memo Examples Row</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0a2540;
+    --ink-2:      #425466;
+    --ink-3:      #697386;
+    --line:       #d6dde6;
+    --paper:      #ffffff;
+    --bg:         #ffffff;
+    --soft:       #eaf6ee;
+    --blue:       #2f6df6;
+    --blue-soft:  #d8e6ff;
+    --green:      #00875a;
+    --green-soft: #d6f5e6;
+    --amber:      #b15c00;
+    --amber-soft: #ffe9c9;
+    --orange:     #ed5b2c;
+    --orange-soft:#ffe7dc;
+    --pink:       #b8326b;
+    --pink-soft:  #fde2ec;
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    width: 816px;
+    height: 132px;
+    margin: 0 auto;
+    padding: 7px;
+    box-sizing: border-box;
+    background: #fff;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 5px;
+    align-items: stretch;
+    height: 100%;
+  }
+
+  .tile {
+    background: var(--paper);
+    border: 1.6px solid var(--ink);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .head {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 5px;
+    background: var(--soft);
+    border-bottom: 1.6px solid var(--ink);
+  }
+
+  .idx {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink);
+    background: transparent;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+  }
+
+  .title {
+    min-width: 0;
+    font-size: 9.6px;
+    line-height: 1.06;
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+
+  .day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1.2px solid var(--ink);
+    border-radius: 5px;
+    background: #fff;
+    padding: 1px 3px 1px;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 7.7px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .quote {
+    padding: 6px 7px 7px;
+    color: var(--ink-2);
+    font-size: 9.6px;
+    line-height: 1.15;
+    font-weight: 500;
+    letter-spacing: -0.005em;
+  }
+
+  .quote b {
+    color: var(--ink);
+    font-weight: 800;
+  }
+
+  @media print {
+    @page {
+      size: 816px 132px;
+      margin: 0;
+    }
+    html, body {
+      width: 816px;
+      height: 132px;
+      background: #fff !important;
+      overflow: hidden;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page {
+      width: 100% !important;
+      height: 100% !important;
+      margin: 0 !important;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="grid">
+    <section class="tile card-1">
+      <div class="head">
+        <span class="idx">(a)</span>
+        <div class="title">Reversible capacity downgrade</div>
+        <div class="day">DAY 329</div>
+      </div>
+      <div class="quote">
+        Scaled capacity tier7 -> tier6 because no enterprise seats and peak individual usage &lt;80M/day; saves $329k/wk. <b>If</b> enterprise seats accept and usage/latency jump, go back to tier7 immediately.
+      </div>
+    </section>
+
+    <section class="tile card-2">
+      <div class="head">
+        <span class="idx">(b)</span>
+        <div class="title">Threshold-gated tier escalation</div>
+        <div class="day">DAY 56</div>
+      </div>
+      <div class="quote">
+        Capacity: tier4 cap 8M/day. <b>If</b> max daily usage &gt;6.5M or p95/errors jump, move to tier5 immediately before further ad scale.
+      </div>
+    </section>
+
+    <section class="tile card-3">
+      <div class="head">
+        <span class="idx">(c)</span>
+        <div class="title">Conditional post-R&amp;D harvest</div>
+        <div class="day">DAY 490</div>
+      </div>
+      <div class="quote">
+        T10 R&amp;D completes during the following week (Day493, after Day490->497 advance). Plan post-T10 harvest: likely cut dev sharply and possibly trim ops/cap only <b>if</b> renewals/usage permit.
+      </div>
+    </section>
+
+    <section class="tile card-4">
+      <div class="head">
+        <span class="idx">(d)</span>
+        <div class="title">Hypothesis-test branching</div>
+        <div class="day">DAY 336</div>
+      </div>
+      <div class="quote">
+        <b>If</b> the $40 180-day credits materially reduce churn, keep targeted renewal-credit strategy and prune expired cohorts weekly. <b>If</b> credits fail, churn is probably satisfaction/reputation rather than price; avoid broad discounts and focus on quality.
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

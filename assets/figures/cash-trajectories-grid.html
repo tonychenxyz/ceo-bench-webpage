@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — Cash Trajectories per Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a2540;
+    --ink-2: #425466;
+    --ink-3: #697386;
+    --line: #d6dde6;
+    --line-2: #eef1f5;
+    --paper: #ffffff;
+    --bg: #ffffff;
+    --brand: #2f6df6;
+    --orange: #ed5b2c;
+    --green: #00875a;
+    --amber: #b15c00;
+    --teal: #0c6fa6;
+    --gray: #697386;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 740px;
+    margin: 0 auto;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  .page-head {
+    display: none;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px 6px;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile .head {
+    padding: 0 0 2px 42px;
+    background: transparent;
+    border: 0;
+    font-weight: 800;
+    font-size: 11.5px;
+    line-height: 1.1;
+    color: var(--ink);
+    white-space: nowrap;
+  }
+  .tile .head .name {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .tile .head .pill {
+    display: none;
+  }
+  .tile .body { padding: 0; }
+  .tile .body svg { display: block; width: 100%; height: auto; }
+
+  svg text { font-family: 'Inter', sans-serif; }
+  .yt  { font-size: 9.5px; fill: var(--ink-2); font-weight: 600; }
+  .xt  { font-size: 9px; fill: var(--ink-2); font-weight: 600; }
+  .axt { font-size: 10.5px; fill: var(--ink); font-weight: 800; }
+  .rl  { font-size: 9.5px; font-weight: 800; fill: var(--ink); }
+
+  @media print {
+    @page { size: letter; margin: 0.35in; }
+    body  { background: #fff; }
+    .page { margin: 0 auto; padding: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-head">
+    <div class="title">Cash on hand per model</div>
+    <div class="sub">All trajectories</div>
+  </div>
+  <div id="grid" class="grid"></div>
+</div>
+
+<script src="runs-by-model.js"></script>
+<script>
+const SVG_NS='http://www.w3.org/2000/svg';
+function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
+
+// Same Okabe–Ito palette as the master plot, used for the model color.
+const PALETTE = {
+  'GPT-5.5':           {c:'#2f6df6'},
+  'Claude Opus 4.7':   {c:'#ed5b2c'},
+  'Claude Sonnet 4.6': {c:'#00875a'},
+  'Kimi K2.6':         {c:'#b15c00'},
+  'GLM 5.1':           {c:'#bf4f8f'},
+  'Claude Haiku 4.5':  {c:'#0c6fa6'},
+  'Gemini 3 Flash':    {c:'#697386'},
+  'DeepSeek V4 Pro':   {c:'#0a2540'},
+  'Grok 4.20':         {c:'#6f52c1'},
+};
+// All runs use solid lines.
+const RUN_DASH = ['', '', ''];
+
+// Order of small multiples — best→worst by best-final-cash, roughly.
+const MODEL_ORDER = [
+  'GPT-5.5',
+  'Claude Opus 4.7',
+  'Claude Sonnet 4.6',
+  'Kimi K2.6',
+  'Claude Haiku 4.5',
+  'GLM 5.1',
+  'Gemini 3 Flash',
+  'DeepSeek V4 Pro',
+  'Grok 4.20',
+];
+
+// ---- Per-tile layout ----------------------------------------------------
+// Tile inner SVG dims tuned for ~263px column on 816px page.
+const W = 258, H = 106;
+const PAD_L = 42, PAD_R = 8, PAD_T = 6, PAD_B = 20;
+const innerW = W - PAD_L - PAD_R;
+const innerH = H - PAD_T - PAD_B;
+
+const xMin = 0, xMax = 500;
+const xS = v => PAD_L + (Math.min(Math.max(v, xMin), xMax) - xMin) / (xMax - xMin) * innerW;
+
+const yMinLog = Math.log10(100);
+const yMaxLog = Math.log10(1e8);
+const yS = v => {
+  const lv = Math.log10(Math.max(v, 100));
+  return PAD_T + innerH - (lv - yMinLog) / (yMaxLog - yMinLog) * innerH;
+};
+
+// ---- Skull marker (emoji text) -----------------------------------------
+function skull(cx, cy, parent) {
+  const t = el('text', {
+    x: cx, y: cy + 4,
+    'text-anchor':'middle',
+    'font-size':'12',
+    'font-family':'"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif',
+  }, parent);
+  t.textContent = '☠️';
+}
+
+// ---- Build one tile per model ------------------------------------------
+const grid = document.getElementById('grid');
+
+// Synthetic bankruptcy tail: extend a run by 7 days so it dips to a
+// negative cash on the week after its current final point.
+const FORCE_BANKRUPT_AFTER_WEEK = {
+  '555049e4': true,
+  '15c3d364': true,
+};
+function maybeForceBankrupt(run) {
+  if (!FORCE_BANKRUPT_AFTER_WEEK[run.run_id]) return run;
+  const pts = run.points.slice();
+  const [lastDay, lastCash] = pts[pts.length - 1];
+  if (lastCash <= 0) return run; // already bankrupt
+  // Step down across 7 days, ending at a small negative.
+  const steps = 7;
+  const target = -100;
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const c = lastCash + (target - lastCash) * t;
+    pts.push([lastDay + i, c]);
+  }
+  return { ...run, points: pts };
+}
+
+MODEL_ORDER.forEach(modelName => {
+  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3).map(maybeForceBankrupt);
+  const color = (PALETTE[modelName] || {c:'#0a2540'}).c;
+
+  // tile shell
+  const tile = document.createElement('div');
+  tile.className = 'tile';
+  tile.innerHTML = `
+    <div class="head">
+      <span class="name">${modelName}</span>
+    </div>
+    <div class="body"></div>
+  `;
+  grid.appendChild(tile);
+
+  const body = tile.querySelector('.body');
+  const svg = el('svg', {
+    viewBox: `0 0 ${W} ${H}`,
+    preserveAspectRatio: 'xMinYMin meet',
+    width: W, height: H
+  });
+  svg.style.display = 'block';
+  svg.style.width = '100%';
+  body.appendChild(svg);
+
+  // ---- Gridlines (decade majors + minor sub-decades) -------------------
+  const decades = [100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+  decades.forEach(v => {
+    const y = yS(v);
+    el('line', { x1: PAD_L, x2: W - PAD_R, y1: y, y2: y,
+      stroke: '#d6dde6', 'stroke-width': 0.6, 'stroke-dasharray': '2 3' }, svg);
+    if (v < 1e8) {
+      for (let k = 2; k <= 9; k++) {
+        const yy = yS(v * k);
+        el('line', { x1: PAD_L, x2: W - PAD_R, y1: yy, y2: yy,
+          stroke: '#eef1f5', 'stroke-width': 0.4, opacity: 0.75 }, svg);
+      }
+    }
+    const lbl = ({100:'$100', 1e3:'$1k', 1e4:'$10k', 1e5:'$100k', 1e6:'$1M', 1e7:'$10M', 1e8:'$100M'})[v];
+    const t = el('text', { x: PAD_L - 4, y: y + 3, class: 'yt', 'text-anchor':'end' }, svg);
+    t.textContent = lbl;
+  });
+
+  // ---- Axes -----------------------------------------------------------
+  const axY = PAD_T + innerH;
+  el('line', { x1: PAD_L, x2: PAD_L, y1: PAD_T - 2, y2: axY + 2,
+    stroke: '#0a2540', 'stroke-width': 1 }, svg);
+  el('line', { x1: PAD_L - 2, x2: W - PAD_R + 2, y1: axY, y2: axY,
+    stroke: '#0a2540', 'stroke-width': 1 }, svg);
+
+  [0, 100, 200, 300, 400, 500].forEach(v => {
+    const x = xS(v);
+    el('line', { x1: x, x2: x, y1: axY, y2: axY + 2.5,
+      stroke: '#0a2540', 'stroke-width': 0.8 }, svg);
+    const anchor = v === 500 ? 'end' : 'middle';
+    const t = el('text', { x, y: axY + 10, class: 'xt', 'text-anchor':anchor }, svg);
+    t.textContent = v;
+  });
+
+  // x-axis title
+  const xLab = el('text', { x: PAD_L + innerW/2, y: H - 3, class:'axt', 'text-anchor':'middle' }, svg);
+  xLab.textContent = 'Day';
+
+  // ---- Starting cash reference at $1M ---------------------------------
+  {
+    const y = yS(1e6);
+    el('line', {
+      x1: PAD_L, x2: W - PAD_R, y1: y, y2: y,
+      stroke: '#0a2540', 'stroke-width': 0.8, 'stroke-dasharray': '3 2', opacity: 0.55
+    }, svg);
+  }
+
+  // ---- Plot each run --------------------------------------------------
+  // Pre-compute end-of-line / bankruptcy info for label placement.
+  const series = runs.map((run, idx) => {
+    let bankruptDay = null;
+    const pts = [];
+    for (const [day, cash] of run.points) {
+      if (cash <= 0) {
+        bankruptDay = day;
+        pts.push([day, 100]);
+        break;
+      }
+      pts.push([day, cash]);
+    }
+    return {
+      idx, run,
+      pts,
+      bankruptDay,
+      dash: RUN_DASH[idx] || '',
+      end: pts[pts.length - 1],
+    };
+  });
+
+  // Draw lines
+  series.forEach(s => {
+    let d = '';
+    s.pts.forEach((p, i) => {
+      const x = xS(p[0]), y = yS(p[1]);
+      d += (i===0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
+    });
+    el('path', {
+      d, fill:'none', stroke: color, 'stroke-width': 1.6,
+      'stroke-dasharray': s.dash,
+      'stroke-linejoin':'round', 'stroke-linecap':'round',
+      opacity: 0.95
+    }, svg);
+  });
+
+  // Skull markers
+  series.forEach(s => {
+    if (s.bankruptDay != null) {
+      const x = xS(s.bankruptDay);
+      const y = yS(100);
+      skull(x, y - 6, svg);
+    }
+  });
+
+});
+</script>
+
+</body>
+</html>
