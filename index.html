@@ -380,7 +380,7 @@
 
     <section class="container" id="analysis">
       <div class="section-header">
-        <h2 class="section-label">How Were Models Different?</h2>
+        <h2 class="section-label">Analyzing Agent Behaviors</h2>
       </div>
       <article class="prose">
         <p>We released all agent trajectories at our <a href="trajectory-viewer/" class="text-link">interactive trajectory viewer</a>.</p>
@@ -420,6 +420,17 @@
           </div>
           <div class="fig-caption">Frequency of "if" in agent's memos.</div>
         </div>
+      </div>
+
+      <article class="prose">
+        <p><strong class="example-label">Example 3: GPT-5.5 writes sophisticated code to reason about future cash and customer preferences.</strong> In its best trajectory, the GPT-5.5 agent wrote its own code files to probe the simulator and negotiation history: running simulations to forecast cash under different scenarios and inferring latent enterprise-customer price and quality preferences from noisy negotiation outcomes.</p>
+      </article>
+
+      <div class="figure-block">
+        <div class="frame-wrap" data-label="GPT-5.5 code examples">
+          <iframe src="assets/figures/gpt5.5_code_example.html" title="GPT-5.5 code examples" data-width="816" data-height="450" loading="lazy"></iframe>
+        </div>
+        <div class="fig-caption">Example code files written by the GPT-5.5 agent during its best trajectory. (a) The agent runs its own simulation to forecast cash under different scenarios. (b) The agent infers latent enterprise-customer price and quality preferences by mining noisy negotiation outcomes.</div>
       </div>
     </section>
 

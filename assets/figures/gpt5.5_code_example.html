@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench — GPT 5.5 Code Examples</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #0a2540;
+    --ink-2:      #425466;
+    --ink-3:      #697386;
+    --muted:      #8792a2;
+    --line:       #d6dde6;
+    --line-2:     #cbd3df;
+    --paper:      #ffffff;
+    --bg:         #ffffff;
+
+    --brand:      #2f6df6;
+    --brand-soft: #d8e6ff;
+
+    --orange:     #ed5b2c;
+    --orange-soft:#ffe7dc;
+
+    --green:      #00875a;
+    --green-soft: #d6f5e6;
+    --amber:      #b15c00;
+    --amber-soft: #ffe9c9;
+    --red:        #cd3500;
+    --red-soft:   #ffe2d8;
+    --teal:       #0c6fa6;
+    --teal-soft:  #dcf0fb;
+    --pink:       #b8326b;
+    --pink-soft:  #fde2ec;
+    --purple:     #6b3fc8;
+    --purple-soft:#e8defb;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 816px; /* Letter */
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+
+  /* Tile system, matching teaser */
+  .tile {
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile .head {
+    display: flex; align-items: center; gap: 8px;
+    padding: 3px 10px;
+    border-bottom: 2px solid var(--ink);
+    font-weight: 700;
+    font-size: 11.5px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .tile .head .lbl {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-2);
+    margin-left: auto;
+    font-weight: 600;
+  }
+  .tile .head .head-legend {
+    margin-left: auto;
+    display: inline-flex;
+    gap: 12px;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .tile .head .head-legend + .lbl { margin-left: 14px; }
+  .tile .head .lg-item { display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; }
+  .tile .head .lg-sw {
+    width: 9px; height: 9px;
+    border: 1px solid var(--ink);
+    display: inline-block;
+  }
+  .tile .head { background: #eaf6ee; }
+  .tile .head .panel-mark {
+    flex: 0 0 auto;
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--ink);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .row { margin-bottom: 8px; }
+  .row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Code tile */
+  .tile.code .body { padding: 8px 10px; }
+  pre.code {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    line-height: 1.45;
+    margin: 0;
+    color: #1f2328;
+    white-space: pre;
+    overflow: hidden;
+  }
+  pre.code .kw  { color: #cf222e; }
+  pre.code .str { color: #0a3069; }
+  pre.code .num { color: #0550ae; }
+  pre.code .com { color: #6e7781; font-style: italic; }
+  pre.code .fn  { color: #6639ba; }
+  pre.code .bn  { color: #953800; }
+  .suppress {
+    display: inline-block;
+    background: #eaeef2;
+    border-radius: 3px;
+    color: #6e7781;
+    padding: 0 6px;
+    margin: 0;
+    font-size: 9px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-style: italic;
+    line-height: 1.4;
+  }
+  .stdout {
+    margin-top: 6px;
+    padding: 6px 8px;
+    background: #0a2540;
+    color: #e6edf3;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    line-height: 1.45;
+    border-radius: 3px;
+    white-space: pre;
+    overflow: hidden;
+  }
+  .stdout .case { color: #79c0ff; font-weight: 700; }
+  .stdout .neg  { color: #ff7b72; }
+  .stdout-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+  }
+  .stdout-2col > div { white-space: pre; }
+  .stdout .suppress {
+    background: #1b3556;
+    color: #8ca5c4;
+    padding: 0 6px;
+    margin: 0;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .caption {
+    margin-top: 4px;
+    font-size: 10.5px;
+    color: var(--ink-2);
+    line-height: 1.35;
+    padding: 0 4px;
+  }
+  .caption .lbl {
+    font-weight: 700;
+    color: var(--ink);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-right: 6px;
+  }
+
+  /* SVG text classes */
+  svg text { font-family: 'Inter', sans-serif; }
+  .yt { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; fill: var(--ink-3); }
+  .xt { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; fill: var(--ink-3); }
+  .annot { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9px; fill: var(--ink); font-weight: 600; }
+  .annot-sub { font-family: 'Inter', sans-serif; font-size: 9px; fill: var(--ink-2); }
+  .qhead { font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700; fill: var(--ink); }
+  .qbody { font-family: 'Inter', sans-serif; font-size: 9px; fill: var(--ink-2); }
+  .ctag { font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 0.08em; font-weight: 700; text-transform: uppercase; }
+
+  /* Header */
+  .header {
+    margin-bottom: 12px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 8px;
+  }
+  .header h1 {
+    font-size: 20px;
+    margin: 0;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+  .header h1 .accent { color: var(--orange); }
+  .header .meta {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9.5px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+  }
+  .sub {
+    font-size: 11px;
+    color: var(--ink-2);
+    margin: 6px 0 0;
+  }
+
+  /* Legend chips */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    padding: 6px 10px;
+    border-top: 1px dashed var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    color: var(--ink-2);
+    letter-spacing: 0.04em;
+  }
+  .legend .item { display: inline-flex; align-items: center; gap: 4px; }
+  .legend .sw { width: 8px; height: 8px; border-radius: 2px; border: 1px solid var(--ink); }
+
+  .footer {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 9px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    padding-top: 4px;
+    border-top: 1px solid var(--line);
+  }
+  .tile.time {
+    border-width: 2px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .tile.time .head {
+    padding: 6px 12px;
+    font-size: 14px;
+    line-height: 1;
+    background: #eaf6ee;
+  }
+  .tile.time .head .ico svg {
+    width: 14px;
+    height: 14px;
+  }
+  .memo-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: auto 34px auto;
+    gap: 0 5px;
+    padding: 6px 12px 9px;
+  }
+  .memo-card {
+    border: 1.6px solid var(--ink);
+    border-radius: 7px;
+    overflow: hidden;
+    background: #fff;
+    min-width: 0;
+  }
+  .memo-card-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 3px 8px;
+    border-bottom: 1.6px solid var(--line);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  .memo-day {
+    white-space: nowrap;
+  }
+  .memo-card-body {
+    padding: 5px 8px 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 10.5px;
+    line-height: 1.12;
+    color: var(--ink-2);
+  }
+  .memo-card-body b {
+    font-weight: 800;
+    color: var(--ink);
+  }
+  .memo-timeline {
+    position: relative;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0 -4px;
+  }
+  .memo-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1.6px solid var(--ink);
+  }
+  .memo-tick,
+  .memo-event {
+    position: absolute;
+    top: 50%;
+  }
+  .memo-tick {
+    width: 0;
+    height: 9px;
+    transform: translateY(-50%);
+    border-left: 1.4px solid var(--ink);
+  }
+  .memo-event {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    transform: translate(-50%, -50%);
+    background: var(--teal);
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 1px var(--ink);
+    z-index: 2;
+  }
+  .memo-event::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    border-left: 1.5px solid currentColor;
+    transform: translateX(-50%);
+  }
+  .memo-event.top::before {
+    bottom: 7px;
+    height: 15px;
+  }
+  .memo-event.bottom::before {
+    top: 7px;
+    height: 15px;
+  }
+  @media print {
+    @page { size: letter portrait; margin: 0.4cm; }
+    html, body {
+      background: #fff !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .row, .row-2col, .tile {
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page" id="page">
+  <div class="row-2col">
+    <!-- Left: Example action — simulating multiple scenarios -->
+    <div class="tile code">
+      <div class="head">
+        <span class="panel-mark">(a)</span>
+        <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3 L3 11 L11 11" stroke="#0a2540" stroke-width="1.4" fill="none"/><path d="M5 9 L7 6 L9 8 L11 4" stroke="#0a2540" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg></span>
+        <span><b>Example action</b> · Simulating multiple scenarios into the future · <span style="color:#6e7781">Day 28</span></span>
+      </div>
+      <div class="body">
+<pre class="code"><span class="bn">start_day</span>=<span class="bn">nm</span>.vars.current_day
+<span class="bn">cash</span>=<span class="bn">nm</span>.query(<span class="str">'SELECT SUM(amount) cash FROM ledger'</span>)[<span class="str">'rows'</span>][<span class="num">0</span>][<span class="str">'cash'</span>]
+<span class="suppress">⋯ 10+ lines suppressed</span>
+<span class="kw">def</span> <span class="fn">simulate</span>(params):
+    history={}; active=<span class="num">0</span>
+    <span class="kw">for</span> day <span class="kw">in</span> <span class="fn">range</span>(start_day+<span class="num">1</span>,<span class="num">230</span>):
+        ad_spend=params[<span class="str">'ad_spend'</span>](day)
+        new_subs=ad_spend*params[<span class="str">'subs_per_dollar'</span>](day)
+        revenue=new_subs*params[<span class="str">'avg_price'</span>](day)
+        <span class="kw">if</span> day <span class="kw">in</span> params.get(<span class="str">'enterprise_days'</span>,[]): revenue+=params[<span class="str">'enterprise_value'</span>]
+<span class="suppress">⋯ 25+ lines suppressed</span>
+        churn=active*params[<span class="str">'churn'</span>](day)
+        active+=new_subs-churn
+        cost=ad_spend+active*params[<span class="str">'compute_per_sub'</span>](day)
+        cash+=revenue-cost
+        <span class="kw">if</span> day <span class="kw">in</span> [start_day+<span class="num">28</span>,start_day+<span class="num">84</span>,start_day+<span class="num">182</span>]: history[day]=(cash,active)
+    <span class="kw">return</span> history
+<span class="kw">def</span> <span class="fn">make_params</span>(scale):
+    <span class="kw">return</span> {<span class="str">'ad_spend'</span>:<span class="kw">lambda</span> d:<span class="num">8000</span> <span class="kw">if</span> d&lt;start_day+<span class="num">50</span> <span class="kw">else</span> scale,<span class="str">'subs_per_dollar'</span>:<span class="kw">lambda</span> d:<span class="num">0.02</span> <span class="kw">if</span> d&lt;start_day+<span class="num">84</span> <span class="kw">else</span> <span class="num">0.018</span>,<span class="str">'avg_price'</span>:<span class="kw">lambda</span> d:<span class="num">80</span>,<span class="str">'compute_per_sub'</span>:<span class="kw">lambda</span> d:<span class="num">2.0</span>,<span class="str">'churn'</span>:<span class="kw">lambda</span> d:<span class="num">0.03</span>,<span class="str">'enterprise_days'</span>:[start_day+<span class="num">50</span>] <span class="kw">if</span> scale&gt;<span class="num">20000</span> <span class="kw">else</span> [],<span class="str">'enterprise_value'</span>:<span class="num">140000</span>}
+<span class="kw">for</span> scale <span class="kw">in</span> [<span class="num">3000</span>,<span class="num">12000</span>,<span class="num">25000</span>]: <span class="fn">print</span>(scale,<span class="fn">simulate</span>(make_params(scale)))
+<span class="suppress">⋯ 10+ lines suppressed</span></pre>
+
+<div class="stdout stdout-2col"><div><span class="case">CASE low</span>
+  d+7    cash    213,479
+  d+28   cash     68,156
+  d+84   cash   <span class="neg">-104,164</span>
+  d+182  cash   <span class="neg">-268,101</span></div>
+<div><span class="case">CASE base</span>
+<span class="suppress">⋯ 4 lines suppressed</span>
+<span class="case">CASE high</span>
+<span class="suppress">⋯ 4 lines suppressed</span></div></div>
+      </div>
+    </div>
+
+    <!-- Right: Example action — infer latent customer attributes -->
+    <div class="tile code">
+      <div class="head">
+        <span class="panel-mark">(b)</span>
+        <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
+        <span><b>Example action</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
+      </div>
+      <div class="body">
+<pre class="code">rows=<span class="bn">nm</span>.query(<span class="str">"""select et.customer_id,c.group_id,et.offer_json,s.status from enterprise_turns et join customers c on c.customer_id=et.customer_id left join subscriptions s on s.customer_id=et.customer_id where et.sender='agent' and et.offer_json not in ('{}','')"""</span>)[<span class="str">'rows'</span>]
+<span class="suppress">⋯ 40+ lines suppressed</span>
+<span class="kw">def</span> <span class="fn">parse_prices</span>(o):
+  <span class="kw">try</span>: d=json.loads(o)
+  <span class="kw">except</span>: <span class="kw">return</span> []
+  <span class="kw">return</span> [(x.get(<span class="str">'plan'</span>),x.get(<span class="str">'price'</span>,x.get(<span class="str">'price_per_seat'</span>,x.get(<span class="str">'monthly_price'</span>)))) <span class="kw">for</span> x <span class="kw">in</span> ([d] <span class="kw">if</span> <span class="fn">isinstance</span>(d,<span class="bn">dict</span>) <span class="kw">else</span> d) <span class="kw">if</span> <span class="fn">isinstance</span>(x,<span class="bn">dict</span>) <span class="kw">and</span> x.get(<span class="str">'plan'</span>)]
+last={}; [last.setdefault(r[<span class="str">'customer_id'</span>],r) <span class="kw">for</span> r <span class="kw">in</span> rows]
+<span class="kw">for</span> gid <span class="kw">in</span> <span class="fn">set</span>(r[<span class="str">'group_id'</span>] <span class="kw">for</span> r <span class="kw">in</span> last.values()):
+  lr=[r <span class="kw">for</span> r <span class="kw">in</span> last.values() <span class="kw">if</span> r[<span class="str">'group_id'</span>]==gid]
+  <span class="kw">for</span> plan <span class="kw">in</span> [<span class="str">'A'</span>,<span class="str">'B'</span>,<span class="str">'C'</span>]:
+    by_status=collections.defaultdict(<span class="bn">list</span>)
+    <span class="kw">for</span> r <span class="kw">in</span> lr:
+      <span class="kw">for</span> p,v <span class="kw">in</span> parse_prices(r[<span class="str">'offer_json'</span>]):
+        <span class="kw">if</span> p==plan <span class="kw">and</span> v <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>: by_status[r[<span class="str">'status'</span>]].append(<span class="fn">float</span>(v))
+    <span class="kw">if</span> by_status:
+      <span class="fn">print</span>(gid,plan,{s:(<span class="fn">len</span>(v),<span class="fn">round</span>(statistics.mean(v),<span class="num">2</span>)) <span class="kw">for</span> s,v <span class="kw">in</span> by_status.items()})
+<span class="suppress">⋯ 20+ lines suppressed</span></pre>
+
+<div class="stdout"><span class="case">Active enterprise accepted price distribution</span>
+{'group_id':'E3','plan':'B','n':154,'seats':167595,'minp':1.69,'avgp':56.01,'maxp':89.0}
+{'group_id':'E3','plan':'C','n':3,'seats':3341,'minp':25.0,'avgp':101.0,'maxp':139.0}
+
+<span class="case">Enterprise lost by latest agent offer and day groups summary</span>
+GID D_E02 n 413 statuses Counter({'lost':403,'lead':10})
+  B all avg 40.19 min 39.0 max 49.0 by_status {'lost':(403,40.22,39,49),'lead':(10,39,39,39)}
+  C all avg 61.15 min 59.0 max 79.0 by_status {'lost':(403,61.21,59,79),'lead':(10,59,59,59)}
+<span class="suppress">⋯ 40+ lines suppressed</span></div>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+</body>
+</html>
