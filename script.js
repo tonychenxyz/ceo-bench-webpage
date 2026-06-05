@@ -9,7 +9,8 @@ const MODEL_COLORS = {
   "Claude Haiku 4.5": "#0c6fa6",
   "Gemini 3 Flash": "#697386",
   "DeepSeek V4 Pro": "#0a2540",
-  "Grok 4.20": "#6b3fc8"
+  "Grok 4.20": "#6b3fc8",
+  "Rule-Based Baseline": "#6b6b6b"
 };
 
 function svgEl(tag, attrs = {}, parent) {
@@ -260,6 +261,7 @@ function drawCashPlot(runs) {
 
   const labelOffsets = {
     "GPT-5.5": { dx: -8, dy: -10, anchor: "end" },
+    "Rule-Based Baseline": { dx: -8, dy: 16, anchor: "end" },
     "Claude Opus 4.7": { dx: -8, dy: -10, anchor: "end" },
     "Claude Sonnet 4.6": { dx: -8, dy: -4, anchor: "end" },
     "Kimi K2.6": { dx: -8, dy: 12, anchor: "end" },
@@ -391,28 +393,71 @@ function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
     if (a.pretty === "GPT-5.5") return -1;
     if (b.pretty === "GPT-5.5") return 1;
+    if (a.pretty === "Rule-Based Baseline") return -1;
+    if (b.pretty === "Rule-Based Baseline") return 1;
     return b.final_cash - a.final_cash;
   });
 }
 
-async function loadCashRuns() {
-  if (Array.isArray(window.CEOBENCH_RUNS)) {
-    return window.CEOBENCH_RUNS;
+function parseBaselineCsv(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const header = lines.shift().split(",");
+  const dayIdx = header.indexOf("day");
+  const cashIdx = header.indexOf("cash");
+  if (dayIdx === -1 || cashIdx === -1) {
+    throw new Error("baseline CSV must include day and cash columns");
   }
-
-  const response = await fetch("assets/runs.json");
-  if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  return response.json();
+  return lines
+    .map(line => {
+      const cols = line.split(",");
+      return [Number(cols[dayIdx]), Number(cols[cashIdx])];
+    })
+    .filter(([day, cash]) => Number.isFinite(day) && Number.isFinite(cash))
+    .sort((a, b) => a[0] - b[0]);
 }
 
-loadCashRuns()
-  .then(runs => drawCashPlot(orderRuns(runs)))
-  .catch(error => {
-    const mount = document.getElementById("cash-plot");
-    if (mount) {
-      mount.innerHTML = `<div class="plot-error">Could not load cash data: ${error.message}</div>`;
-    }
-  });
+function baselineRun(points) {
+  if (!points.length) return null;
+  const finalPoint = points[points.length - 1];
+  return {
+    model: "rule-based-baseline",
+    pretty: "Rule-Based Baseline",
+    bankrupt: 0,
+    max_day: finalPoint[0],
+    final_cash: finalPoint[1],
+    points
+  };
+}
+
+async function loadBaselineRun() {
+  const response = await fetch("assets/rule_based_baseline_day_vs_cash.csv");
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  return baselineRun(parseBaselineCsv(await response.text()));
+}
+
+async function loadCashRuns() {
+  const runs = Array.isArray(window.CEOBENCH_RUNS)
+    ? window.CEOBENCH_RUNS
+    : await (async () => {
+        const response = await fetch("assets/runs.json");
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.json();
+      })();
+
+  const baseline = await loadBaselineRun();
+  return baseline ? runs.concat(baseline) : runs;
+}
+
+if (document.getElementById("cash-plot") && document.getElementById("cash-legend")) {
+  loadCashRuns()
+    .then(runs => drawCashPlot(orderRuns(runs)))
+    .catch(error => {
+      const mount = document.getElementById("cash-plot");
+      if (mount) {
+        mount.innerHTML = `<div class="plot-error">Could not load cash data: ${error.message}</div>`;
+      }
+    });
+}
 
 window.addEventListener("load", fitAllFrames);
 window.addEventListener("resize", fitAllFrames);

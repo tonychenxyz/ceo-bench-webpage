@@ -573,9 +573,19 @@ code {
   border-bottom: 0;
 }
 
+.reference-row th,
+.reference-row td {
+  font-weight: 500;
+}
+
+.baseline-row th,
+.baseline-row td {
+  border-top: 1px solid var(--ink);
+  border-bottom: 0;
+}
+
 .estimate-row th,
 .estimate-row td {
-  border-top: 1px solid var(--ink);
   font-weight: 500;
 }
 

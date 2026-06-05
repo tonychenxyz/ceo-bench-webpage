@@ -75,9 +75,9 @@
 
     <section class="container" id="benchmark">
       <figure class="chart-panel">
-        <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run"></div>
+        <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption">We measure cash balance as performance metric. This plot shows cash balance over time for best run of each model.</figcaption>
+        <figcaption class="fig-caption">We measure cash balance as performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline.</figcaption>
       </figure>
     </section>
 
@@ -257,7 +257,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> While four models (GPT-5.5, Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6) end with positive cash on their best run, only GPT-5.5 finishes above its $1M starting balance. This preliminary evaluation shows that GPT-5.5 demonstrates high-upside strategic behavior; Claude Opus 4.7 survives more conservatively; while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> While four models (GPT-5.5, Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6) end with positive cash on their best run, only GPT-5.5 finishes above its $1M starting balance. The rule-based baseline finishes with $15.8M, highlighting that current agents can trail explicit strategies even when they survive. This preliminary evaluation shows that GPT-5.5 demonstrates high-upside strategic behavior; Claude Opus 4.7 survives more conservatively; while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
@@ -362,7 +362,16 @@
                 <td>8.2</td>
                 <td>$0.75</td>
               </tr>
-              <tr class="estimate-row">
+              <tr class="reference-row baseline-row">
+                <th scope="row">Rule-based baseline</th>
+                <td>--</td>
+                <td>$15,756,408</td>
+                <td>500</td>
+                <td>--</td>
+                <td>--</td>
+                <td>--</td>
+              </tr>
+              <tr class="reference-row estimate-row">
                 <th scope="row">Estimated max final cash</th>
                 <td>--</td>
                 <td>$2,200,000,000</td>
