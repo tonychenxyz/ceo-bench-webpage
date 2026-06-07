@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>CEOBench — GPT 5.5 Code Examples</title>
+<title>CEOBench — Agent Code Examples</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
@@ -392,40 +392,41 @@
       <div class="head">
         <span class="panel-mark">(a)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3 L3 11 L11 11" stroke="#0a2540" stroke-width="1.4" fill="none"/><path d="M5 9 L7 6 L9 8 L11 4" stroke="#0a2540" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg></span>
-        <span><b>Example action</b> · Simulating multiple scenarios into the future · <span style="color:#6e7781">Day 28</span></span>
+        <span><b>Claude Opus 4.8</b> · Simulating growth scenarios into the future · <span style="color:#6e7781">Day 77</span></span>
       </div>
       <div class="body">
-<pre class="code"><span class="bn">start_day</span>=<span class="bn">nm</span>.vars.current_day
-<span class="bn">cash</span>=<span class="bn">nm</span>.query(<span class="str">'SELECT SUM(amount) cash FROM ledger'</span>)[<span class="str">'rows'</span>][<span class="num">0</span>][<span class="str">'cash'</span>]
-<span class="suppress">⋯ 10+ lines suppressed</span>
-<span class="kw">def</span> <span class="fn">simulate</span>(params):
-    history={}; active=<span class="num">0</span>
-    <span class="kw">for</span> day <span class="kw">in</span> <span class="fn">range</span>(start_day+<span class="num">1</span>,<span class="num">230</span>):
-        ad_spend=params[<span class="str">'ad_spend'</span>](day)
-        new_subs=ad_spend*params[<span class="str">'subs_per_dollar'</span>](day)
-        revenue=new_subs*params[<span class="str">'avg_price'</span>](day)
-        <span class="kw">if</span> day <span class="kw">in</span> params.get(<span class="str">'enterprise_days'</span>,[]): revenue+=params[<span class="str">'enterprise_value'</span>]
-<span class="suppress">⋯ 25+ lines suppressed</span>
-        churn=active*params[<span class="str">'churn'</span>](day)
-        active+=new_subs-churn
-        cost=ad_spend+active*params[<span class="str">'compute_per_sub'</span>](day)
-        cash+=revenue-cost
-        <span class="kw">if</span> day <span class="kw">in</span> [start_day+<span class="num">28</span>,start_day+<span class="num">84</span>,start_day+<span class="num">182</span>]: history[day]=(cash,active)
-    <span class="kw">return</span> history
-<span class="kw">def</span> <span class="fn">make_params</span>(scale):
-    <span class="kw">return</span> {<span class="str">'ad_spend'</span>:<span class="kw">lambda</span> d:<span class="num">8000</span> <span class="kw">if</span> d&lt;start_day+<span class="num">50</span> <span class="kw">else</span> scale,<span class="str">'subs_per_dollar'</span>:<span class="kw">lambda</span> d:<span class="num">0.02</span> <span class="kw">if</span> d&lt;start_day+<span class="num">84</span> <span class="kw">else</span> <span class="num">0.018</span>,<span class="str">'avg_price'</span>:<span class="kw">lambda</span> d:<span class="num">80</span>,<span class="str">'compute_per_sub'</span>:<span class="kw">lambda</span> d:<span class="num">2.0</span>,<span class="str">'churn'</span>:<span class="kw">lambda</span> d:<span class="num">0.03</span>,<span class="str">'enterprise_days'</span>:[start_day+<span class="num">50</span>] <span class="kw">if</span> scale&gt;<span class="num">20000</span> <span class="kw">else</span> [],<span class="str">'enterprise_value'</span>:<span class="num">140000</span>}
-<span class="kw">for</span> scale <span class="kw">in</span> [<span class="num">3000</span>,<span class="num">12000</span>,<span class="num">25000</span>]: <span class="fn">print</span>(scale,<span class="fn">simulate</span>(make_params(scale)))
-<span class="suppress">⋯ 10+ lines suppressed</span></pre>
+<pre class="code">D0=<span class="num">77</span>; START_CASH=<span class="num">1269489</span>
+S1_TOUCHED0=<span class="num">159258</span>+<span class="num">54467</span>+<span class="num">987</span>
+RAW=[(<span class="num">0</span>,<span class="num">19</span>,<span class="num">15</span>),(<span class="num">5</span>,<span class="num">22</span>,<span class="num">1830</span>),(<span class="num">8</span>,<span class="num">26</span>,<span class="num">20562</span>), <span class="suppress">⋯ active cohorts</span>]
+<span class="kw">def</span> <span class="fn">build_cohorts</span>():
+  cohorts=[]
+  <span class="suppress">⋯ expand observed signup weeks into renewal cohorts</span>
+  <span class="kw">return</span> cohorts
+<span class="kw">def</span> <span class="fn">simulate</span>(cap=<span class="num">450000</span>,conv=<span class="num">.72</span>,first=<span class="num">.13</span>,ongoing=<span class="num">.04</span>):
+  cohorts=build_cohorts(); touched=S1_TOUCHED0; cash=START_CASH
+  REMAIN0=cap-S1_TOUCHED0
+  targets={<span class="num">84</span>:<span class="str">'1wk'</span>,<span class="num">105</span>:<span class="str">'4wk'</span>,<span class="num">161</span>:<span class="str">'12wk'</span>,<span class="num">259</span>:<span class="str">'26wk'</span>}; results={}
+  <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">183</span>):
+    day=D0+step; active=<span class="fn">sum</span>(c[<span class="num">1</span>] <span class="kw">for</span> c <span class="kw">in</span> cohorts)
+    pen=<span class="fn">max</span>(<span class="num">0.02</span>,(cap-touched)/<span class="fn">max</span>(<span class="num">1</span>,REMAIN0))
+    ad_spend=<span class="num">85000</span> <span class="kw">if</span> step&lt;=<span class="num">7</span> <span class="kw">else</span> (<span class="num">120000</span> <span class="kw">if</span> step&lt;=<span class="num">77</span> <span class="kw">else</span> <span class="num">90000</span>)
+    leads=<span class="num">4.25</span>*(ad_spend**<span class="num">0.71</span>)*pen + <span class="num">0.0132</span>*active*pen
+    new=leads*conv; touched+=leads; cohorts.append([<span class="num">26.0</span>,new])
+    cash += new*<span class="num">15.0</span> - (ad_spend + leads*<span class="num">0.5</span> + active*<span class="num">0.15</span> + <span class="num">58500</span>)
+    <span class="suppress">⋯ apply re-bills/churn; record target days</span>
+  <span class="kw">return</span> results
+scen={<span class="str">'DISAST'</span>:(<span class="num">260000</span>,<span class="num">.62</span>,<span class="num">.25</span>,<span class="num">.08</span>),<span class="str">'PESS'</span>:(<span class="num">320000</span>,<span class="num">.68</span>,<span class="num">.18</span>,<span class="num">.06</span>), <span class="suppress">⋯ BASE/OPT</span>}</pre>
 
-<div class="stdout stdout-2col"><div><span class="case">CASE low</span>
-  d+7    cash    213,479
-  d+28   cash     68,156
-  d+84   cash   <span class="neg">-104,164</span>
-  d+182  cash   <span class="neg">-268,101</span></div>
-<div><span class="case">CASE base</span>
-<span class="suppress">⋯ 4 lines suppressed</span>
-<span class="case">CASE high</span>
-<span class="suppress">⋯ 4 lines suppressed</span></div></div>
+<div class="stdout stdout-2col"><div><span class="case">scen    1wk M/k   4wk M/k</span>
+DISAST   .69/182   .07/152
+PESS     .99/202   .54/204
+BASE    1.23/216  1.53/291
+OPT     1.40/225  2.81/397</div>
+<div><span class="case">scen    12wk M/k  26wk M/k</span>
+DISAST <span class="neg">-4.58/131</span> <span class="neg">-8.39/102</span>
+PESS   <span class="neg">-1.97/183</span> <span class="neg">-1.91/158</span>
+BASE    2.79/273  8.99/248
+OPT    10.74/462 29.96/433</div></div>
       </div>
     </div>
 
@@ -434,7 +435,7 @@
       <div class="head">
         <span class="panel-mark">(b)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
-        <span><b>Example action</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
+        <span><b>GPT-5.5</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
       </div>
       <div class="body">
 <pre class="code">rows=<span class="bn">nm</span>.query(<span class="str">"""select et.customer_id,c.group_id,et.offer_json,s.status from enterprise_turns et join customers c on c.customer_id=et.customer_id left join subscriptions s on s.customer_id=et.customer_id where et.sender='agent' and et.offer_json not in ('{}','')"""</span>)[<span class="str">'rows'</span>]

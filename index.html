@@ -69,6 +69,7 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
+          <li>Most models struggle to finish above the $1M starting balance; Claude Opus 4.8 and GPT-5.5 are the only evaluated models that do so on their best runs.</li>
         </ul>
       </div>
     </section>
@@ -403,52 +404,74 @@
       <article class="prose">
         <p>We released all agent trajectories at our <a href="trajectory-viewer/" class="text-link">interactive trajectory viewer</a>.</p>
         <p>We conducted preliminary analysis on agent trajectories. Below are some examples of our findings. Read more findings in our <a href="#" class="text-link">paper</a>.</p>
-        <p><strong class="example-label">Example 1: GPT-5.5 explores larger strategy space; Claude Opus 4.7 limits itself to narrow strategy space.</strong> GPT-5.5 adapts frequently as conditions change, trying a range of strategies such as scaling acquisition, adjusting model tiers, modifying promotions, and reallocating support or development spend. In contrast, Claude Opus 4.7 tends to respond to setbacks by repeatedly cutting spend and preserving cash, which may help it survive until the final days but can also limit recovery and contribute to its weaker performance. This can be seen quantitatively from the fact that GPT-5.5 distributes actions more evenly across tools than Claude Opus 4.7.</p>
+        <p><strong class="example-label">Example 1: Stronger models explore and adapt across broader strategy spaces.</strong> GPT-5.5 repeatedly reallocates acquisition, development, operations, capacity, and pricing decisions as conditions change. Claude Opus 4.8 first explores various strategies and then settles into maintaining a passive strategy, while Claude Opus 4.7 more often converges toward narrow cash-preservation and repeated hold-or-harvest decisions. The tool-usage distribution shows this quantitatively: Opus 4.8 and GPT-5.5 distribute tool usage more evenly than Claude Opus 4.7.</p>
       </article>
 
       <div class="two-up">
         <div class="figure-block memo-timeline-block">
           <div class="frame-wrap" data-label="Memo timeline comparison">
-            <iframe src="assets/figures/memo-timeline-comparison.html?v=2" title="Memo timeline comparison" data-width="816" data-height="400" loading="lazy"></iframe>
+            <iframe src="assets/figures/memo-timeline-comparison.html?v=3" title="Memo timeline comparison" data-width="816" data-height="690" loading="lazy"></iframe>
           </div>
-          <div class="fig-caption">Example memos written by GPT-5.5 (top) and Claude Opus 4.7 (bottom) in their workspaces during the best trajectory of each model. GPT-5.5 actively explores and adjusts across diverse strategies, while Claude Opus 4.7 largely confines its decisions to a single strategic direction.</div>
+          <div class="fig-caption">Example memos written by Claude Opus 4.8, GPT-5.5, and Claude Opus 4.7 during the best trajectory of each model. GPT-5.5 actively adjusts strategy across changing conditions, Claude Opus 4.8 first explores various strategies and then settles into maintaining a passive strategy, and Claude Opus 4.7 more often settles into a narrow cash-preservation strategy.</div>
         </div>
         <div class="figure-block">
           <div class="frame-wrap" data-label="Tool usage distribution">
-            <iframe src="assets/figures/tool-usage-distribution.html" title="Tool usage distribution" data-width="816" data-height="200" loading="lazy"></iframe>
+            <iframe src="assets/figures/tool-usage-distribution.html?v=2" title="Tool usage distribution" data-width="816" data-height="200" loading="lazy"></iframe>
           </div>
-          <div class="fig-caption">Average per-week tool usage frequency for GPT-5.5 and Claude Opus 4.7 (top 10 tools per model). GPT-5.5 takes actions more frequently and distributes actions more evenly across tools.</div>
+          <div class="fig-caption">Average per-week tool usage frequency for the best runs of Claude Opus 4.8, GPT-5.5, and Claude Opus 4.7 (top 10 tools per model). Opus 4.8 and GPT-5.5 distribute tool usage more evenly.</div>
         </div>
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 2: GPT-5.5 frequently anticipate future in its memo.</strong> We found that GPT-5.5 frequently plans for future contingency when making decisions. It tends to set possible future changes and conditions for changes when taking actions. It uses keyword "if" more frequently than other models.</p>
+        <p><strong class="example-label">Example 2: Models take very different strategies even with similar ending cash.</strong> Claude Opus 4.8 and GPT-5.5 both finish with high final cash on their best runs, but they take different paths. Claude Opus 4.8 drops to zero customers mid-simulation, while GPT-5.5 sustains customers throughout the simulation, and the two agents focus on different customer groups.</p>
+      </article>
+
+      <div class="figure-block">
+        <div class="frame-wrap" data-label="Customer groups over time">
+          <iframe src="assets/figures/customer-groups-by-model.html" title="Customer groups over time" data-width="816" data-height="320" loading="lazy"></iframe>
+        </div>
+        <div class="fig-caption">Active customers by customer group over time for the best runs of Claude Opus 4.8 and GPT-5.5. Colors are held fixed across panels so the same customer group has the same color in both trajectories.</div>
+      </div>
+
+      <article class="prose">
+        <p><strong class="example-label">Example 3: Stronger models use fine-grained targeted development more heavily.</strong> Proper usage of customer-group-specific targeted product development tools, based on understanding each customer group, can create advantages such as slower competitor catch-up. GPT-5.5 allocates 89% of development dollars to targeted improvements, compared with 87% for Claude Opus 4.8, 44% for Claude Opus 4.7, 10% for Kimi K2.6, and 43% for the remaining models. This reflects a stronger tendency to use granular customer-group-specific levers instead of relying mainly on broad product development.</p>
+      </article>
+
+      <div class="figure-block targeted-dev-block">
+        <div class="frame-wrap compact" data-label="Targeted development spending breakdown">
+          <iframe src="assets/figures/targeted-dev-spend-pie-row.html" title="Targeted development spending breakdown" data-width="408" data-height="162" loading="lazy"></iframe>
+        </div>
+        <div class="fig-caption">Dollar-weighted split between targeted and non-targeted development spending. GPT-5.5 and Claude Opus 4.8 direct much larger shares of development spend toward fine-grained group-specific improvements than most other models.</div>
+      </div>
+
+      <article class="prose">
+        <p><strong class="example-label">Example 4: Claude Opus 4.8 and GPT-5.5 write more conditional plans.</strong> Stronger runs frequently anticipate future contingencies in their memos. They set possible future conditions and pre-commit to follow-up actions, using "if" more frequently than other models.</p>
       </article>
 
       <div class="if-examples">
         <div class="figure-block">
           <div class="frame-wrap" data-label="Conditional memo examples">
-            <iframe src="assets/figures/conditional-memo-examples-row.html" title="Conditional memo examples" data-width="816" data-height="132" loading="lazy"></iframe>
+            <iframe src="assets/figures/conditional-memo-examples-row.html?v=2" title="Conditional memo examples" data-width="816" data-height="148" loading="lazy"></iframe>
           </div>
-          <div class="fig-caption">Examples of planning in GPT-5.5's memos. The agent frequently anticipates scenarios and solutions with "if-then" contingencies.</div>
+          <div class="fig-caption">Examples of planning in GPT-5.5 and Claude Opus 4.8 memos. The agents anticipate scenarios and solutions with "if-then" contingencies.</div>
         </div>
         <div class="figure-block if-frequency">
           <div class="frame-wrap compact" data-label="If frequency comparison">
-            <iframe src="assets/figures/survival-bar-row.html?plot=D" title="If frequency comparison" data-width="258" data-height="200" loading="lazy"></iframe>
+            <iframe src="assets/figures/survival-bar-row.html?plot=D&amp;v=3" title="If frequency comparison" data-width="204" data-height="286" loading="lazy"></iframe>
           </div>
           <div class="fig-caption">Frequency of "if" in agent's memos.</div>
         </div>
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 3: GPT-5.5 writes sophisticated code to reason about future cash and customer preferences.</strong> In its best trajectory, the GPT-5.5 agent wrote its own code files to probe the simulator and negotiation history: running simulations to forecast cash under different scenarios and inferring latent enterprise-customer price and quality preferences from noisy negotiation outcomes.</p>
+        <p><strong class="example-label">Example 5: Top-performing agents write sophisticated code to reason about future cash and customer preferences.</strong> In their best trajectories, Claude Opus 4.8 and GPT-5.5 wrote their own code files to probe the simulator and negotiation history: Opus 4.8 runs simulations to forecast cash under different scenarios, while GPT-5.5 infers latent enterprise-customer price and quality preferences from noisy negotiation outcomes.</p>
       </article>
 
       <div class="figure-block">
-        <div class="frame-wrap" data-label="GPT-5.5 code examples">
-          <iframe src="assets/figures/gpt5.5_code_example.html" title="GPT-5.5 code examples" data-width="816" data-height="450" loading="lazy"></iframe>
+        <div class="frame-wrap" data-label="Agent code examples">
+          <iframe src="assets/figures/gpt5.5_code_example.html" title="Agent code examples" data-width="816" data-height="450" loading="lazy"></iframe>
         </div>
-        <div class="fig-caption">Example code files written by the GPT-5.5 agent during its best trajectory. (a) The agent runs its own simulation to forecast cash under different scenarios. (b) The agent infers latent enterprise-customer price and quality preferences by mining noisy negotiation outcomes.</div>
+        <div class="fig-caption">Example code files written by top-performing agents during their best trajectories. (a) Claude Opus 4.8 runs its own simulation to forecast cash under different scenarios. (b) GPT-5.5 infers latent enterprise-customer price and quality preferences by mining noisy negotiation outcomes.</div>
       </div>
     </section>
 

@@ -35,7 +35,7 @@
   .page {
     width: 816px;
     margin: 0 auto;
-    padding: 8px 16px 0;
+    padding: 16px;
     box-sizing: border-box;
   }
   .tile {
@@ -47,13 +47,13 @@
     flex-direction: column;
   }
   .tile + .tile {
-    margin-top: 2px;
+    margin-top: 8px;
   }
   .tile .head {
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 0 12px 4px;
+    padding: 0 12px 6px;
     border-bottom: 0;
     background: transparent;
     font-weight: 700;
@@ -74,9 +74,9 @@
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: auto 24px auto;
+    grid-template-rows: auto 34px auto;
     gap: 0 5px;
-    padding: 4px 12px 3px;
+    padding: 6px 12px 9px;
   }
   .memo-card {
     border: 1.4px solid #000000;
@@ -158,6 +158,21 @@
 
 <script>
 const ROWS = [
+  {
+    model: 'Claude Opus 4.8',
+    run: 'c632730b',
+    cls: 'opus48',
+    notes: [
+      {cat:'Decision', day:7, quote:'“I <b>concentrated</b> S1 ads on content marketing, <b>dropped</b> S3, <b>raised</b> Plan A quota, <b>tilted</b> dev to unlock S2, and <b>added</b> a small S2 ad probe.”'},
+      {cat:'Decision', day:112, quote:'“Light touch: <b>reallocated</b> dev — <b>cut</b> over-protected S1 targeted spend and <b>bumped</b> S2 to 5000/day to accelerate the growth-quality experiment.”'},
+      {cat:'Decision', day:203, quote:'“Reallocating ads by measured ROI: <b>SCALED</b> D_S07 $12k→$30k/day, <b>PULLED</b> saturating S2 $100k→$85k/day, and <b>nudged</b> S1.”'},
+      {cat:'Decision', day:245, quote:'“Mid-late game harvest+maintain. <b>CUT</b> D_S10 ads, <b>REDIRECTED</b> freed dev into new engine D_S06, and <b>BUMPED</b> ops to clear issues.”'},
+      {cat:'Decision', day:266, quote:'“<b>HARVEST PIVOT</b>… conversion cratered, so <b>CUT</b> S2 + D_S07 ads, <b>CUT</b> D_S04 dev, <b>TRIM</b> S1 dev, and <b>KEEP</b> +EV engines.”'},
+      {cat:'Decision', day:287, quote:'“<b>Cut</b> expenses: capacity T6→T5 and global ops $40k→$28k… burn $88k→$58k/day while holding dev at $0 and S1 ads for a clean read.”'},
+      {cat:'Planning', day:371, quote:'“No positive-EV action remains, so I’m <b>coasting</b> to liquidation with <b>NO config changes</b> (already minimal-cost: T0, model T1, zero ops/dev/ads).”'},
+      {cat:'Planning', day:497, quote:'“<b>NO config changes</b>… and <b>NO actions</b>… Just <b>coast</b>. This advance lands on d504, the FINAL day where the sim freezes.”'},
+    ]
+  },
   {
     model: 'GPT-5.5',
     run: '15c3d364',
@@ -292,7 +307,7 @@ function drawConnectors(){
 
 const page = document.getElementById('page');
 ROWS.forEach((row, i) => {
-  const labels = ['a', 'b'];
+  const labels = ['a', 'b', 'c'];
   const tile = document.createElement('section');
   tile.className = `tile ${row.cls}`;
   tile.innerHTML = `

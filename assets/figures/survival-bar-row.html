@@ -37,26 +37,43 @@
     -webkit-font-smoothing: antialiased;
   }
   .page {
-    width: 1066px;
+    width: 816px;
     margin: 0 auto;
-    padding: 8px;
+    padding: 0;
     box-sizing: border-box;
   }
   .page.single {
-    width: 258px;
+    width: 204px;
     padding: 0;
+  }
+  .page.single .legend-row {
+    height: auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-items: start;
+    align-items: start;
+    gap: 5px;
+    padding: 5px 0 0 50px;
+    font-size: 10px;
+  }
+  .page.single .legend-item {
+    gap: 4px;
+  }
+  .page.single .legend-swatch {
+    width: 8px;
+    height: 8px;
   }
   .row {
     display: grid;
-    grid-template-columns: repeat(4, 258px);
-    gap: 6px;
+    grid-template-columns: repeat(4, 204px);
+    gap: 0;
     align-items: stretch;
   }
   .page.single .row {
     display: block;
   }
   .page.single .panel {
-    width: 258px;
+    width: 204px;
   }
   .panel {
     min-width: 0;
@@ -75,26 +92,46 @@
     width: 100%;
     height: auto;
   }
+  .legend-row {
+    height: 26px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 18px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-2);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+  }
+  .legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    border: 0.8px solid #0a2540;
+    display: inline-block;
+  }
   .caption {
     display: none;
   }
   @page {
-    size: 258px 200px;
+    size: 816px 236px;
     margin: 0;
   }
   @media print {
     html,
     body {
-      width: 258px;
-      height: 200px;
+      width: 816px;
+      height: 236px;
     }
     .page {
-      width: 258px;
+      width: 816px;
       padding: 0;
       margin: 0;
-    }
-    .row {
-      display: block;
     }
   }
   svg text {
@@ -138,6 +175,11 @@
     fill: var(--ink);
     font-weight: 800;
   }
+  .panel-label {
+    font-size: 12px;
+    fill: var(--ink);
+    font-weight: 800;
+  }
 </style>
 </head>
 <body>
@@ -157,10 +199,12 @@
       <div class="tile"><div class="body"><div id="plotD"></div></div></div>
     </div>
   </div>
+  <div class="legend-row" id="legend"></div>
 </div>
 
 <script>
 const GROUPS = [
+  {key:'opus48',  label:'Claude Opus 4.8',  short:['Claude', 'Opus 4.8'], color:'#c41e3a', fill:'#f28ea0'},
   {key:'gpt',     label:'GPT 5.5',          short:['GPT 5.5'],             color:'#2f6df6', fill:'#86adff'},
   {key:'opus',    label:'Claude Opus 4.7',  short:['Claude', 'Opus 4.7'], color:'#ed5b2c', fill:'#ffad8d'},
   {key:'other',   label:'Other models',     short:['Other'],               color:'#697386', fill:'#bcc8d6'},
@@ -177,13 +221,15 @@ if(requestedPlot){
 const PLOTS = [
   {
     mountId: 'plotA',
+    panelLabel: '(a)',
     yLabel: 'Ads allocation efficiency',
     kind: 'pct',
-    yMax: 0.44,
-    ticks: [0, 0.1, 0.2, 0.3, 0.4],
+    yMax: 0.65,
+    ticks: [0, 0.2, 0.4, 0.6],
     baseline: {y: 0.2, label: 'Random guess'},
     direction: 'up',
     bars: [
+      {key:'opus48', mean:0.429072, sd:0.138564, n:3},
       {key:'gpt', mean:0.333733, sd:0.005937, n:3},
       {key:'opus', mean:0.138500, sd:0.074473, n:3},
       {key:'other', mean:0.096756, sd:0.076078, n:18},
@@ -191,6 +237,7 @@ const PLOTS = [
   },
   {
     mountId: 'plotB',
+    panelLabel: '(b)',
     yLabel: 'Four-week forecast error',
     kind: 'pct',
     yMax: 7.0,
@@ -199,6 +246,7 @@ const PLOTS = [
     yLabelOffset: 19,
     direction: 'down',
     bars: [
+      {key:'opus48', mean:0.075265, sd:0.051668, n:3},
       {key:'gpt', mean:0.249233, sd:0.156431, n:3},
       {key:'opus', mean:0.479933, sd:0.248756, n:3},
       {key:'other', mean:1.794384, sd:3.892406, n:19},
@@ -206,6 +254,7 @@ const PLOTS = [
   },
   {
     mountId: 'plotC',
+    panelLabel: '(c)',
     yLabel: ['Detect-competitor lag', '(weeks)'],
     kind: 'weeks',
     yMax: 4.0,
@@ -213,6 +262,7 @@ const PLOTS = [
     yLabelOffset: 24,
     direction: 'down',
     bars: [
+      {key:'opus48', mean:1.000000, sd:0.000000, n:3},
       {key:'gpt', mean:1.000000, sd:0.000000, n:2},
       {key:'opus', mean:1.000000, sd:0.000000, n:3},
       {key:'other', mean:2.000000, sd:1.322876, n:17},
@@ -220,12 +270,14 @@ const PLOTS = [
   },
   {
     mountId: 'plotD',
+    panelLabel: '(d)',
     yLabel: ['Weekly avg. count of "if"', 'in agent memo'],
     kind: 'count',
     yMax: 10,
     ticks: [0, 2, 4, 6, 8, 10],
     yLabelOffset: 20,
     bars: [
+      {key:'opus48', mean:8.574, sd:0.231, n:3},
       {key:'gpt', mean:7.47, sd:1.37, n:3},
       {key:'opus', mean:2.74, sd:0.48, n:3},
       {key:'other', mean:2.63, sd:2.37, n:21},
@@ -255,8 +307,8 @@ function tickFmt(v, kind){
 }
 
 function drawBarPlot(cfg){
-  const W = 258, H = 200;
-  const PAD_L = cfg.padL || 48, PAD_R = 8, PAD_T = 24, PAD_B = 44;
+  const W = 204, H = 210;
+  const PAD_L = cfg.padL || 48, PAD_R = 6, PAD_T = 31, PAD_B = 32;
   const innerW = W - PAD_L - PAD_R;
   const innerH = H - PAD_T - PAD_B;
   const yMin = 0, yMax = cfg.yMax;
@@ -278,8 +330,8 @@ function drawBarPlot(cfg){
   el('line', {x1:PAD_L-2, x2:W-PAD_R+2, y1:axY, y2:axY, stroke:'#0a2540', 'stroke-width':1}, svg);
 
   if(cfg.direction){
-    const dir = el('text', {x:PAD_L+2, y:14, class:'dir', 'text-anchor':'middle'}, svg);
-    dir.textContent = '↑ ' + (cfg.direction === 'up' ? '👍' : '👎');
+    const dir = el('text', {x:PAD_L+2, y:18, class:'dir', 'text-anchor':'middle'}, svg);
+    dir.textContent = cfg.direction === 'up' ? '👍' : '👎';
   }
 
   const yLabelLines = Array.isArray(cfg.yLabel) ? cfg.yLabel : [cfg.yLabel];
@@ -295,12 +347,14 @@ function drawBarPlot(cfg){
     tspan.textContent = line;
   });
 
-  const gap = 6;
-  const barW = (innerW - gap * (GROUPS.length + 1)) / GROUPS.length;
+  const gap = 11;
+  const barW = 18;
+  const totalW = barW * GROUPS.length + gap * (GROUPS.length - 1);
+  const startX = PAD_L + (innerW - totalW) / 2;
 
   cfg.bars.forEach((d, i) => {
     const g = GROUPS.find(x => x.key === d.key);
-    const x = PAD_L + gap + i * (barW + gap);
+    const x = startX + i * (barW + gap);
     const y0 = y(0);
     const yMean = y(d.mean);
     const h = Math.max(1, y0 - yMean);
@@ -316,27 +370,35 @@ function drawBarPlot(cfg){
     const valueY = Math.min(yMean, top) - 7;
     const v = el('text', {x:cx, y:valueY, class:'val', 'text-anchor':'middle'}, svg);
     v.textContent = fmt(d.mean, cfg.kind);
-
-    const lines = Array.isArray(g.short) ? g.short : [g.short];
-    lines.forEach((line, j) => {
-      const lab = el('text', {x:cx, y:axY+14+j*13, class:'xt', 'text-anchor':'middle'}, svg);
-      lab.textContent = line;
-    });
   });
 
   if(cfg.baseline){
     const by = y(cfg.baseline.y);
     el('line', {x1:PAD_L, x2:W-PAD_R, y1:by, y2:by, stroke:'#0a2540', 'stroke-width':1.2, 'stroke-dasharray':'2 3', opacity:0.9}, svg);
-    const lx = PAD_L + 6, ly = PAD_T + 3;
+    const lx = PAD_L + 14, ly = 22;
     el('line', {x1:lx, x2:lx+14, y1:ly, y2:ly, stroke:'#0a2540', 'stroke-width':1.2, 'stroke-dasharray':'2 3'}, svg);
     const leg = el('text', {x:lx+18, y:ly+3.5, class:'legend'}, svg);
     leg.textContent = cfg.baseline.label;
   }
+
+  if(cfg.panelLabel && !requestedPlot){
+    const panelLabel = el('text', {x:PAD_L + innerW / 2, y:H - 8, class:'panel-label', 'text-anchor':'middle'}, svg);
+    panelLabel.textContent = cfg.panelLabel;
+  }
+}
+
+function drawLegend(){
+  const legend = document.getElementById('legend');
+  if (!legend) return;
+  legend.innerHTML = GROUPS.map(g => (
+    `<span class="legend-item"><span class="legend-swatch" style="background:${g.fill}"></span>${g.label}</span>`
+  )).join('');
 }
 
 PLOTS
   .filter(plot => !requestedPlot || plot.mountId === 'plot' + requestedPlot.toUpperCase())
   .forEach(drawBarPlot);
+drawLegend();
 </script>
 </body>
 </html>

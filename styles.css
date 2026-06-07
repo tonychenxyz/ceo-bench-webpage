@@ -470,6 +470,7 @@ code {
 .figure-block {
   overflow: visible;
   margin: 42px auto 64px;
+  min-width: 0;
 }
 
 .figure-block.teaser-block {
@@ -591,8 +592,10 @@ code {
 
 .frame-wrap {
   width: 100%;
+  max-width: 100%;
   overflow: hidden;
   background: #ffffff;
+  min-width: 0;
 }
 
 .frame-wrap iframe {
@@ -761,7 +764,7 @@ code {
 
 .if-examples {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 170px;
+  grid-template-columns: minmax(0, 1fr) 204px;
   align-items: start;
   gap: 18px;
   margin-top: 32px;
@@ -775,6 +778,12 @@ code {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+}
+
+.targeted-dev-block {
+  max-width: 520px;
+  margin-top: 28px;
+  margin-bottom: 52px;
 }
 
 @media (max-width: 760px) {

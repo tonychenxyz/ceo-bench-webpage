@@ -38,20 +38,33 @@
 
   .page {
     width: 816px;
-    height: 132px;
+    height: 148px;
     margin: 0 auto;
     padding: 7px;
     box-sizing: border-box;
     background: #fff;
   }
 
+  .figure-body {
+    position: relative;
+    display: grid;
+    grid-template-rows: 1fr 14px;
+    gap: 4px;
+    height: 100%;
+  }
+
   .grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 5px;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) 10px repeat(2, minmax(0, 1fr));
+    gap: 4px;
     align-items: stretch;
     height: 100%;
   }
+
+  .card-1 { grid-column: 1; }
+  .card-2 { grid-column: 2; }
+  .card-3 { grid-column: 4; }
+  .card-4 { grid-column: 5; }
 
   .tile {
     background: var(--paper);
@@ -113,10 +126,10 @@
   }
 
   .quote {
-    padding: 6px 7px 7px;
+    padding: 5px 7px 7px;
     color: var(--ink-2);
-    font-size: 9.6px;
-    line-height: 1.15;
+    font-size: 9.2px;
+    line-height: 1.13;
     font-weight: 500;
     letter-spacing: -0.005em;
   }
@@ -126,14 +139,30 @@
     font-weight: 800;
   }
 
+  .model-labels {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 18px;
+    color: var(--ink);
+    font-size: 10px;
+    line-height: 1;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .model-labels span {
+    display: block;
+  }
+
   @media print {
     @page {
-      size: 816px 132px;
+      size: 816px 148px;
       margin: 0;
     }
     html, body {
       width: 816px;
-      height: 132px;
+      height: 148px;
       background: #fff !important;
       overflow: hidden;
     }
@@ -153,6 +182,7 @@
 </head>
 <body>
 <div class="page">
+  <div class="figure-body">
   <div class="grid">
     <section class="tile card-1">
       <div class="head">
@@ -168,35 +198,40 @@
     <section class="tile card-2">
       <div class="head">
         <span class="idx">(b)</span>
-        <div class="title">Threshold-gated tier escalation</div>
-        <div class="day">DAY 56</div>
+        <div class="title">Hypothesis-test branching</div>
+        <div class="day">DAY 336</div>
       </div>
       <div class="quote">
-        Capacity: tier4 cap 8M/day. <b>If</b> max daily usage &gt;6.5M or p95/errors jump, move to tier5 immediately before further ad scale.
+        <b>If</b> the $40 180-day credits materially reduce churn, keep targeted renewal-credit strategy and prune expired cohorts weekly. <b>If</b> credits fail, avoid broad discounts and focus on quality.
       </div>
     </section>
 
     <section class="tile card-3">
       <div class="head">
         <span class="idx">(c)</span>
-        <div class="title">Conditional post-R&amp;D harvest</div>
-        <div class="day">DAY 490</div>
+        <div class="title">Customer group probing</div>
+        <div class="day">DAY 63</div>
       </div>
       <div class="quote">
-        T10 R&amp;D completes during the following week (Day493, after Day490->497 advance). Plan post-T10 harvest: likely cut dev sharply and possibly trim ops/cap only <b>if</b> renewals/usage permit.
+        Probing linkedin D_E09 to test whether enterprise threads arrive. <b>If</b> threads arrive, offer plan C or B near $80-$106 per seat; <b>if</b> no leads, bump probe or drop.
       </div>
     </section>
 
     <section class="tile card-4">
       <div class="head">
         <span class="idx">(d)</span>
-        <div class="title">Hypothesis-test branching</div>
-        <div class="day">DAY 336</div>
+        <div class="title">Price cut consequences</div>
+        <div class="day">DAY 357</div>
       </div>
       <div class="quote">
-        <b>If</b> the $40 180-day credits materially reduce churn, keep targeted renewal-credit strategy and prune expired cohorts weekly. <b>If</b> credits fail, churn is probably satisfaction/reputation rather than price; avoid broad discounts and focus on quality.
+        Cutting price has no downside when survival is 0%. <b>If</b> it flips renewals, keep the base and test elasticity; <b>if</b> it still fails, accept liquidation and coast.
       </div>
     </section>
+  </div>
+  <div class="model-labels">
+    <span>GPT-5.5</span>
+    <span>Claude Opus 4.8</span>
+  </div>
   </div>
 </div>
 </body>

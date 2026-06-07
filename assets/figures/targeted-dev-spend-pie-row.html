@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench - Targeted Dev Spend Pie Row</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a2540;
+    --ink-2: #425466;
+    --ink-3: #697386;
+    --line: #d6dde6;
+    --paper: #ffffff;
+    --bg: #ffffff;
+    --brand: #2f6df6;
+    --brand-soft: #d8e6ff;
+    --orange: #ed5b2c;
+    --orange-soft: #ffe7dc;
+    --gray: #8792a2;
+    --gray-soft: #eaf6ee;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 408px;
+    height: 162px;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 408px;
+    height: 162px;
+    margin: 0;
+    box-sizing: border-box;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .tile .body {
+    padding: 0;
+  }
+  .tile svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  svg text {
+    font-family: 'Inter', system-ui, sans-serif;
+    fill: #000000;
+  }
+  .group {
+    font-size: 10px;
+    fill: #000000;
+    font-weight: 400;
+  }
+  .legend {
+    font-size: 11px;
+    fill: #000000;
+    font-weight: 400;
+  }
+  .pct {
+    font-size: 7.5px;
+    fill: #000000;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  @page {
+    size: 408px 162px;
+    margin: 0;
+  }
+  @media print {
+    html,
+    body {
+      width: 408px;
+      height: 162px;
+    }
+    .page {
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="tile"><div class="body"><div id="plot"></div></div></div>
+</div>
+
+<script>
+const DATA = [
+  {
+    group: 'GPT-5.5',
+    note: 'single model',
+    targetedPct: 0.8866584145094452,
+    nonTargetedPct: 0.11334158549055487,
+    totalDollars: 4645250,
+    totalLabel: 'total',
+  },
+  {
+    group: 'Opus 4.8',
+    note: 'n = 3',
+    targetedPct: 0.8736094978681365,
+    nonTargetedPct: 0.12639050213186348,
+    totalDollars: 1940400,
+    totalLabel: 'avg.',
+  },
+  {
+    group: 'Opus 4.7',
+    note: 'single model',
+    targetedPct: 0.43548387096774194,
+    nonTargetedPct: 0.5645161290322581,
+    totalDollars: 46500,
+    totalLabel: 'total',
+  },
+  {
+    group: 'Kimi K2.6',
+    note: 'single model',
+    targetedPct: 0.09761273209549072,
+    nonTargetedPct: 0.9023872679045093,
+    totalDollars: 94250,
+    totalLabel: 'total',
+  },
+  {
+    group: 'Other',
+    note: 'n = 7',
+    targetedPct: 0.4271315377977655,
+    nonTargetedPct: 0.5728684622022345,
+    totalDollars: 88292.85714285714,
+    totalLabel: 'avg.',
+  },
+];
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const W = 408;
+const H = 162;
+const PANEL_W = W / DATA.length;
+const PIE_R = 31;
+const PIE_Y = 67;
+const TARGETED = '#86adff';
+const NON_TARGETED = '#bcc8d6';
+
+function el(tag, attrs = {}, parent) {
+  const node = document.createElementNS(SVG_NS, tag);
+  Object.keys(attrs).forEach(key => node.setAttribute(key, attrs[key]));
+  if (parent) parent.appendChild(node);
+  return node;
+}
+
+function polar(cx, cy, r, angle) {
+  const rad = (angle - 90) * Math.PI / 180;
+  return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+}
+
+function slicePath(cx, cy, r, startFrac, endFrac) {
+  const start = startFrac * 360;
+  const end = endFrac * 360;
+  const [sx, sy] = polar(cx, cy, r, start);
+  const [ex, ey] = polar(cx, cy, r, end);
+  const large = endFrac - startFrac > 0.5 ? 1 : 0;
+  return [
+    `M ${cx.toFixed(2)} ${cy.toFixed(2)}`,
+    `L ${sx.toFixed(2)} ${sy.toFixed(2)}`,
+    `A ${r} ${r} 0 ${large} 1 ${ex.toFixed(2)} ${ey.toFixed(2)}`,
+    'Z',
+  ].join(' ');
+}
+
+function money(v) {
+  if (v >= 1000000) return `$${(v / 1000000).toFixed(2)}M`;
+  if (v >= 100000) return `$${Math.round(v / 1000)}k`;
+  if (v >= 10000) return `$${(v / 1000).toFixed(1)}k`;
+  return `$${Math.round(v)}`;
+}
+
+function pct(v) {
+  return `${Math.round(v * 100)}%`;
+}
+
+function labelPoint(cx, cy, startFrac, endFrac) {
+  const mid = (startFrac + endFrac) / 2;
+  const span = endFrac - startFrac;
+  const r = PIE_R * (span < 0.18 ? 0.7 : 0.52);
+  return polar(cx, cy, r, mid * 360);
+}
+
+function addCenteredText(parent, lines, x, y, cls, gap = 9) {
+  lines.forEach((line, i) => {
+    const t = el('text', {
+      x,
+      y: y + i * gap,
+      class: cls,
+      'text-anchor': 'middle',
+    }, parent);
+    t.textContent = line;
+  });
+}
+
+function drawPanel(svg, d, i) {
+  const x0 = i * PANEL_W;
+  const cx = x0 + PANEL_W / 2;
+  const titleLines = [d.group];
+
+  addCenteredText(svg, titleLines, cx, 21, 'group', 13);
+
+  el('path', {
+    d: slicePath(cx, PIE_Y, PIE_R, 0, d.targetedPct),
+    fill: TARGETED,
+    stroke: 'none',
+    'stroke-linejoin': 'round',
+  }, svg);
+  el('path', {
+    d: slicePath(cx, PIE_Y, PIE_R, d.targetedPct, 1),
+    fill: NON_TARGETED,
+    stroke: 'none',
+    'stroke-linejoin': 'round',
+  }, svg);
+  el('circle', {
+    cx,
+    cy: PIE_Y,
+    r: PIE_R,
+    fill: 'none',
+    stroke: '#0a2540',
+    'stroke-width': 0.9,
+    opacity: 0.85,
+  }, svg);
+
+  [
+    {start: 0, end: d.targetedPct, label: pct(d.targetedPct)},
+    {start: d.targetedPct, end: 1, label: pct(d.nonTargetedPct)},
+  ].forEach(item => {
+    const [lx, ly] = labelPoint(cx, PIE_Y, item.start, item.end);
+    const percent = el('text', {x: lx, y: ly + 3, class: 'pct', 'text-anchor': 'middle'}, svg);
+    percent.textContent = item.label;
+  });
+
+  if (i > 0) {
+    el('line', {
+      x1: x0,
+      x2: x0,
+      y1: 16,
+      y2: 111,
+      stroke: '#eef1f5',
+      'stroke-width': 0.8,
+    }, svg);
+  }
+}
+
+function drawLegend(svg) {
+  const y = 133;
+  const targetedX = 63;
+  el('rect', {x: targetedX, y: y - 8, width: 10, height: 10, rx: 1.5, fill: TARGETED, stroke: '#0a2540', 'stroke-width': 0.55}, svg);
+  const targeted = el('text', {x: targetedX + 15, y, class: 'legend'}, svg);
+  targeted.textContent = 'Targeted dev spend';
+
+  const nonTargetedX = 224;
+  el('rect', {x: nonTargetedX, y: y - 8, width: 10, height: 10, rx: 1.5, fill: NON_TARGETED, stroke: '#0a2540', 'stroke-width': 0.55}, svg);
+  const nonTargeted = el('text', {x: nonTargetedX + 15, y, class: 'legend'}, svg);
+  nonTargeted.textContent = 'Non-targeted dev spend';
+}
+
+function draw() {
+  const mount = document.getElementById('plot');
+  const svg = el('svg', {
+    viewBox: `0 0 ${W} ${H}`,
+    width: W,
+    height: H,
+    preserveAspectRatio: 'xMinYMin meet',
+  }, mount);
+  DATA.forEach((d, i) => drawPanel(svg, d, i));
+  drawLegend(svg);
+}
+
+draw();
+</script>
+</body>
+</html>

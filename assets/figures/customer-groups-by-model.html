@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench - Best Run Customer Groups</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a2540;
+    --ink-2: #425466;
+    --ink-3: #697386;
+    --line: #d6dde6;
+    --line-2: #eef1f5;
+    --paper: #ffffff;
+    --bg: #ffffff;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 816px;
+    height: 320px;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 816px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile .body { padding: 0; }
+  .tile .body svg { display: block; width: 100%; height: auto; }
+
+  svg text { font-family: 'Inter', sans-serif; }
+  .yt { font-size: 10.5px; fill: var(--ink-2); font-weight: 600; }
+  .xt { font-size: 10px; fill: var(--ink-2); font-weight: 600; }
+  .axt { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
+  .panel-title { font-size: 13px; fill: var(--ink); font-weight: 800; }
+  .legend-title { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
+  .legend { font-size: 9px; fill: var(--ink-2); font-weight: 700; }
+  @page {
+    size: 816px 320px;
+    margin: 0;
+  }
+  @media print {
+    html,
+    body {
+      width: 816px;
+      height: 320px;
+    }
+    .page {
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="tile">
+    <div class="body"><div id="plot"></div></div>
+  </div>
+</div>
+
+<script>
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(SVG_NS, tag);
+  attrs = attrs || {};
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+const GROUP_META = [
+  {id:'S1',    color:'#0072B2'},
+  {id:'S2',    color:'#D55E00'},
+  {id:'S3',    color:'#009E73'},
+  {id:'E3',    color:'#CC79A7'},
+  {id:'D_S03', color:'#56B4E9'},
+  {id:'D_S04', color:'#E69F00'},
+  {id:'D_S05', color:'#7F3F98'},
+  {id:'D_S06', color:'#8A8F98'},
+  {id:'D_S07', color:'#C23B22'},
+  {id:'D_S10', color:'#2F4B7C'},
+];
+const GROUP_ORDER = GROUP_META.map(g => g.id);
+const GROUP_COLORS = GROUP_META.reduce((acc, g) => {
+  acc[g.id] = g.color;
+  return acc;
+}, {});
+
+const W = 816, H = 320;
+const LEGEND_W = 116;
+const PANEL_W = (W - LEGEND_W) / 2;
+const PAD_L = 58, PAD_R = 10, PAD_T = 34, PAD_B = 42;
+const INNER_W = PANEL_W - PAD_L - PAD_R;
+const INNER_H = H - PAD_T - PAD_B;
+const X_MAX = 500;
+const Y_MAX = 700000;
+const Y_TICKS = [0, 100000, 200000, 300000, 400000, 500000, 600000];
+const X_TICKS = [0, 100, 200, 300, 400, 500];
+
+function parseCsv(text) {
+  const lines = text.trim().split(/\r?\n/);
+  const headers = lines.shift().split(',');
+  return lines.map(line => {
+    const cols = line.split(',');
+    const row = {};
+    headers.forEach((h, i) => { row[h] = cols[i]; });
+    return {
+      model: row.model,
+      runId: row.run_id,
+      finalCash: Number(row.final_cash),
+      currentDay: Number(row.current_day),
+      day: Number(row.day),
+      group: row.group_id,
+      count: Number(row.count),
+    };
+  }).filter(r =>
+    r.model && r.group &&
+    Number.isFinite(r.day) &&
+    Number.isFinite(r.count)
+  );
+}
+
+function formatCount(v) {
+  if (v >= 1000000) return (v / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (v >= 1000) return Math.round(v / 1000) + 'k';
+  return String(Math.round(v));
+}
+
+function normalizePanel(rows, model) {
+  const modelRows = rows.filter(r => r.model === model);
+  const currentDay = modelRows.reduce((m, r) => Math.max(m, r.currentDay || 0), 0);
+  const dayMap = {};
+  modelRows.forEach(r => {
+    if (r.day > currentDay) return;
+    if (!dayMap[r.day]) dayMap[r.day] = {};
+    dayMap[r.day][r.group] = r.count;
+  });
+  if (!dayMap[0]) dayMap[0] = {};
+  GROUP_ORDER.forEach(g => {
+    if (dayMap[0][g] == null) dayMap[0][g] = 0;
+  });
+
+  const days = Object.keys(dayMap).map(Number).sort((a, b) => a - b);
+  const stacked = days.map(day => {
+    let base = 0;
+    const items = GROUP_ORDER.map(group => {
+      const val = dayMap[day][group] || 0;
+      const item = {group, val, base, top: base + val};
+      base += val;
+      return item;
+    });
+    return {day, total: base, items};
+  });
+  const peak = stacked.reduce((best, row) => row.total > best.total ? row : best, {day:0, total:0});
+  return {
+    model,
+    currentDay,
+    stacked,
+    peak,
+  };
+}
+
+function drawLegend(svg) {
+  const x = W - LEGEND_W + 15;
+  const title1 = el('text', {x, y:37, class:'legend-title'}, svg);
+  title1.textContent = 'Customer';
+  const title2 = el('text', {x, y:51, class:'legend-title'}, svg);
+  title2.textContent = 'groups';
+  GROUP_META.forEach((g, i) => {
+    const y = 76 + i * 20;
+    el('rect', {x, y:y - 8, width:9, height:9, fill:g.color, opacity:0.82}, svg);
+    const t = el('text', {x:x + 14, y, class:'legend'}, svg);
+    t.textContent = g.id;
+  });
+}
+
+function drawPanel(svg, panel, idx) {
+  const x0 = idx * PANEL_W;
+  const plotX0 = x0 + PAD_L;
+  const plotX1 = x0 + PANEL_W - PAD_R;
+  const plotY0 = PAD_T;
+  const plotY1 = H - PAD_B;
+  const xS = d => plotX0 + Math.max(0, Math.min(X_MAX, d)) / X_MAX * INNER_W;
+  const yS = v => plotY1 - Math.max(0, Math.min(Y_MAX, v)) / Y_MAX * INNER_H;
+
+  const title = el('text', {x:plotX0, y:15, class:'panel-title'}, svg);
+  title.textContent = panel.model;
+
+  Y_TICKS.forEach(tick => {
+    const y = yS(tick);
+    el('line', {
+      x1:plotX0, x2:plotX1, y1:y, y2:y,
+      stroke:tick === 0 ? '#0a2540' : '#d6dde6',
+      'stroke-width':tick === 0 ? 1 : 0.75,
+      'stroke-dasharray':tick === 0 ? '' : '2 3'
+    }, svg);
+    const label = el('text', {x:plotX0 - 6, y:y + 3.5, class:'yt', 'text-anchor':'end'}, svg);
+    label.textContent = formatCount(tick);
+  });
+
+  el('line', {x1:plotX0, x2:plotX0, y1:plotY0 - 2, y2:plotY1 + 2, stroke:'#0a2540', 'stroke-width':1}, svg);
+  el('line', {x1:plotX0 - 2, x2:plotX1 + 2, y1:plotY1, y2:plotY1, stroke:'#0a2540', 'stroke-width':1}, svg);
+
+  X_TICKS.forEach(tick => {
+    const x = xS(tick);
+    el('line', {x1:x, x2:x, y1:plotY1, y2:plotY1 + 3, stroke:'#0a2540', 'stroke-width':0.8}, svg);
+    const label = el('text', {x, y:plotY1 + 13, class:'xt', 'text-anchor':'middle'}, svg);
+    label.textContent = tick;
+  });
+
+  GROUP_ORDER.forEach((group, gi) => {
+    const top = panel.stacked.map(row => row.items[gi].top);
+    const base = panel.stacked.map(row => row.items[gi].base);
+    let d = '';
+    panel.stacked.forEach((row, i) => {
+      d += (i === 0 ? 'M' : 'L') + xS(row.day).toFixed(1) + ' ' + yS(top[i]).toFixed(1) + ' ';
+    });
+    for (let i = panel.stacked.length - 1; i >= 0; i--) {
+      d += 'L' + xS(panel.stacked[i].day).toFixed(1) + ' ' + yS(base[i]).toFixed(1) + ' ';
+    }
+    d += 'Z';
+    el('path', {
+      d,
+      fill:GROUP_COLORS[group],
+      'fill-opacity':0.76,
+      stroke:GROUP_COLORS[group],
+      'stroke-width':0.45,
+      'stroke-linejoin':'round'
+    }, svg);
+  });
+
+  const xLab = el('text', {x:plotX0 + INNER_W / 2, y:H - 8, class:'axt', 'text-anchor':'middle'}, svg);
+  xLab.textContent = 'Day';
+  if (idx === 0) {
+    const yLab = el('text', {
+      x:-(plotY0 + INNER_H / 2),
+      y:14,
+      class:'axt',
+      'text-anchor':'middle',
+      transform:'rotate(-90)'
+    }, svg);
+    yLab.textContent = 'Active customers';
+  }
+}
+
+function draw(rows) {
+  const mount = document.getElementById('plot');
+  mount.textContent = '';
+  const svg = el('svg', {viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
+  drawLegend(svg);
+  ['Claude Opus 4.8', 'GPT-5.5'].forEach((model, i) => {
+    drawPanel(svg, normalizePanel(rows, model), i);
+  });
+}
+
+function drawError(message) {
+  const mount = document.getElementById('plot');
+  const svg = el('svg', {viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
+  const t = el('text', {x:W / 2, y:H / 2, class:'axt', 'text-anchor':'middle'}, svg);
+  t.textContent = message;
+}
+
+fetch('best_run_customer_groups_by_model.csv')
+  .then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.text();
+  })
+  .then(text => draw(parseCsv(text)))
+  .catch(err => drawError('Unable to load best_run_customer_groups_by_model.csv (' + err.message + ')'));
+</script>
+</body>
+</html>

@@ -39,7 +39,7 @@
   .tile svg { display: block; width: 100%; height: auto; }
   svg text { font-family: 'Inter', sans-serif; }
   .title { font-size: 14px; fill: var(--ink); font-weight: 800; }
-  .tool { font-family: 'JetBrains Mono', monospace; font-size: 9.2px; fill: var(--ink); font-weight: 500; }
+  .tool { font-family: 'JetBrains Mono', monospace; font-size: 7.6px; fill: var(--ink); font-weight: 500; }
   .xt { font-size: 10px; fill: var(--ink-2); font-weight: 700; }
   .axt { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
   .val { font-size: 10px; fill: var(--ink); font-weight: 800; font-variant-numeric: tabular-nums; }
@@ -75,6 +75,23 @@ function el(tag, attrs={}, parent){
 }
 
 const PANELS = [
+  {
+    title: 'Claude Opus 4.8',
+    color: '#c41e3a',
+    fill: '#f28ea0',
+    data: [
+      {rank:1, tool:'get_social_posts', total:76, avg:1.0556},
+      {rank:2, tool:'list_research_projects', total:74, avg:1.0278},
+      {rank:3, tool:'get_group_insights', total:52, avg:0.7222},
+      {rank:4, tool:'set_targeted_ad_spend', total:52, avg:0.7222},
+      {rank:5, tool:'set_targeted_dev_spend', total:47, avg:0.6528},
+      {rank:6, tool:'get_market_overview', total:45, avg:0.6250},
+      {rank:7, tool:'set_daily_spend', total:44, avg:0.6111},
+      {rank:8, tool:'get_cost_info', total:31, avg:0.4306},
+      {rank:9, tool:'set_capacity_tier', total:28, avg:0.3889},
+      {rank:10, tool:'set_lead_promotion', total:26, avg:0.3611},
+    ],
+  },
   {
     title: 'GPT-5.5',
     color: '#2f6df6',
@@ -112,8 +129,8 @@ const PANELS = [
 ];
 
 const W = 816, H = 200;
-const PANEL_W = 406, GAP = 4;
-const PAD_L = 136, PAD_R = 8, PAD_T = 24, PAD_B = 34;
+const PANEL_W = 270, GAP = 3;
+const PAD_L = 118, PAD_R = 8, PAD_T = 24, PAD_B = 34;
 const INNER_W = PANEL_W - PAD_L - PAD_R;
 const INNER_H = H - PAD_T - PAD_B;
 const X_MAX = 2.0;
@@ -173,8 +190,7 @@ function drawPanel(svg, panel, x0){
 function draw(){
   const mount = document.getElementById('plot');
   const svg = el('svg', {viewBox:`0 0 ${W} ${H}`, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
-  drawPanel(svg, PANELS[0], 0);
-  drawPanel(svg, PANELS[1], PANEL_W + GAP);
+  PANELS.forEach((panel, i) => drawPanel(svg, panel, i * (PANEL_W + GAP)));
 }
 
 draw();
