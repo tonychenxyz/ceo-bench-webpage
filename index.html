@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=8">
+  <link rel="stylesheet" href="styles.css?v=9">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
   <script>
@@ -76,6 +76,12 @@
 
     <section class="container" id="benchmark">
       <figure class="chart-panel">
+        <div class="plot-controls" aria-label="Cash plot controls">
+          <label class="plot-toggle" for="model-label-toggle">
+            <input type="checkbox" id="model-label-toggle" checked>
+            <span>Model names</span>
+          </label>
+        </div>
         <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
         <figcaption class="fig-caption">We measure cash balance as performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline.</figcaption>
@@ -262,7 +268,7 @@
       </article>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=3" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=4" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -495,7 +501,7 @@
     </section>
   </main>
 
-  <script src="assets/runs-data.js?v=2"></script>
-  <script src="script.js?v=4"></script>
+  <script src="assets/runs-data.js?v=3"></script>
+  <script src="script.js?v=5"></script>
 </body>
 </html>

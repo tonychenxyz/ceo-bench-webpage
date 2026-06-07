@@ -73,6 +73,7 @@ function valueAtDay(points, day) {
 function drawCashPlot(runs) {
   const mount = document.getElementById("cash-plot");
   const legend = document.getElementById("cash-legend");
+  const labelToggle = document.getElementById("model-label-toggle");
   if (!mount || !legend) return;
 
   mount.innerHTML = "";
@@ -297,6 +298,17 @@ function drawCashPlot(runs) {
     label.textContent = run.pretty;
   });
 
+  function syncModelLabels() {
+    const showLabels = !labelToggle || labelToggle.checked;
+    labelsGroup.style.display = showLabels ? "" : "none";
+    labelsGroup.setAttribute("aria-hidden", showLabels ? "false" : "true");
+  }
+
+  if (labelToggle) {
+    labelToggle.addEventListener("change", syncModelLabels);
+    syncModelLabels();
+  }
+
   const hoverGroup = svgEl("g", { opacity: "0" }, svg);
   const hoverLine = svgEl("line", {
     y1: pad.top,
@@ -354,10 +366,26 @@ function drawCashPlot(runs) {
       `).join("")}
     `;
 
-    const pointerX = event.clientX - mountRect.left;
-    const maxLeft = Math.max(10, mountRect.width - tooltip.offsetWidth - 10);
-    const left = Math.max(10, Math.min(pointerX + 16, maxLeft));
+    const edgeGap = 10;
+    const selectionGap = 16;
+    const selectedX = svgRect.left - mountRect.left + (xx / W) * svgRect.width;
+    const maxLeft = Math.max(edgeGap, mountRect.width - tooltip.offsetWidth - edgeGap);
+    const rightLeft = selectedX + selectionGap;
+    const leftLeft = selectedX - tooltip.offsetWidth - selectionGap;
+    let left = rightLeft <= maxLeft ? rightLeft : leftLeft;
+    let top = 18;
+
+    if (left < edgeGap) {
+      left = rightLeft <= maxLeft ? rightLeft : edgeGap;
+    }
+
+    if (left < selectedX && selectedX < left + tooltip.offsetWidth) {
+      top = svgRect.height + selectionGap;
+      left = Math.max(edgeGap, Math.min(selectedX - tooltip.offsetWidth / 2, maxLeft));
+    }
+
     tooltip.style.left = `${left}px`;
+    tooltip.style.top = `${top}px`;
     tooltip.classList.add("visible");
   }
 
