@@ -96,7 +96,7 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js"></script>
+<script src="runs-by-model.js?v=2"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
@@ -104,6 +104,7 @@ function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in 
 // Same Okabe–Ito palette as the master plot, used for the model color.
 const PALETTE = {
   'GPT-5.5':           {c:'#2f6df6'},
+  'Claude Opus 4.8':   {c:'#c41e3a'},
   'Claude Opus 4.7':   {c:'#ed5b2c'},
   'Claude Sonnet 4.6': {c:'#00875a'},
   'Kimi K2.6':         {c:'#b15c00'},
@@ -116,14 +117,15 @@ const PALETTE = {
 // All runs use solid lines.
 const RUN_DASH = ['', '', ''];
 
-// Order of small multiples — best→worst by best-final-cash, roughly.
+// Match the leaderboard table order, excluding non-run summary rows.
 const MODEL_ORDER = [
+  'Claude Opus 4.8',
   'GPT-5.5',
   'Claude Opus 4.7',
-  'Claude Sonnet 4.6',
   'Kimi K2.6',
-  'Claude Haiku 4.5',
+  'Claude Sonnet 4.6',
   'GLM 5.1',
+  'Claude Haiku 4.5',
   'Gemini 3 Flash',
   'DeepSeek V4 Pro',
   'Grok 4.20',

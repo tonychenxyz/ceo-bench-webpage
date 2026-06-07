@@ -5,6 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
+const DATA_VERSION = 2;
 
 // ---------- formatters ----------
 function fmtMoney(n) {
@@ -511,7 +512,7 @@ const WEEK_CACHE = new Map();  // week# -> Promise<weekData>
 function fetchWeek(runId, weekNum) {
   const key = `${runId}:${weekNum}`;
   if (WEEK_CACHE.has(key)) return WEEK_CACHE.get(key);
-  const p = fetch(`data/runs/${runId}/week_${weekNum}.json`).then(r => r.json());
+  const p = fetch(`data/runs/${runId}/week_${weekNum}.json?v=${DATA_VERSION}`).then(r => r.json());
   WEEK_CACHE.set(key, p);
   return p;
 }
@@ -671,7 +672,7 @@ async function init() {
   document.getElementById('run-footer-stamp').textContent = new Date().toISOString().slice(0, 10);
   let r;
   try {
-    r = await (await fetch(`data/runs/${runId}.json`)).json();
+    r = await (await fetch(`data/runs/${runId}.json?v=${DATA_VERSION}`)).json();
   } catch (e) {
     document.getElementById('run-sub').textContent = 'Failed to load run: ' + e.message;
     return;

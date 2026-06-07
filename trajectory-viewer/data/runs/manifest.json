@@ -154,6 +154,57 @@
       ]
     },
     {
+      "model": "claude-opus-4-8",
+      "model_display": "Claude Opus 4.8",
+      "runs": [
+        {
+          "run_id": "c632730b",
+          "label": "opus-4.8-anthropic-seed42-run2 (c632730b)",
+          "total_days": 497,
+          "current_day": 497,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 27777568.31,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 845,
+          "action_count": 854,
+          "days_count": 73
+        },
+        {
+          "run_id": "0bd6d7c0",
+          "label": "opus-4.8-anthropic-seed42-run3 (0bd6d7c0)",
+          "total_days": 504,
+          "current_day": 504,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 611762.95,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 870,
+          "action_count": 880,
+          "days_count": 73
+        },
+        {
+          "run_id": "fd00287f",
+          "label": "opus-4.8-anthropic-504d-run1 (fd00287f)",
+          "total_days": 504,
+          "current_day": 504,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 116358.09,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 614,
+          "action_count": 621,
+          "days_count": 73
+        }
+      ]
+    },
+    {
       "model": "grok-4.20-0309-reasoning",
       "model_display": "Grok 4.20",
       "runs": [

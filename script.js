@@ -2,6 +2,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
   "GPT-5.5": "#2f6df6",
+  "Claude Opus 4.8": "#c41e3a",
   "Claude Opus 4.7": "#ed5b2c",
   "Claude Sonnet 4.6": "#00875a",
   "Kimi K2.6": "#b15c00",
@@ -260,6 +261,7 @@ function drawCashPlot(runs) {
   });
 
   const labelOffsets = {
+    "Claude Opus 4.8": { dx: -94, dy: -10, anchor: "end" },
     "GPT-5.5": { dx: -8, dy: -10, anchor: "end" },
     "Rule-Based Baseline": { dx: -8, dy: 16, anchor: "end" },
     "Claude Opus 4.7": { dx: -8, dy: -10, anchor: "end" },

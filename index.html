@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=7">
+  <link rel="stylesheet" href="styles.css?v=8">
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
   <script>
@@ -257,11 +257,11 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> While four models (GPT-5.5, Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6) end with positive cash on their best run, only GPT-5.5 finishes above its $1M starting balance. The rule-based baseline finishes with $15.8M, highlighting that current agents can trail explicit strategies even when they survive. This preliminary evaluation shows that GPT-5.5 demonstrates high-upside strategic behavior; Claude Opus 4.7 survives more conservatively; while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Opus 4.8 and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Opus 4.8 and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html" title="Cash trajectories per model" data-width="740" data-height="385" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=3" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -281,6 +281,15 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">Claude Opus 4.8</th>
+                <td>0/3</td>
+                <td>$27,777,568</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>10.9</td>
+                <td>--</td>
+              </tr>
               <tr>
                 <th scope="row">GPT-5.5</th>
                 <td>2/3</td>
@@ -364,21 +373,21 @@
               </tr>
               <tr class="reference-row baseline-row">
                 <th scope="row">Rule-based baseline</th>
-                <td>--</td>
+                <td></td>
                 <td>$15,756,408</td>
-                <td>500</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
               <tr class="reference-row estimate-row">
                 <th scope="row">Estimated max final cash</th>
-                <td>--</td>
+                <td></td>
                 <td>$2,200,000,000</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
-                <td>--</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
               </tr>
             </tbody>
           </table>
@@ -463,7 +472,7 @@
     </section>
   </main>
 
-  <script src="assets/runs-data.js"></script>
-  <script src="script.js"></script>
+  <script src="assets/runs-data.js?v=2"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>
