@@ -162,8 +162,36 @@ function skull(cx, cy, parent) {
 // ---- Build one tile per model ------------------------------------------
 const grid = document.getElementById('grid');
 
+// These two GPT-5.5 trajectories terminated shortly after their last observed
+// positive-cash point. The raw grid data keeps the day-500 duplicate for
+// normalization, but the grid should show the bankruptcy event.
+const FORCE_BANKRUPT_AFTER_WEEK = {
+  '555049e4': true,
+  '15c3d364': true,
+};
+function maybeForceBankrupt(run) {
+  if (!FORCE_BANKRUPT_AFTER_WEEK[run.run_id]) return run;
+  const pts = run.points.slice();
+  const last = pts[pts.length - 1];
+  const prev = pts[pts.length - 2];
+  if (last && prev && last[0] === 500 && last[1] === prev[1]) {
+    pts.pop();
+  }
+  const [lastDay, lastCash] = pts[pts.length - 1];
+  if (lastCash <= 0) return run;
+
+  const steps = 7;
+  const target = -100;
+  for (let i = 1; i <= steps; i++) {
+    const t = i / steps;
+    const cash = lastCash + (target - lastCash) * t;
+    pts.push([lastDay + i, cash]);
+  }
+  return Object.assign({}, run, { points: pts });
+}
+
 MODEL_ORDER.forEach(modelName => {
-  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3);
+  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3).map(maybeForceBankrupt);
   const color = (PALETTE[modelName] || {c:'#0a2540'}).c;
 
   // tile shell
