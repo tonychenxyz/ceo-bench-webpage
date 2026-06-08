@@ -672,6 +672,10 @@ code {
   background: #ffffff;
 }
 
+.code-example-frame iframe {
+  overflow: hidden;
+}
+
 .frame-wrap.compact {
   display: block;
 }
