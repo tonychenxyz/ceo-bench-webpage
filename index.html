@@ -78,8 +78,9 @@
       <figure class="chart-panel">
         <div class="plot-controls" aria-label="Cash plot controls">
           <label class="plot-toggle" for="model-label-toggle">
-            <input type="checkbox" id="model-label-toggle" checked>
-            <span>Model names</span>
+            <input class="plot-toggle-input" type="checkbox" id="model-label-toggle" checked>
+            <span class="plot-toggle-switch" aria-hidden="true"></span>
+            <span>Display model names</span>
           </label>
         </div>
         <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -268,7 +269,7 @@
       </article>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=4" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=5" title="Cash trajectories per model" data-width="740" data-height="540" loading="lazy"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -436,7 +437,7 @@
         <div class="frame-wrap" data-label="Customer groups over time">
           <iframe src="assets/figures/customer-groups-by-model.html" title="Customer groups over time" data-width="816" data-height="320" loading="lazy"></iframe>
         </div>
-        <div class="fig-caption">Active customers by customer group over time for the best runs of Claude Opus 4.8 and GPT-5.5. Colors are held fixed across panels so the same customer group has the same color in both trajectories.</div>
+        <div class="fig-caption">Active customers by customer group over time for the best runs of Claude Opus 4.8 and GPT-5.5. Colors are held fixed across panels so the same customer group has the same color in both trajectories. Customer groups without a <code>D_*</code> prefix are initially visible to the agent; the agent must pay for market research to discover hidden customer groups with that prefix.</div>
       </div>
 
       <article class="prose">
