@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 5;
+const DATA_VERSION = 6;
 
 // ---------- formatters ----------
 function fmtMoney(n) {
