@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=23">
+  <link rel="stylesheet" href="styles.css?v=25">
   <script>
     window.MathJax = {
       tex: {
@@ -88,13 +88,27 @@
       </div>
     </d-byline>
 
+    <figure class="chart-panel intro-results-plot">
+      <div class="plot-controls" aria-label="Cash plot controls">
+        <label class="plot-toggle" for="model-label-toggle-intro">
+          <input class="plot-toggle-input" type="checkbox" id="model-label-toggle-intro" checked>
+          <span class="plot-toggle-switch" aria-hidden="true"></span>
+          <span>Display model names</span>
+        </label>
+      </div>
+      <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" data-label-toggle-id="model-label-toggle-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
+      <div id="cash-legend-intro" class="cash-legend"></div>
+      <figcaption class="fig-caption">We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+    </figure>
+
     <d-article>
+
       <div class="tldr">
         <div class="section-label">TL;DR</div>
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Most models struggle to finish above the $1M starting balance; Claude Opus 4.8 and GPT-5.5 are the only evaluated models that do so on their best runs.</li>
+          <li>Most models struggle to finish above the $1M starting balance; Claude Fable 5, Claude Opus 4.8, and GPT-5.5 are the only evaluated models that finish above the initial balance on their best run, and only Claude Fable 5 finishes above the initial balance for more than one run.</li>
         </ul>
       </div>
 
@@ -537,7 +551,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Opus 4.8 and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Opus 4.8 and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <figure class="chart-panel results-overview-plot" id="benchmark">
         <div class="plot-controls" aria-label="Cash plot controls">
@@ -547,15 +561,15 @@
             <span>Display model names</span>
           </label>
         </div>
-        <div id="cash-plot" class="cash-plot" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
+        <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" data-label-toggle-id="model-label-toggle" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption">We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline.</figcaption>
+        <figcaption class="fig-caption">We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=7" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=9" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
         </div>
-        <div class="fig-caption">Cash balance over time for all runs of each model.</div>
+        <div class="fig-caption">Cash balance over time for all runs of each model. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</div>
       </div>
 
       <figure class="results-table-block">
@@ -573,6 +587,15 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">Claude Fable 5<sup>*</sup></th>
+                <td>0/2</td>
+                <td>$47,148,164</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>15.4</td>
+                <td>$386.46</td>
+              </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
                 <td>0/3</td>
@@ -673,7 +696,7 @@
                 <td></td>
               </tr>
               <tr class="reference-row estimate-row">
-                <th scope="row">Estimated max final cash</th>
+                <th scope="row">Estimated final cash upper bound</th>
                 <td></td>
                 <td>$2,200,000,000</td>
                 <td></td>
@@ -684,7 +707,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
       </figure>
     </section>
 
@@ -748,7 +771,7 @@
         </div>
         <div class="figure-block if-frequency">
           <div class="frame-wrap compact" data-label="If frequency comparison">
-            <iframe src="assets/figures/survival-bar-row.html?plot=D&amp;v=5" title="If frequency comparison" data-width="204" data-height="264" loading="lazy"></iframe>
+            <iframe src="assets/figures/survival-bar-row.html?plot=D&amp;v=6" title="If frequency comparison" data-width="204" data-height="148" loading="lazy"></iframe>
           </div>
           <div class="fig-caption">Frequency of "if" in agent's memos.</div>
         </div>
@@ -807,7 +830,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=3"></script>
-  <script src="script.js?v=6"></script>
+  <script src="assets/runs-data.js?v=4"></script>
+  <script src="script.js?v=10"></script>
 </body>
 </html>

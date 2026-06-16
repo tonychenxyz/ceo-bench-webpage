@@ -86,14 +86,15 @@
 	    color: #000000;
   }
   .page.single .legend-row {
-    height: 54px;
+    height: 30px;
     flex-wrap: wrap;
     justify-content: flex-start;
-    align-content: center;
-    gap: 5px 8px;
-    padding-left: 28px;
+    align-content: flex-start;
+    gap: 3px 8px;
+    padding: 4px 0 0 18px;
     font-size: 8.5px;
-    line-height: 1.1;
+    line-height: 1.05;
+    box-sizing: border-box;
   }
   .legend-item {
     display: inline-flex;
@@ -304,8 +305,9 @@ function tickFmt(v, kind){
 }
 
 function drawBarPlot(cfg){
-	  const W = 204, H = 210;
-	  const PAD_L = cfg.padL || 48, PAD_R = 6, PAD_T = 50, PAD_B = 32;
+	  const singlePlot = Boolean(requestedPlot);
+	  const W = 204, H = singlePlot ? 118 : 210;
+	  const PAD_L = cfg.padL || 48, PAD_R = 6, PAD_T = singlePlot ? 34 : 50, PAD_B = singlePlot ? 8 : 32;
   const innerW = W - PAD_L - PAD_R;
   const innerH = H - PAD_T - PAD_B;
   const yMin = 0, yMax = cfg.yMax;
@@ -327,12 +329,12 @@ function drawBarPlot(cfg){
   el('line', {x1:PAD_L-2, x2:W-PAD_R+2, y1:axY, y2:axY, stroke:'#0a2540', 'stroke-width':1}, svg);
 
 	  const titleLines = Array.isArray(cfg.yLabel) ? cfg.yLabel : [cfg.yLabel];
-	  const titleY = titleLines.length > 1 ? 23 : 34;
+	  const titleY = singlePlot ? (titleLines.length > 1 ? 13 : 24) : (titleLines.length > 1 ? 23 : 34);
 	  const title = el('text', {x:PAD_L + innerW / 2, y:titleY, class:'axt', 'text-anchor':'middle'}, svg);
 	  titleLines.forEach((line, i) => {
 	    const tspan = el('tspan', {
 	      x: PAD_L + innerW / 2,
-	      y: titleY + i * 12
+	      y: titleY + i * (singlePlot ? 10 : 12)
 	    }, title);
 	    tspan.textContent = line;
 	  });
@@ -342,8 +344,8 @@ function drawBarPlot(cfg){
 	    dir.textContent = cfg.direction === 'up' ? '👍' : '👎';
 	  }
 
-  const gap = 11;
-  const barW = 18;
+  const gap = singlePlot ? 9 : 11;
+  const barW = singlePlot ? 17 : 18;
   const totalW = barW * GROUPS.length + gap * (GROUPS.length - 1);
   const startX = PAD_L + (innerW - totalW) / 2;
 
@@ -362,7 +364,7 @@ function drawBarPlot(cfg){
     el('line', {x1:cx-5, x2:cx+5, y1:top, y2:top, stroke:'#0a2540', 'stroke-width':1.2}, svg);
     el('line', {x1:cx-5, x2:cx+5, y1:bot, y2:bot, stroke:'#0a2540', 'stroke-width':1.2}, svg);
 
-    const valueY = Math.min(yMean, top) - 7;
+    const valueY = Math.min(yMean, top) - (singlePlot ? 5 : 7);
     const v = el('text', {x:cx, y:valueY, class:'val', 'text-anchor':'middle'}, svg);
     v.textContent = fmt(d.mean, cfg.kind);
   });

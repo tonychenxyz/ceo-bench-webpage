@@ -6,7 +6,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=6">
+<link rel="stylesheet" href="css/style.css?v=7">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
 <script>
@@ -54,7 +54,7 @@ function fmtMoney(n) {
 
 (async () => {
   try {
-    const m = await (await fetch('data/runs/manifest.json?v=2')).json();
+    const m = await (await fetch('data/runs/manifest.json?v=5')).json();
     const meta = document.getElementById('meta');
     if (meta) {
       meta.textContent = `${m.models.length} models · ${m.models.reduce((s, x) => s + x.runs.length, 0)} runs`;
@@ -72,16 +72,20 @@ function fmtMoney(n) {
       runs.className = 'runs';
       for (const r of mod.runs) {
         const a = document.createElement('a');
-        a.className = 'run-item' + (r.bankrupt ? ' bankrupt' : '');
+        const isDnf = r.status === 'dnf' || r.dnf;
+        a.className = 'run-item' + (r.bankrupt ? ' bankrupt' : '') + (isDnf ? ' dnf' : '');
         a.href = `run.html?run=${r.run_id}`;
         const subs = (r.subscribers || 0).toLocaleString();
         const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
-        const right = r.bankrupt
+        const right = isDnf
+          ? `<span class="rcash dnf-pill">DNF</span>`
+          : r.bankrupt
           ? `<span class="rcash bankrupt-pill">BANKRUPTED</span>`
           : `<span class="rcash ${(r.cash || 0) >= 0 ? '' : 'neg'}">${fmtMoney(r.cash)}</span>`;
+        const survivalLabel = isDnf ? 'stopped' : 'survived';
         a.innerHTML = `
           <span class="rid">${r.run_id}</span>
-          <span class="rmeta">survived ${survival}d · ${r.action_count} actions · ${subs} subs</span>
+          <span class="rmeta">${survivalLabel} ${survival}d · ${r.action_count} actions · ${subs} subs</span>
           ${right}
         `;
         runs.appendChild(a);

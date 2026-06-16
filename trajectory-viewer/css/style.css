@@ -456,6 +456,7 @@ svg text { font-family: 'Inter', sans-serif; }
 .run-item .rcash { color: var(--green); font-weight: 700; }
 .run-item .rcash.neg { color: var(--red); }
 .run-item.bankrupt { background: transparent; }
+.run-item.dnf { background: transparent; }
 .bankrupt-pill {
   display: inline-block;
   background: var(--red);
@@ -468,6 +469,20 @@ svg text { font-family: 'Inter', sans-serif; }
   border-radius: 3px;
 }
 .run-item .bankrupt-pill {
+  color: #fff;
+}
+.dnf-pill {
+  display: inline-block;
+  background: #6b7280;
+  color: #fff;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 3px;
+}
+.run-item .dnf-pill {
   color: #fff;
 }
 

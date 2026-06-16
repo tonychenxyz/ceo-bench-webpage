@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 2;
+const DATA_VERSION = 5;
 
 // ---------- formatters ----------
 function fmtMoney(n) {
@@ -197,7 +197,7 @@ function makeDiff(oldStr, newStr) {
 
 // ---------- charts ----------
 function buildCashChart(container, series, currentDay) {
-  const W = 1060, H = 200, PL = 70, PR = 20, PT = 12, PB = 28;
+  const W = 1060, H = 200, PL = 70, PR = 76, PT = 12, PB = 28;
   const cx = (d) => PL + (W - PL - PR) * (d / Math.max(1, currentDay));
   const filtered = series.filter(p => p.day <= currentDay);
   if (filtered.length === 0) {
@@ -243,14 +243,16 @@ function buildCashChart(container, series, currentDay) {
   // current value
   const last = filtered[filtered.length - 1];
   const cashColor = last.cash >= 0 ? '#00875a' : '#cd3500';
+  const lastX = cx(last.day);
+  const lastY = cy(last.cash);
 
   container.innerHTML = `
     <svg width="100%" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
       ${yLines}
       ${zero}
       <path d="M ${pts}" fill="none" stroke="${cashColor}" stroke-width="2"/>
-      <circle cx="${cx(last.day)}" cy="${cy(last.cash)}" r="3.5" fill="${cashColor}" stroke="#fff" stroke-width="1.5"/>
-      <text class="annot" x="${cx(last.day)+8}" y="${cy(last.cash)+4}">${fmtMoney(last.cash)}</text>
+      <circle cx="${lastX}" cy="${lastY}" r="3.5" fill="${cashColor}" stroke="#fff" stroke-width="1.5"/>
+      <text class="annot" x="${lastX + 8}" y="${lastY + 4}">${fmtMoney(last.cash)}</text>
       ${xLines}
     </svg>
   `;
@@ -684,15 +686,19 @@ async function init() {
   const subParts = [];
   subParts.push(`<b>${r.label || ''}</b>`);
   subParts.push(`run <code>${runId}</code>`);
+  const isDnf = r.status === 'dnf' || r.dnf;
   const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
-  if (r.bankrupt) {
+  if (isDnf) {
+    subParts.push(`<span style="background:#6b7280;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 6px;border-radius:3px;">DNF</span>`);
+    subParts.push(`stopped at <b>${survival}d</b>`);
+  } else if (r.bankrupt) {
     subParts.push(`<span style="background:#cd3500;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 6px;border-radius:3px;">BANKRUPTED</span>`);
     subParts.push(`survived <b>${survival}d</b>`);
   } else {
     subParts.push(`survived <b>${survival}d</b>`);
     subParts.push(`final cash <b>${fmtMoney(r.cash)}</b>`);
   }
-  subParts.push(`${r.action_count} actions over ${r.days_list.length}-week entries`);
+  subParts.push(`${r.action_count} actions over ${r.days_list.length} entries`);
   subParts.push(`subs <b>${fmtInt(r.subscribers)}</b>`);
   if (r.founder_dividends) subParts.push(`dividends <b>${fmtMoney(r.founder_dividends)}</b>`);
   document.getElementById('run-sub').innerHTML = subParts.join(' · ');

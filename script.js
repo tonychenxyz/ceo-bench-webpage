@@ -1,6 +1,7 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
+  "Claude Fable 5*": "#111827",
   "GPT-5.5": "#2f6df6",
   "Claude Opus 4.8": "#c41e3a",
   "Claude Opus 4.7": "#ed5b2c",
@@ -29,6 +30,23 @@ function formatCash(value) {
   if (abs >= 1e6) return `${sign}$${(abs / 1e6).toFixed(2)}M`;
   if (abs >= 1e3) return `${sign}$${(abs / 1e3).toFixed(0)}k`;
   return `${sign}$${abs.toFixed(0)}`;
+}
+
+function appendModelName(node, name) {
+  if (name !== "Claude Fable 5*") {
+    node.textContent = name;
+    return;
+  }
+  node.textContent = "Claude Fable 5";
+  const marker = svgEl("tspan", {
+    "baseline-shift": "super",
+    "font-size": "8.5"
+  }, node);
+  marker.textContent = "*";
+}
+
+function modelNameHtml(name) {
+  return name === "Claude Fable 5*" ? "Claude Fable 5<sup>*</sup>" : name;
 }
 
 function drawBankruptcyMarker(parent, cx, cy, label) {
@@ -70,19 +88,20 @@ function valueAtDay(points, day) {
   return left[1] + t * (right[1] - left[1]);
 }
 
-function drawCashPlot(runs) {
-  const mount = document.getElementById("cash-plot");
-  const legend = document.getElementById("cash-legend");
-  const labelToggle = document.getElementById("model-label-toggle");
-  if (!mount || !legend) return;
+function drawCashPlot(runs, mount) {
+  if (!mount) return;
+  const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
+  const labelToggle = document.getElementById(mount.dataset.labelToggleId || "model-label-toggle");
 
   mount.innerHTML = "";
-  legend.innerHTML = "";
-  legend.hidden = true;
+  if (legend) {
+    legend.innerHTML = "";
+    legend.hidden = true;
+  }
 
   const W = 960;
-  const H = 430;
-  const pad = { left: 78, right: 28, top: 18, bottom: 58 };
+  const H = 560;
+  const pad = { left: 78, right: 28, top: 22, bottom: 62 };
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
   const xMin = 0;
@@ -235,10 +254,10 @@ function drawCashPlot(runs) {
       d: pathData,
       fill: "none",
       stroke: color,
-      "stroke-width": run.pretty === "GPT-5.5" ? "3" : "2.2",
+      "stroke-width": run.pretty === "Claude Fable 5*" ? "3.2" : "2.2",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      opacity: run.pretty === "GPT-5.5" ? "0.96" : "0.78"
+      opacity: run.pretty === "Claude Fable 5*" ? "0.96" : "0.78"
     }, lineGroup);
 
     const last = run.points[run.points.length - 1];
@@ -262,8 +281,9 @@ function drawCashPlot(runs) {
   });
 
   const labelOffsets = {
-    "Claude Opus 4.8": { dx: -94, dy: -10, anchor: "end" },
-    "GPT-5.5": { dx: -8, dy: -10, anchor: "end" },
+    "Claude Fable 5*": { dx: -8, dy: -14, anchor: "end" },
+    "Claude Opus 4.8": { day: 213, dx: 8, dy: -34, anchor: "start" },
+    "GPT-5.5": { day: 363, dx: 8, dy: 22, anchor: "start" },
     "Rule-Based Baseline": { dx: -8, dy: 16, anchor: "end" },
     "Claude Opus 4.7": { dx: -8, dy: -10, anchor: "end" },
     "Claude Sonnet 4.6": { dx: -8, dy: -4, anchor: "end" },
@@ -280,8 +300,11 @@ function drawCashPlot(runs) {
     const color = MODEL_COLORS[run.pretty] || "#0a2540";
     const last = run.points[run.points.length - 1];
     const offset = labelOffsets[run.pretty] || { dx: 8, dy: -8, anchor: "start" };
-    const rawX = x(last[0]) + offset.dx;
-    const rawY = y(last[1]) + offset.dy;
+    const labelDay = offset.day == null ? last[0] : offset.day;
+    const labelValue = offset.day == null ? last[1] : valueAtDay(run.points, offset.day);
+    if (labelValue == null) return;
+    const rawX = x(labelDay) + offset.dx;
+    const rawY = y(labelValue) + offset.dy;
     const label = svgEl("text", {
       x: Math.max(pad.left + 6, Math.min(W - pad.right - 8, rawX)),
       y: Math.max(pad.top + 12, Math.min(pad.top + innerH + 13, rawY)),
@@ -295,7 +318,7 @@ function drawCashPlot(runs) {
       "paint-order": "stroke fill",
       "pointer-events": "none"
     }, labelsGroup);
-    label.textContent = run.pretty;
+    appendModelName(label, run.pretty);
   });
 
   function syncModelLabels() {
@@ -329,7 +352,7 @@ function drawCashPlot(runs) {
     const mountRect = mount.getBoundingClientRect();
     const sx = W / svgRect.width;
     const rawX = (event.clientX - svgRect.left) * sx;
-    const day = Math.max(0, Math.min(500, Math.round(invX(rawX))));
+    const day = Math.max(xMin, Math.min(xMax, Math.round(invX(rawX))));
     const xx = x(day);
 
     hoverGroup.setAttribute("opacity", "1");
@@ -360,7 +383,7 @@ function drawCashPlot(runs) {
       ${values.map(item => `
         <div class="tooltip-row">
           <span class="tooltip-dot" style="background:${item.color}"></span>
-          <span class="tooltip-name">${item.name}</span>
+          <span class="tooltip-name">${modelNameHtml(item.name)}</span>
           <span class="tooltip-value">${formatCash(item.value)}</span>
         </div>
       `).join("")}
@@ -421,8 +444,8 @@ function fitAllFrames() {
 
 function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
-    if (a.pretty === "GPT-5.5") return -1;
-    if (b.pretty === "GPT-5.5") return 1;
+    if (a.pretty === "Claude Fable 5*") return -1;
+    if (b.pretty === "Claude Fable 5*") return 1;
     if (a.pretty === "Rule-Based Baseline") return -1;
     if (b.pretty === "Rule-Based Baseline") return 1;
     return b.final_cash - a.final_cash;
@@ -478,14 +501,17 @@ async function loadCashRuns() {
   return baseline ? runs.concat(baseline) : runs;
 }
 
-if (document.getElementById("cash-plot") && document.getElementById("cash-legend")) {
+const cashPlotMounts = Array.from(document.querySelectorAll(".cash-plot[data-cash-plot='best']"));
+if (cashPlotMounts.length) {
   loadCashRuns()
-    .then(runs => drawCashPlot(orderRuns(runs)))
+    .then(runs => {
+      const orderedRuns = orderRuns(runs);
+      cashPlotMounts.forEach(mount => drawCashPlot(orderedRuns, mount));
+    })
     .catch(error => {
-      const mount = document.getElementById("cash-plot");
-      if (mount) {
+      cashPlotMounts.forEach(mount => {
         mount.innerHTML = `<div class="plot-error">Could not load cash data: ${error.message}</div>`;
-      }
+      });
     });
 }
 

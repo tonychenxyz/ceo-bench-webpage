@@ -1,6 +1,68 @@
 {
   "models": [
     {
+      "model": "claude-fable-5",
+      "model_display": "Claude Fable 5",
+      "runs": [
+        {
+          "run_id": "2d192ec1",
+          "label": "fable-anthropic-seed42-max-504d-auto-fallback (2d192ec1)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 47148164,
+          "subscribers": 3917,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 1106,
+          "action_count": 1123,
+          "days_count": 67,
+          "model_display": "Claude Fable 5",
+          "final_cash": 47148164
+        },
+        {
+          "run_id": "2bd22f52",
+          "label": "fable-anthropic-seed42-max-504d-auto-fallback-run2 (2bd22f52)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 14613511,
+          "subscribers": 39448,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 1011,
+          "action_count": 1022,
+          "days_count": 71,
+          "model_display": "Claude Fable 5",
+          "final_cash": 14613511
+        },
+        {
+          "run_id": "6284da19",
+          "label": "fable-anthropic-seed42-high-run1 (6284da19)",
+          "total_days": 504,
+          "current_day": 385,
+          "bankrupt": false,
+          "status": "dnf",
+          "dnf": true,
+          "survival_days": 385,
+          "cash": 60270175,
+          "subscribers": 138694,
+          "founder_dividends": 0,
+          "mrr": 0.0,
+          "agent_turns": 711,
+          "action_count": 719,
+          "days_count": 56,
+          "model_display": "Claude Fable 5"
+        }
+      ]
+    },
+    {
       "model": "deepseek-ai/DeepSeek-V4-Pro",
       "model_display": "DeepSeek-V4-Pro",
       "runs": [

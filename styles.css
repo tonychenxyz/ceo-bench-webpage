@@ -322,6 +322,7 @@ code {
 d-article > .tldr {
   grid-column: text-start / text-end;
   grid-row: 1;
+  align-self: start;
   max-width: none;
   margin: 42px 0 18px;
 }
@@ -656,7 +657,7 @@ d-article .text-width-figure {
 
 .prose {
   max-width: var(--article-w);
-  margin: 0 auto 28px;
+  margin: 0 auto 22px;
 }
 
 .prose h3 {
@@ -698,7 +699,7 @@ d-article .text-width-figure {
 
 .image-figure {
   overflow: hidden;
-  margin: 34px auto 52px;
+  margin: 12px auto 24px;
 }
 
 .image-figure img {
@@ -733,13 +734,13 @@ d-article .image-figure.paper-wide-figure {
 }
 
 .agent-complexity-figure {
-  margin-top: 18px;
-  margin-bottom: 28px;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 .world-mechanics-figure {
-  margin-top: 18px;
-  margin-bottom: 28px;
+  margin-top: 8px;
+  margin-bottom: 16px;
 }
 
 .interface-figure .frame-wrap iframe,
@@ -749,14 +750,14 @@ d-article .image-figure.paper-wide-figure {
 
 .figure-block {
   overflow: visible;
-  margin: 34px auto 58px;
+  margin: 10px auto 24px;
   min-width: 0;
 }
 
 .figure-block.paper-wide-figure {
   width: var(--page-w);
   max-width: calc(100vw - 48px);
-  margin: 18px 0 28px calc((var(--article-w) - var(--page-w)) / 2);
+  margin: 8px 0 18px calc((var(--article-w) - var(--page-w)) / 2);
 }
 
 .figure-block.teaser-block {
@@ -769,9 +770,16 @@ d-article .image-figure.paper-wide-figure {
   color: var(--ink-3);
   font-size: 12.5px;
   line-height: 1.48;
-  text-align: center;
-  margin: 10px auto 0;
+  text-align: left;
+  margin: 8px auto 0;
   max-width: var(--article-w);
+}
+
+.fig-caption sup,
+.results-table sup {
+  font-size: 0.72em;
+  line-height: 0;
+  vertical-align: super;
 }
 
 .chart-panel .fig-caption {
@@ -780,7 +788,27 @@ d-article .image-figure.paper-wide-figure {
 
 .results-overview-plot {
   max-width: var(--max-w);
-  margin: 8px auto 54px;
+  margin: 0 auto 24px;
+}
+
+.intro-results-plot {
+  grid-column: page-start / page-end;
+  grid-row: 1;
+  max-width: var(--max-w);
+  width: 100%;
+  margin: 14px auto 18px;
+}
+
+d-article > .intro-results-plot + .tldr {
+  grid-row: 2;
+}
+
+d-article > .intro-results-plot ~ .article-contents {
+  grid-row: 2;
+}
+
+d-article > .intro-results-plot ~ .narrative {
+  grid-row: 3;
 }
 
 .frame-wrap + .fig-caption {
@@ -789,7 +817,7 @@ d-article .image-figure.paper-wide-figure {
 
 .results-table-block {
   max-width: var(--max-w);
-  margin: 8px auto 0;
+  margin: 4px auto 0;
 }
 
 .table-scroll {
@@ -1200,7 +1228,7 @@ d-appendix .bottom-note:first-child {
   display: grid;
   grid-template-columns: 1fr;
   gap: 18px;
-  margin: 32px 0 38px;
+  margin: 12px 0 22px;
 }
 
 .two-up .figure-block {
@@ -1211,7 +1239,7 @@ d-appendix .bottom-note:first-child {
 }
 
 .two-up .fig-caption {
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 .if-examples {
@@ -1219,7 +1247,7 @@ d-appendix .bottom-note:first-child {
   grid-template-columns: minmax(0, 1fr) 240px;
   align-items: center;
   gap: 12px;
-  margin-top: 32px;
+  margin-top: 8px;
 }
 
 .if-examples .figure-block {
@@ -1241,8 +1269,8 @@ d-appendix .bottom-note:first-child {
 
 .targeted-dev-block {
   max-width: 520px;
-  margin-top: 28px;
-  margin-bottom: 52px;
+  margin-top: 8px;
+  margin-bottom: 24px;
 }
 
 @media (max-width: 880px) {
