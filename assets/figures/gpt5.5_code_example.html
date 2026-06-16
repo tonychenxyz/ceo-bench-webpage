@@ -104,6 +104,16 @@
     letter-spacing: 0;
     white-space: nowrap;
   }
+  .tile.code .head,
+  .tile.code .head .panel-mark {
+    color: #000000;
+  }
+  .tile.code .head .card-title {
+    color: #000000;
+  }
+  .tile.code .head .card-title [style] {
+    color: #000000 !important;
+  }
 
   .row { margin-bottom: 8px; }
   .row-2col {
@@ -360,8 +370,10 @@
     height: 15px;
   }
   @media print {
-    @page { size: letter portrait; margin: 0.4cm; }
+    @page { size: 816px 449px; margin: 0; }
     html, body {
+      width: 816px;
+      height: 449px;
       background: #fff !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -371,10 +383,10 @@
       print-color-adjust: exact !important;
     }
     .page {
-      width: 100% !important;
-      max-width: 100% !important;
+      width: 816px !important;
+      max-width: 816px !important;
       margin: 0 !important;
-      padding: 0 !important;
+      padding: 16px !important;
     }
     .row, .row-2col, .tile {
       break-inside: avoid;
@@ -392,7 +404,7 @@
       <div class="head">
         <span class="panel-mark">(a)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3 L3 11 L11 11" stroke="#0a2540" stroke-width="1.4" fill="none"/><path d="M5 9 L7 6 L9 8 L11 4" stroke="#0a2540" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg></span>
-        <span><b>Claude Opus 4.8</b> · Simulating growth scenarios into the future · <span style="color:#6e7781">Day 77</span></span>
+        <span class="card-title"><b>Claude Opus 4.8</b> · Simulating growth scenarios into the future · <span style="color:#6e7781">Day 77</span></span>
       </div>
       <div class="body">
 <pre class="code">D0=<span class="num">77</span>; START_CASH=<span class="num">1269489</span>
@@ -435,7 +447,7 @@ OPT    10.74/462 29.96/433</div></div>
       <div class="head">
         <span class="panel-mark">(b)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
-        <span><b>GPT-5.5</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
+        <span class="card-title"><b>GPT-5.5</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
       </div>
       <div class="body">
 <pre class="code">rows=<span class="bn">nm</span>.query(<span class="str">"""select et.customer_id,c.group_id,et.offer_json,s.status from enterprise_turns et join customers c on c.customer_id=et.customer_id left join subscriptions s on s.customer_id=et.customer_id where et.sender='agent' and et.offer_json not in ('{}','')"""</span>)[<span class="str">'rows'</span>]

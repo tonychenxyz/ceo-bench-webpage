@@ -8,9 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0a2540;
-    --ink-2: #425466;
-    --ink-3: #697386;
+    --ink: #000000;
+    --ink-2: #000000;
+    --ink-3: #000000;
     --line: #d6dde6;
     --paper: #ffffff;
     --bg: #ffffff;
@@ -56,7 +56,7 @@
     padding: 0 12px 6px;
     border-bottom: 0;
     background: transparent;
-    font-weight: 700;
+    font-weight: 400;
     font-size: 14px;
     line-height: 1;
     color: var(--ink);
@@ -65,7 +65,7 @@
     flex: 0 0 auto;
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 11px;
-    font-weight: 800;
+    font-weight: 400;
     color: var(--ink);
     letter-spacing: 0;
     white-space: nowrap;
@@ -94,7 +94,7 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 8.5px;
     line-height: 1;
-    font-weight: 800;
+    font-weight: 400;
     color: #000000;
     white-space: nowrap;
   }
@@ -131,8 +131,10 @@
     overflow: visible;
   }
   @media print {
-    @page { size: letter portrait; margin: 0.4cm; }
+    @page { size: 816px 676px; margin: 0; }
     html, body {
+      width: 816px;
+      height: 676px;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
     }
@@ -144,7 +146,7 @@
       width: 816px !important;
       max-width: 816px !important;
       padding: 16px !important;
-      margin: 0 auto !important;
+      margin: 0 !important;
     }
     .tile {
       page-break-inside: avoid;

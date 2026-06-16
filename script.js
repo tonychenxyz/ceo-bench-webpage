@@ -489,10 +489,19 @@ if (document.getElementById("cash-plot") && document.getElementById("cash-legend
     });
 }
 
-window.addEventListener("load", fitAllFrames);
-window.addEventListener("resize", fitAllFrames);
+window.addEventListener("load", () => {
+  fitAllFrames();
+});
+window.addEventListener("resize", () => {
+  fitAllFrames();
+});
 document.querySelectorAll("details").forEach(details => {
-  details.addEventListener("toggle", fitAllFrames);
+  details.addEventListener("toggle", () => {
+    fitAllFrames();
+    if (details.open && window.MathJax && typeof window.MathJax.typesetPromise === "function") {
+      window.MathJax.typesetPromise([details]).catch(() => {});
+    }
+  });
 });
 document.querySelectorAll(".frame-wrap iframe").forEach(frame => {
   frame.addEventListener("load", () => fitFrame(frame));

@@ -8,9 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
 <style>
   :root {
-    --ink: #0a2540;
-    --ink-2: #425466;
-    --ink-3: #697386;
+    --ink: #000000;
+    --ink-2: #000000;
+    --ink-3: #000000;
     --line: #d6dde6;
     --line-2: #eef1f5;
     --paper: #ffffff;
@@ -30,6 +30,7 @@
     width: 816px;
     margin: 0 auto;
     box-sizing: border-box;
+    position: relative;
   }
   .tile {
     background: var(--paper);
@@ -43,12 +44,59 @@
   .tile .body svg { display: block; width: 100%; height: auto; }
 
   svg text { font-family: 'Inter', sans-serif; }
-  .yt { font-size: 10.5px; fill: var(--ink-2); font-weight: 600; }
-  .xt { font-size: 10px; fill: var(--ink-2); font-weight: 600; }
-  .axt { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
-  .panel-title { font-size: 13px; fill: var(--ink); font-weight: 800; }
-  .legend-title { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
-  .legend { font-size: 9px; fill: var(--ink-2); font-weight: 700; }
+  .yt { font-size: 10.5px; fill: #000000; font-weight: 400; }
+  .xt { font-size: 10px; fill: #000000; font-weight: 400; }
+  .axt { font-size: 11.5px; fill: #000000; font-weight: 400; }
+  .panel-title { font-size: 13px; fill: #000000; font-weight: 400; }
+  .legend-title { font-size: 11.5px; fill: #000000; font-weight: 400; }
+  .legend { font-size: 8.5px; fill: #000000; font-weight: 400; }
+  .customer-tooltip {
+    position: absolute;
+    z-index: 10;
+    min-width: 194px;
+    max-width: 238px;
+    padding: 8px 10px;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid #d6dde6;
+    box-shadow: 0 10px 24px rgba(10, 37, 64, 0.14);
+    color: #000000;
+    font-size: 10.5px;
+    line-height: 1.35;
+    pointer-events: none;
+  }
+  .customer-tooltip[hidden] {
+    display: none;
+  }
+  .tooltip-title {
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+  .tooltip-subtitle {
+    margin-bottom: 6px;
+    color: #333333;
+  }
+  .tooltip-group {
+    display: grid;
+    grid-template-columns: 8px minmax(0, 1fr) auto;
+    gap: 5px;
+    align-items: center;
+  }
+  .tooltip-group + .tooltip-group {
+    margin-top: 3px;
+  }
+  .tooltip-swatch {
+    width: 7px;
+    height: 7px;
+  }
+  .tooltip-label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .tooltip-value {
+    font-weight: 700;
+  }
   @page {
     size: 816px 320px;
     margin: 0;
@@ -71,6 +119,7 @@
   <div class="tile">
     <div class="body"><div id="plot"></div></div>
   </div>
+  <div class="customer-tooltip" id="customer-tooltip" hidden></div>
 </div>
 
 <script>
@@ -84,16 +133,16 @@ function el(tag, attrs, parent) {
 }
 
 const GROUP_META = [
-  {id:'S1',    color:'#0072B2'},
-  {id:'S2',    color:'#D55E00'},
-  {id:'S3',    color:'#009E73'},
-  {id:'E3',    color:'#CC79A7'},
-  {id:'D_S03', color:'#56B4E9'},
-  {id:'D_S04', color:'#E69F00'},
-  {id:'D_S05', color:'#7F3F98'},
-  {id:'D_S06', color:'#8A8F98'},
-  {id:'D_S07', color:'#C23B22'},
-  {id:'D_S10', color:'#2F4B7C'},
+  {id:'S1',    label:'Individual 1', color:'#0072B2'},
+  {id:'S2',    label:'Individual 2', color:'#D55E00'},
+  {id:'S3',    label:'Individual 3', color:'#009E73'},
+  {id:'E3',    label:'Enterprise 1', color:'#CC79A7'},
+  {id:'D_S03', label:'Discoverable Individual 1', color:'#56B4E9'},
+  {id:'D_S04', label:'Discoverable Individual 2', color:'#E69F00'},
+  {id:'D_S05', label:'Discoverable Individual 3', color:'#7F3F98'},
+  {id:'D_S06', label:'Discoverable Individual 4', color:'#8A8F98'},
+  {id:'D_S07', label:'Discoverable Individual 5', color:'#C23B22'},
+  {id:'D_S10', label:'Discoverable Individual 6', color:'#2F4B7C'},
 ];
 const GROUP_ORDER = GROUP_META.map(g => g.id);
 const GROUP_COLORS = GROUP_META.reduce((acc, g) => {
@@ -102,14 +151,14 @@ const GROUP_COLORS = GROUP_META.reduce((acc, g) => {
 }, {});
 
 const W = 816, H = 320;
-const LEGEND_W = 116;
+const LEGEND_W = 172;
 const PANEL_W = (W - LEGEND_W) / 2;
 const PAD_L = 58, PAD_R = 10, PAD_T = 34, PAD_B = 42;
 const INNER_W = PANEL_W - PAD_L - PAD_R;
 const INNER_H = H - PAD_T - PAD_B;
 const X_MAX = 500;
-const Y_MAX = 700000;
-const Y_TICKS = [0, 100000, 200000, 300000, 400000, 500000, 600000];
+const Y_MAX = 550000;
+const Y_TICKS = [0, 100000, 200000, 300000, 400000, 500000];
 const X_TICKS = [0, 100, 200, 300, 400, 500];
 
 function parseCsv(text) {
@@ -176,7 +225,7 @@ function normalizePanel(rows, model) {
 }
 
 function drawLegend(svg) {
-  const x = W - LEGEND_W + 15;
+  const x = W - LEGEND_W + 12;
   const title1 = el('text', {x, y:37, class:'legend-title'}, svg);
   title1.textContent = 'Customer';
   const title2 = el('text', {x, y:51, class:'legend-title'}, svg);
@@ -185,11 +234,11 @@ function drawLegend(svg) {
     const y = 76 + i * 20;
     el('rect', {x, y:y - 8, width:9, height:9, fill:g.color, opacity:0.82}, svg);
     const t = el('text', {x:x + 14, y, class:'legend'}, svg);
-    t.textContent = g.id;
+    t.textContent = g.label;
   });
 }
 
-function drawPanel(svg, panel, idx) {
+function drawPanel(svg, panel, idx, tooltip) {
   const x0 = idx * PANEL_W;
   const plotX0 = x0 + PAD_L;
   const plotX1 = x0 + PANEL_W - PAD_R;
@@ -244,6 +293,85 @@ function drawPanel(svg, panel, idx) {
     }, svg);
   });
 
+  const hoverGroup = el('g', {opacity:0}, svg);
+  const hoverLine = el('line', {
+    x1:plotX0,
+    x2:plotX0,
+    y1:plotY0,
+    y2:plotY1,
+    stroke:'#0a2540',
+    'stroke-width':1,
+    'stroke-dasharray':'3 3',
+    opacity:0.8
+  }, hoverGroup);
+  const overlay = el('rect', {
+    x:plotX0,
+    y:plotY0,
+    width:INNER_W,
+    height:INNER_H,
+    fill:'transparent',
+    'pointer-events':'all'
+  }, svg);
+
+  function nearestRow(svgX) {
+    const day = Math.max(0, Math.min(X_MAX, Math.round((svgX - plotX0) / INNER_W * X_MAX)));
+    return panel.stacked.reduce((best, row) => (
+      Math.abs(row.day - day) < Math.abs(best.day - day) ? row : best
+    ), panel.stacked[0]);
+  }
+
+  function showTooltip(event) {
+    const rect = svg.getBoundingClientRect();
+    const svgX = (event.clientX - rect.left) * W / rect.width;
+    if (svgX < plotX0 || svgX > plotX1) {
+      hideTooltip();
+      return;
+    }
+
+    const row = nearestRow(svgX);
+    const x = xS(row.day);
+    hoverLine.setAttribute('x1', x);
+    hoverLine.setAttribute('x2', x);
+    hoverGroup.setAttribute('opacity', '1');
+
+    const groups = row.items
+      .filter(item => item.val > 0)
+      .slice()
+      .sort((a, b) => b.val - a.val)
+      .slice(0, 4);
+
+    tooltip.innerHTML = `
+      <div class="tooltip-title">${panel.model}</div>
+      <div class="tooltip-subtitle">Day ${row.day} · ${formatCount(row.total)} active customers</div>
+      ${groups.map(item => {
+        const meta = GROUP_META.find(g => g.id === item.group);
+        return `<div class="tooltip-group">
+          <span class="tooltip-swatch" style="background:${GROUP_COLORS[item.group]}"></span>
+          <span class="tooltip-label">${meta ? meta.label : item.group}</span>
+          <span class="tooltip-value">${formatCount(item.val)}</span>
+        </div>`;
+      }).join('')}
+    `;
+    tooltip.hidden = false;
+
+    const pageRect = tooltip.parentElement.getBoundingClientRect();
+    const preferredLeft = event.clientX - pageRect.left + 14;
+    const preferredTop = event.clientY - pageRect.top + 12;
+    const maxLeft = W - tooltip.offsetWidth - 8;
+    const maxTop = H - tooltip.offsetHeight - 8;
+    tooltip.style.left = Math.max(8, Math.min(preferredLeft, maxLeft)) + 'px';
+    tooltip.style.top = Math.max(8, Math.min(preferredTop, maxTop)) + 'px';
+  }
+
+  function hideTooltip() {
+    hoverGroup.setAttribute('opacity', '0');
+    tooltip.hidden = true;
+  }
+
+  overlay.addEventListener('pointermove', showTooltip);
+  overlay.addEventListener('pointerenter', showTooltip);
+  overlay.addEventListener('pointerleave', hideTooltip);
+
   const xLab = el('text', {x:plotX0 + INNER_W / 2, y:H - 8, class:'axt', 'text-anchor':'middle'}, svg);
   xLab.textContent = 'Day';
   if (idx === 0) {
@@ -260,11 +388,13 @@ function drawPanel(svg, panel, idx) {
 
 function draw(rows) {
   const mount = document.getElementById('plot');
+  const tooltip = document.getElementById('customer-tooltip');
   mount.textContent = '';
+  tooltip.hidden = true;
   const svg = el('svg', {viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
   drawLegend(svg);
   ['Claude Opus 4.8', 'GPT-5.5'].forEach((model, i) => {
-    drawPanel(svg, normalizePanel(rows, model), i);
+    drawPanel(svg, normalizePanel(rows, model), i, tooltip);
   });
 }
 

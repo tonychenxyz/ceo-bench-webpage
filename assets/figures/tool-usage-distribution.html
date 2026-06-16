@@ -37,12 +37,12 @@
   }
   .tile .body { padding: 0; }
   .tile svg { display: block; width: 100%; height: auto; }
-  svg text { font-family: 'Inter', sans-serif; }
-  .title { font-size: 14px; fill: var(--ink); font-weight: 800; }
-  .tool { font-family: 'JetBrains Mono', monospace; font-size: 7.6px; fill: var(--ink); font-weight: 500; }
-  .xt { font-size: 10px; fill: var(--ink-2); font-weight: 700; }
-  .axt { font-size: 11.5px; fill: var(--ink); font-weight: 800; }
-  .val { font-size: 10px; fill: var(--ink); font-weight: 800; font-variant-numeric: tabular-nums; }
+  svg text { font-family: 'Inter', sans-serif; fill: #000000; font-weight: 400; }
+  .title { font-size: 14px; fill: #000000; font-weight: 400; }
+  .tool { font-family: 'Inter', system-ui, sans-serif; font-size: 7.6px; fill: #000000; font-weight: 400; }
+  .xt { font-size: 10px; fill: #000000; font-weight: 400; }
+  .axt { font-size: 11.5px; fill: #000000; font-weight: 400; }
+  .val { font-size: 10px; fill: #000000; font-weight: 400; font-variant-numeric: tabular-nums; }
   @page {
     size: 816px 200px;
     margin: 0;
@@ -144,6 +144,10 @@ function fmtValue(v){
   return v.toFixed(2);
 }
 
+function displayToolName(tool){
+  return tool.replace(/_/g, ' ');
+}
+
 function drawPanel(svg, panel, x0){
   const plotX0 = x0 + PAD_L;
   const plotX1 = x0 + PANEL_W - PAD_R;
@@ -172,7 +176,7 @@ function drawPanel(svg, panel, x0){
     const labelY = cy + 3.2;
 
     const lab = el('text', {x:plotX0 - 4, y:labelY, class:'tool', 'text-anchor':'end'}, svg);
-    lab.textContent = d.tool;
+    lab.textContent = displayToolName(d.tool);
 
     el('rect', {x:plotX0, y:barY, width:Math.max(1, barX1 - plotX0), height:barH, rx:2, fill:panel.fill}, svg);
     el('line', {x1:barX1, x2:barX1, y1:barY, y2:barY + barH, stroke:panel.color, 'stroke-width':1.1}, svg);
