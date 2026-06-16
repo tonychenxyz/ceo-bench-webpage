@@ -779,6 +779,83 @@
     line-height: 1.25;
     margin-left: auto;
   }
+
+  /* Figure 1 paper/site rendering: prose labels black; terminal code keeps syntax color. */
+  .comp-day,
+  .tile .head,
+  .tbl,
+  .tbl.more,
+  .tool-group .grp,
+  .tool,
+  .tool.more,
+  .neg-row .who,
+  .neg-row .arrow-i.out,
+  .neg-row .arrow-i.in,
+  .neg-row .verb,
+  .neg-row .deal,
+  .neg-row .deal .price,
+  .soc-row .at,
+  .soc-row .quote,
+  .agent-pill,
+  .tile.agent .agent-label,
+  .terminal .head,
+  .terminal .head .meta,
+  .term-section,
+  .otrow .day,
+  .otrow .what,
+  .otrow .what .v,
+  .otrow .what .v.up,
+  .otrow .what .v.down,
+  .otrow .what .v.neu,
+  .otrow .delta,
+  .delta-up,
+  .delta-down,
+  .delta-good,
+  .delta-neutral,
+  .otrow.final .delta,
+  .tile.world .head .meta,
+  .world-row .rlabel,
+  .rlabel-val,
+  .pmi-axis,
+  .pmi-axis .now,
+  .econ-meta,
+  .econ-meta b,
+  .econ-meta .up,
+  .econ-meta .dn,
+  .seg-name,
+  .seg-n,
+  .seg-d,
+  .seg-d.up,
+  .simple-val,
+  .econ-row .simple-val,
+  .comp-row .simple-val,
+  .cust-tag,
+  .cust-num,
+  .ri-name,
+  .ri-mag {
+    color: #000;
+  }
+
+  svg text {
+    fill: #000 !important;
+  }
+
+  .term-body pre { color: var(--ink-2); }
+  .term-body pre .prompt { color: var(--green); font-weight: 700; }
+  .term-body pre .code-fn { color: var(--brand); }
+  .term-body pre .code-mod { color: var(--ink); font-weight: 600; }
+  .term-body pre .code-str { color: var(--green); }
+  .term-body pre .code-num { color: var(--amber); }
+
+  .cust-tag { color: var(--ink-2); }
+  .cust-num { color: var(--brand); }
+  .comp-day { color: var(--ink-3); }
+  .comp-row .simple-val { color: #b15c00; }
+  .otrow .what .v.up { color: var(--green); }
+  .otrow .what .v.down { color: var(--red); }
+  .otrow .what .v.neu { color: var(--brand); }
+  .otrow.final .delta { color: #fff; }
+  .ri-mag { color: #fff; }
 </style>
 </head>
 <body style="">
