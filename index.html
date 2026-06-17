@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=25">
+  <link rel="stylesheet" href="styles.css?v=26">
   <script>
     window.MathJax = {
       tex: {
@@ -132,6 +132,7 @@
           <a href="#action-interface" class="toc-link toc-level-1">Action Interface</a>
           <a href="#results" class="toc-link toc-level-1">Results</a>
           <a href="#analysis" class="toc-link toc-level-1">Agent Behaviors</a>
+          <a href="#model-trajectories" class="toc-link toc-level-1">Watch the Models at Work</a>
           <a href="#conclusion" class="toc-link toc-level-1">Conclusion</a>
         </nav>
       </d-contents>
@@ -797,6 +798,84 @@
         </div>
         <div class="fig-caption">Example code files written by top-performing agents during their best trajectories. (a) Claude Opus 4.8 runs its own simulation to forecast cash under different scenarios. (b) GPT-5.5 infers latent enterprise-customer price and quality preferences by mining noisy negotiation outcomes.</div>
       </div>
+    </section>
+
+    <section class="container trajectory-showcase" id="model-trajectories">
+      <div class="section-header">
+        <h2 class="section-label">Watch the Models at Work</h2>
+      </div>
+      <article class="prose trajectory-showcase-copy">
+        <p>We release all experiment trajectories in the interactive trajectory viewer. Click to view full trajectories.</p>
+      </article>
+
+      <div class="trajectory-card-row" aria-label="Highlighted model trajectories">
+        <div class="trajectory-model-card">
+          <h3>Claude Fable 5<sup>*</sup></h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=2d192ec1" class="trajectory-run-item">
+              <span class="trajectory-run-id">2d192ec1</span>
+              <span class="trajectory-run-meta">survived 500d · 1,123 actions · 3,917 subs</span>
+              <span class="trajectory-run-cash">$47.15M</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=2bd22f52" class="trajectory-run-item">
+              <span class="trajectory-run-id">2bd22f52</span>
+              <span class="trajectory-run-meta">survived 500d · 1,022 actions · 39,448 subs</span>
+              <span class="trajectory-run-cash">$14.61M</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=6284da19" class="trajectory-run-item">
+              <span class="trajectory-run-id">6284da19</span>
+              <span class="trajectory-run-meta">stopped 385d · 719 actions · 138,694 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">DNF</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="trajectory-model-card">
+          <h3>Claude Opus 4.8</h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=c632730b" class="trajectory-run-item">
+              <span class="trajectory-run-id">c632730b</span>
+              <span class="trajectory-run-meta">survived 500d · 854 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$27.78M</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=0bd6d7c0" class="trajectory-run-item">
+              <span class="trajectory-run-id">0bd6d7c0</span>
+              <span class="trajectory-run-meta">survived 500d · 880 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$611.8K</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=fd00287f" class="trajectory-run-item">
+              <span class="trajectory-run-id">fd00287f</span>
+              <span class="trajectory-run-meta">survived 500d · 621 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$116.4K</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="trajectory-model-card">
+          <h3>GPT-5.5</h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=c8419b3b" class="trajectory-run-item">
+              <span class="trajectory-run-id">c8419b3b</span>
+              <span class="trajectory-run-meta">survived 500d · 3,527 actions · 81,834 subs</span>
+              <span class="trajectory-run-cash">$21.30M</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=15c3d364" class="trajectory-run-item">
+              <span class="trajectory-run-id">15c3d364</span>
+              <span class="trajectory-run-meta">survived 441d · 1,150 actions · 64,474 subs</span>
+              <span class="trajectory-run-cash">$688.4K</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=555049e4" class="trajectory-run-item">
+              <span class="trajectory-run-id">555049e4</span>
+              <span class="trajectory-run-meta">survived 70d · 329 actions · 137,652 subs</span>
+              <span class="trajectory-run-cash">$29.4K</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <article class="prose trajectory-showcase-action">
+        <p><a href="https://ceobench.com/trajectory-viewer/" class="text-link">View more model trajectories</a></p>
+      </article>
     </section>
 
     <section class="container" id="conclusion">

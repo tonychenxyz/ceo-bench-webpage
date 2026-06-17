@@ -570,7 +570,7 @@ function renderWeekTile(weekRow) {
     <div class="tile action collapsed" id="${id}" data-week="${weekRow.week}">
       <div class="head" style="background:#0c6fa6;color:#fff;">
         <span class="panel-mark" style="background:#fff;color:#0c6fa6;">W</span>
-        <span><b>Week ${weekRow.week} artifacts</b></span>
+        <span><b>Week ${weekRow.week} Workspace file edits</b></span>
         <span class="path">commit ${escHTML(weekRow.hash)} · ${weekRow.file_count} files · ${(weekRow.size_bytes/1024).toFixed(0)}KB</span>
         <button class="toggle" onclick="toggleWeek(${weekRow.week})" aria-label="toggle">▸</button>
       </div>

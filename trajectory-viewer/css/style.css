@@ -38,6 +38,16 @@ html, body {
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
+body,
+body *,
+body *::before,
+body *::after {
+  font-weight: 400 !important;
+}
+.nav-brand,
+.nav-brand span {
+  font-weight: 700 !important;
+}
 .page {
   max-width: 1100px;
   margin: 0 auto;
