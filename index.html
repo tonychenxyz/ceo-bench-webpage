@@ -4,7 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CEO-Bench</title>
-  <meta name="description" content="CEO-Bench measures steering intelligence by asking agents to operate a simulated AI startup for 500 days.">
+  <meta name="description" content="CEO-Bench evaluates whether AI agents can steer a simulated AI startup for 500 days, testing long-term planning, adaptation, and coordination under uncertainty.">
+  <link rel="canonical" href="https://ceobench.com/">
+  <meta property="og:title" content="CEO-Bench">
+  <meta property="og:description" content="CEO-Bench evaluates whether AI agents can steer a simulated AI startup for 500 days, testing long-term planning, adaptation, and coordination under uncertainty.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ceobench.com/">
+  <meta property="og:image" content="https://ceobench.com/assets/ceobench-icon.png">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="CEO-Bench">
+  <meta name="twitter:description" content="CEO-Bench evaluates whether AI agents can steer a simulated AI startup for 500 days, testing long-term planning, adaptation, and coordination under uncertainty.">
+  <meta name="twitter:image" content="https://ceobench.com/assets/ceobench-icon.png">
   <link rel="icon" type="image/png" href="assets/ceobench-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -98,7 +108,7 @@
       </div>
       <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" data-label-toggle-id="model-label-toggle-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
       <div id="cash-legend-intro" class="cash-legend"></div>
-      <figcaption class="fig-caption">We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
     </figure>
 
     <d-article>
@@ -563,7 +573,7 @@
         </div>
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" data-label-toggle-id="model-label-toggle" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption">We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
