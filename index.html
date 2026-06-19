@@ -562,7 +562,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <figure class="chart-panel results-overview-plot" id="benchmark">
         <div class="plot-controls" aria-label="Cash plot controls">
@@ -578,7 +578,7 @@
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=9" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=10" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</div>
       </div>
@@ -641,6 +641,15 @@
                 <td>500</td>
                 <td>343.0 &plusmn; 110.0</td>
                 <td>30.5</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">GLM 5.2</th>
+                <td>0/3</td>
+                <td>$91,371</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>12.9</td>
                 <td>--</td>
               </tr>
               <tr>
@@ -923,7 +932,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=4"></script>
-  <script src="script.js?v=10"></script>
+  <script src="assets/runs-data.js?v=5"></script>
+  <script src="script.js?v=14"></script>
 </body>
 </html>

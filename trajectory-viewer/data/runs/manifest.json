@@ -369,6 +369,63 @@
       ]
     },
     {
+      "model": "zai-org/GLM-5.2",
+      "model_display": "GLM 5.2",
+      "runs": [
+        {
+          "run_id": "899cf4c0",
+          "label": "glm52_together_max_seed42_run1 (899cf4c0)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 91370.95,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 928,
+          "action_count": 1000,
+          "days_count": 72,
+          "model_display": "GLM 5.2",
+          "final_cash": 91370.95
+        },
+        {
+          "run_id": "1a28c744",
+          "label": "glm52_together_max_seed42_run2 (1a28c744)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 8314.73,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 808,
+          "action_count": 869,
+          "days_count": 72,
+          "model_display": "GLM 5.2",
+          "final_cash": 8314.73
+        },
+        {
+          "run_id": "00b47f3c",
+          "label": "glm52_together_max_seed42_run3 (00b47f3c)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 19527.75,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1037,
+          "action_count": 1041,
+          "days_count": 72,
+          "model_display": "GLM 5.2",
+          "final_cash": 19527.75
+        }
+      ]
+    },
+    {
       "model": "us.anthropic.claude-haiku-4-5-20251001-v1:0",
       "model_display": "Claude Haiku 4.5",
       "runs": [
