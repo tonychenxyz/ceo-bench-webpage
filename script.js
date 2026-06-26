@@ -51,25 +51,6 @@ function modelNameHtml(name) {
   return name === "Claude Fable 5*" ? "Claude Fable 5<sup>*</sup>" : name;
 }
 
-function drawBankruptcyMarker(parent, cx, cy, label) {
-  const group = svgEl("g", {
-    "aria-label": label,
-    role: "img"
-  }, parent);
-  const title = svgEl("title", {}, group);
-  title.textContent = label;
-
-  const marker = svgEl("text", {
-    x: cx,
-    y: cy,
-    "text-anchor": "middle",
-    "dominant-baseline": "middle",
-    "font-size": "14",
-    "font-family": "\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Noto Color Emoji\",sans-serif"
-  }, group);
-  marker.textContent = "☠️";
-}
-
 function valueAtDay(points, day) {
   if (!points.length || day < points[0][0] || day > points[points.length - 1][0]) {
     return null;
@@ -273,14 +254,7 @@ function drawCashPlot(runs, mount) {
     runElements.set(run, { path, baseStrokeWidth, baseOpacity });
 
     const last = run.points[run.points.length - 1];
-    if (run.bankrupt) {
-      drawBankruptcyMarker(
-        lineGroup,
-        x(last[0]),
-        0,
-        `${run.pretty} bankrupt at day ${last[0]}`
-      );
-    } else {
+    if (!run.bankrupt) {
       svgEl("circle", {
         cx: x(last[0]),
         cy: y(last[1]),
