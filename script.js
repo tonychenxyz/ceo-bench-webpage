@@ -5,6 +5,7 @@ const MODEL_COLORS = {
   "GPT-5.5": "#2f6df6",
   "Claude Opus 4.8": "#c41e3a",
   "Claude Opus 4.7": "#ed5b2c",
+  "Qwen 3.7 Max": "#8a63d2",
   "Claude Sonnet 4.6": "#00875a",
   "Kimi K2.6": "#b15c00",
   "GLM 5.2": "#7c2d6f",
@@ -93,6 +94,10 @@ function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
   const labelToggle = document.getElementById(mount.dataset.labelToggleId || "model-label-toggle");
+  const rankedRuns = runs.slice().sort((a, b) => {
+    const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
+    return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
+  });
 
   mount.innerHTML = "";
   if (legend) {
@@ -101,14 +106,15 @@ function drawCashPlot(runs, mount) {
   }
 
   const W = 960;
-  const H = 560;
-  const pad = { left: 78, right: 28, top: 22, bottom: 62 };
+  const H = 610;
+  const pad = { left: 78, right: 214, top: 54, bottom: 62 };
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
+  const plotRight = pad.left + innerW;
   const xMin = 0;
   const xMax = 500;
   const yFloor = 100;
-  const maxCash = Math.max(...runs.flatMap(run => run.points.map(point => point[1]).filter(v => v > 0)));
+  const maxCash = Math.max(...rankedRuns.flatMap(run => run.points.map(point => point[1]).filter(v => v > 0)));
   const yCeil = Math.pow(10, Math.ceil(Math.log10(Math.max(maxCash, 1e7))));
   const yMinLog = Math.log10(yFloor);
   const yMaxLog = Math.log10(yCeil);
@@ -139,6 +145,23 @@ function drawCashPlot(runs, mount) {
     fill: "#0a2540"
   };
 
+  svgEl("text", {
+    x: pad.left,
+    y: 20,
+    "font-family": "Inter, sans-serif",
+    "font-size": "18",
+    "font-weight": "800",
+    fill: "#0a2540"
+  }, svg).textContent = "Best run money balance over time";
+  svgEl("text", {
+    x: pad.left,
+    y: 39,
+    "font-family": "Inter, sans-serif",
+    "font-size": "12.5",
+    "font-weight": "600",
+    fill: "#697386"
+  }, svg).textContent = "One best trajectory per model, ranked by final cash";
+
   const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
     .filter(tick => tick <= yCeil);
 
@@ -146,12 +169,12 @@ function drawCashPlot(runs, mount) {
     const yy = y(tick);
     svgEl("line", {
       x1: pad.left,
-      x2: W - pad.right,
+      x2: plotRight,
       y1: yy,
       y2: yy,
-      stroke: "#d6dde6",
+      stroke: tick === 1000000 ? "#b7c2d0" : "#e5eaf0",
       "stroke-width": "0.9",
-      "stroke-dasharray": "3 4"
+      "stroke-dasharray": tick === 1000000 ? "5 4" : "2 5"
     }, svg);
     const label = svgEl("text", {
       x: pad.left - 8,
@@ -169,7 +192,7 @@ function drawCashPlot(runs, mount) {
       x2: xx,
       y1: pad.top,
       y2: pad.top + innerH,
-      stroke: "#eef1f5",
+      stroke: "#f0f3f7",
       "stroke-width": "0.8"
     }, svg);
     svgEl("line", {
@@ -199,7 +222,7 @@ function drawCashPlot(runs, mount) {
   }, svg);
   svgEl("line", {
     x1: pad.left - 3,
-    x2: W - pad.right + 2,
+    x2: plotRight + 2,
     y1: pad.top + innerH,
     y2: pad.top + innerH,
     stroke: "#0a2540",
@@ -209,7 +232,7 @@ function drawCashPlot(runs, mount) {
   const startY = y(1000000);
   svgEl("line", {
     x1: pad.left,
-    x2: W - pad.right,
+    x2: plotRight,
     y1: startY,
     y2: startY,
     stroke: "#0a2540",
@@ -218,7 +241,7 @@ function drawCashPlot(runs, mount) {
     opacity: "0.55"
   }, svg);
   const startingCashLabel = svgEl("text", {
-    x: W - pad.right - 8,
+    x: plotRight - 8,
     y: startY - 8,
     "text-anchor": "end",
     "font-family": "Inter, sans-serif",
@@ -246,8 +269,9 @@ function drawCashPlot(runs, mount) {
   yLabel.textContent = "Cash on hand (USD, log)";
 
   const lineGroup = svgEl("g", {}, svg);
-  runs.forEach(run => {
+  rankedRuns.slice().reverse().forEach(run => {
     const color = MODEL_COLORS[run.pretty] || "#0a2540";
+    const rank = rankedRuns.indexOf(run);
     const pathData = run.points
       .map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`)
       .join(" ");
@@ -255,10 +279,10 @@ function drawCashPlot(runs, mount) {
       d: pathData,
       fill: "none",
       stroke: color,
-      "stroke-width": run.pretty === "Claude Fable 5*" ? "3.2" : "2.2",
+      "stroke-width": rank < 3 ? "3" : "2.1",
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      opacity: run.pretty === "Claude Fable 5*" ? "0.96" : "0.78"
+      opacity: rank < 3 ? "0.98" : "0.72"
     }, lineGroup);
 
     const last = run.points[run.points.length - 1];
@@ -281,38 +305,76 @@ function drawCashPlot(runs, mount) {
     }
   });
 
-  const labelOffsets = {
-    "Claude Fable 5*": { dx: -8, dy: -14, anchor: "end" },
-    "Claude Opus 4.8": { day: 213, dx: 8, dy: -34, anchor: "start" },
-    "GPT-5.5": { day: 363, dx: 8, dy: 22, anchor: "start" },
-    "Rule-Based Baseline": { dx: -8, dy: 16, anchor: "end" },
-    "Claude Opus 4.7": { dx: -8, dy: -10, anchor: "end" },
-    "Claude Sonnet 4.6": { dx: -8, dy: -4, anchor: "end" },
-    "Kimi K2.6": { dx: -8, dy: 12, anchor: "end" },
-    "GLM 5.2": { dx: 8, dy: 14, anchor: "start" },
-    "Claude Haiku 4.5": { dx: 8, dy: -34, anchor: "start" },
-    "Gemini 3 Flash": { dx: -8, dy: -12, anchor: "end" },
-    "DeepSeek V4 Pro": { dx: -8, dy: -28, anchor: "end" },
-    "Grok 4.20": { dx: 8, dy: -12, anchor: "start" },
-    "GLM 5.1": { dx: 8, dy: -18, anchor: "start" }
-  };
-
   const labelsGroup = svgEl("g", { "aria-label": "Model labels" }, svg);
-  runs.forEach(run => {
+  svgEl("text", {
+    x: plotRight + 16,
+    y: pad.top - 16,
+    "font-family": "Inter, sans-serif",
+    "font-size": "12",
+    "font-weight": "800",
+    fill: "#0a2540"
+  }, labelsGroup).textContent = "Current leaderboard";
+  svgEl("text", {
+    x: W - 8,
+    y: pad.top - 16,
+    "text-anchor": "end",
+    "font-family": "Inter, sans-serif",
+    "font-size": "12",
+    "font-weight": "800",
+    fill: "#0a2540"
+  }, labelsGroup).textContent = "Final cash";
+
+  const labelRows = rankedRuns.map((run, index) => {
+    const last = run.points[run.points.length - 1];
+    return {
+      run,
+      index,
+      targetY: y(last[1]),
+      y: y(last[1])
+    };
+  });
+  const minLabelGap = 22;
+  let cursorY = pad.top + 12;
+  labelRows.forEach(row => {
+    row.y = Math.max(row.targetY, cursorY);
+    cursorY = row.y + minLabelGap;
+  });
+  const overflow = cursorY - minLabelGap - (pad.top + innerH - 4);
+  if (overflow > 0) {
+    labelRows[labelRows.length - 1].y -= overflow;
+    for (let i = labelRows.length - 2; i >= 0; i -= 1) {
+      labelRows[i].y = Math.min(labelRows[i].y, labelRows[i + 1].y - minLabelGap);
+    }
+  }
+
+  labelRows.forEach(row => {
+    const { run, index } = row;
     const color = MODEL_COLORS[run.pretty] || "#0a2540";
     const last = run.points[run.points.length - 1];
-    const offset = labelOffsets[run.pretty] || { dx: 8, dy: -8, anchor: "start" };
-    const labelDay = offset.day == null ? last[0] : offset.day;
-    const labelValue = offset.day == null ? last[1] : valueAtDay(run.points, offset.day);
-    if (labelValue == null) return;
-    const rawX = x(labelDay) + offset.dx;
-    const rawY = y(labelValue) + offset.dy;
-    const label = svgEl("text", {
-      x: Math.max(pad.left + 6, Math.min(W - pad.right - 8, rawX)),
-      y: Math.max(pad.top + 12, Math.min(pad.top + innerH + 13, rawY)),
-      "text-anchor": offset.anchor,
+    const lastX = x(last[0]);
+    svgEl("line", {
+      x1: lastX + 7,
+      x2: plotRight + 10,
+      y1: y(last[1]),
+      y2: row.y,
+      stroke: color,
+      "stroke-width": "0.9",
+      opacity: "0.44"
+    }, labelsGroup);
+    svgEl("text", {
+      x: plotRight + 16,
+      y: row.y + 4,
       "font-family": "Inter, sans-serif",
-      "font-size": "12",
+      "font-size": "11.5",
+      "font-weight": "800",
+      fill: "#697386"
+    }, labelsGroup).textContent = String(index + 1);
+    const label = svgEl("text", {
+      x: plotRight + 36,
+      y: row.y + 4,
+      "text-anchor": "start",
+      "font-family": "Inter, sans-serif",
+      "font-size": "11.5",
       "font-weight": "800",
       fill: color,
       stroke: "#ffffff",
@@ -321,6 +383,18 @@ function drawCashPlot(runs, mount) {
       "pointer-events": "none"
     }, labelsGroup);
     appendModelName(label, run.pretty);
+    svgEl("text", {
+      x: W - 8,
+      y: row.y + 4,
+      "text-anchor": "end",
+      "font-family": "Inter, sans-serif",
+      "font-size": "11.5",
+      "font-weight": "800",
+      fill: run.bankrupt ? "#697386" : "#0a2540",
+      stroke: "#ffffff",
+      "stroke-width": "3.5",
+      "paint-order": "stroke fill"
+    }, labelsGroup).textContent = run.bankrupt ? "DNF" : formatCash(last[1]);
   });
 
   function syncModelLabels() {
@@ -446,11 +520,8 @@ function fitAllFrames() {
 
 function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
-    if (a.pretty === "Claude Fable 5*") return -1;
-    if (b.pretty === "Claude Fable 5*") return 1;
-    if (a.pretty === "Rule-Based Baseline") return -1;
-    if (b.pretty === "Rule-Based Baseline") return 1;
-    return b.final_cash - a.final_cash;
+    const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
+    return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });
 }
 

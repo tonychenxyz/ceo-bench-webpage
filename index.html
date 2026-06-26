@@ -562,7 +562,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Qwen 3.7 Max, Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <figure class="chart-panel results-overview-plot" id="benchmark">
         <div class="plot-controls" aria-label="Cash plot controls">
@@ -578,7 +578,7 @@
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=10" title="Cash trajectories per model" data-width="740" data-height="505" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=11" title="Cash trajectories per model" data-width="740" data-height="625" loading="lazy"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</div>
       </div>
@@ -594,7 +594,6 @@
                 <th scope="col">Max survival days</th>
                 <th scope="col">Mean survival days</th>
                 <th scope="col">Turns/week</th>
-                <th scope="col">Best run API cost</th>
               </tr>
             </thead>
             <tbody>
@@ -605,7 +604,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>15.4</td>
-                <td>$386.46</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
@@ -614,7 +612,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>10.9</td>
-                <td>$213.41</td>
               </tr>
               <tr>
                 <th scope="row">GPT-5.5</th>
@@ -623,7 +620,14 @@
                 <td>500</td>
                 <td>333.7 &plusmn; 229.7</td>
                 <td>34.7</td>
-                <td>$200.49</td>
+              </tr>
+              <tr>
+                <th scope="row">Qwen 3.7 Max</th>
+                <td>0/3</td>
+                <td>$417,918</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>6.1</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.7</th>
@@ -632,7 +636,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>14.6</td>
-                <td>$128.72</td>
               </tr>
               <tr>
                 <th scope="row">Kimi K2.6</th>
@@ -641,7 +644,6 @@
                 <td>500</td>
                 <td>343.0 &plusmn; 110.0</td>
                 <td>30.5</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
@@ -650,7 +652,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>12.9</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 4.6</th>
@@ -659,7 +660,6 @@
                 <td>500</td>
                 <td>282.3 &plusmn; 136.0</td>
                 <td>13.3</td>
-                <td>$82.84</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
@@ -668,7 +668,6 @@
                 <td>324</td>
                 <td>214.7 &plusmn; 91.1</td>
                 <td>51.5</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Claude Haiku 4.5</th>
@@ -677,7 +676,6 @@
                 <td>231</td>
                 <td>144.7 &plusmn; 70.5</td>
                 <td>23.1</td>
-                <td>$6.68</td>
               </tr>
               <tr>
                 <th scope="row">Gemini 3 Flash</th>
@@ -686,7 +684,6 @@
                 <td>226</td>
                 <td>154.0 &plusmn; 37.0</td>
                 <td>18.5</td>
-                <td>$2.98</td>
               </tr>
               <tr>
                 <th scope="row">DeepSeek V4 Pro</th>
@@ -695,7 +692,6 @@
                 <td>176</td>
                 <td>114.3 &plusmn; 38.6</td>
                 <td>19.3</td>
-                <td>--</td>
               </tr>
               <tr class="pre-estimate-row">
                 <th scope="row">Grok 4.20</th>
@@ -704,7 +700,6 @@
                 <td>37</td>
                 <td>28.3 &plusmn; 8.5</td>
                 <td>8.2</td>
-                <td>$0.75</td>
               </tr>
               <tr class="reference-row baseline-row">
                 <th scope="row">Rule-based baseline</th>
@@ -713,13 +708,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
               </tr>
               <tr class="reference-row estimate-row">
                 <th scope="row">Estimated final cash upper bound</th>
                 <td></td>
                 <td>$2,200,000,000</td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -932,7 +925,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=5"></script>
+  <script src="assets/runs-data.js?v=6"></script>
   <script src="script.js?v=11"></script>
 </body>
 </html>

@@ -216,6 +216,57 @@
       ]
     },
     {
+      "model": "Qwen/Qwen3.7-Max",
+      "model_display": "Qwen 3.7 Max",
+      "runs": [
+        {
+          "run_id": "dd3b8df6",
+          "label": "qwen37max_together_reasoning_seed42_run1 (dd3b8df6)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 366686.88,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 401,
+          "action_count": 998,
+          "days_count": 72
+        },
+        {
+          "run_id": "55f860e5",
+          "label": "qwen37max_together_reasoning_seed42_run2 (55f860e5)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 82162.5,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 401,
+          "action_count": 856,
+          "days_count": 72
+        },
+        {
+          "run_id": "dcb342f7",
+          "label": "qwen37max_together_reasoning_seed42_run3 (dcb342f7)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "survival_days": 500,
+          "cash": 417918.03,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 503,
+          "action_count": 1100,
+          "days_count": 72
+        }
+      ]
+    },
+    {
       "model": "claude-opus-4-8",
       "model_display": "Claude Opus 4.8",
       "runs": [
