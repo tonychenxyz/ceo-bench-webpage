@@ -93,7 +93,6 @@ function valueAtDay(points, day) {
 function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
-  const labelToggle = document.getElementById(mount.dataset.labelToggleId || "model-label-toggle");
   const rankedRuns = runs.slice().sort((a, b) => {
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
@@ -135,32 +134,15 @@ function drawCashPlot(runs, mount) {
   const tickStyle = {
     "font-family": "Inter, sans-serif",
     "font-size": "12",
-    "font-weight": "600",
-    fill: "#425466"
+    "font-weight": "400",
+    fill: "#000000"
   };
   const labelStyle = {
     "font-family": "Inter, sans-serif",
     "font-size": "13",
-    "font-weight": "800",
-    fill: "#0a2540"
+    "font-weight": "400",
+    fill: "#000000"
   };
-
-  svgEl("text", {
-    x: pad.left,
-    y: 20,
-    "font-family": "Inter, sans-serif",
-    "font-size": "18",
-    "font-weight": "800",
-    fill: "#0a2540"
-  }, svg).textContent = "Best run money balance over time";
-  svgEl("text", {
-    x: pad.left,
-    y: 39,
-    "font-family": "Inter, sans-serif",
-    "font-size": "12.5",
-    "font-weight": "600",
-    fill: "#697386"
-  }, svg).textContent = "One best trajectory per model, ranked by final cash";
 
   const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
     .filter(tick => tick <= yCeil);
@@ -246,8 +228,8 @@ function drawCashPlot(runs, mount) {
     "text-anchor": "end",
     "font-family": "Inter, sans-serif",
     "font-size": "12",
-    "font-weight": "700",
-    fill: "#425466"
+    "font-weight": "400",
+    fill: "#000000"
   }, svg);
   startingCashLabel.textContent = "$1M starting cash balance";
 
@@ -269,21 +251,25 @@ function drawCashPlot(runs, mount) {
   yLabel.textContent = "Cash on hand (USD, log)";
 
   const lineGroup = svgEl("g", {}, svg);
+  const runElements = new Map();
   rankedRuns.slice().reverse().forEach(run => {
     const color = MODEL_COLORS[run.pretty] || "#0a2540";
     const rank = rankedRuns.indexOf(run);
+    const baseStrokeWidth = rank < 3 ? "3" : "2.1";
+    const baseOpacity = rank < 3 ? "0.98" : "0.72";
     const pathData = run.points
       .map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`)
       .join(" ");
-    svgEl("path", {
+    const path = svgEl("path", {
       d: pathData,
       fill: "none",
       stroke: color,
-      "stroke-width": rank < 3 ? "3" : "2.1",
+      "stroke-width": baseStrokeWidth,
       "stroke-linecap": "round",
       "stroke-linejoin": "round",
-      opacity: rank < 3 ? "0.98" : "0.72"
+      opacity: baseOpacity
     }, lineGroup);
+    runElements.set(run, { path, baseStrokeWidth, baseOpacity });
 
     const last = run.points[run.points.length - 1];
     if (run.bankrupt) {
@@ -306,23 +292,6 @@ function drawCashPlot(runs, mount) {
   });
 
   const labelsGroup = svgEl("g", { "aria-label": "Model labels" }, svg);
-  svgEl("text", {
-    x: plotRight + 16,
-    y: pad.top - 16,
-    "font-family": "Inter, sans-serif",
-    "font-size": "12",
-    "font-weight": "800",
-    fill: "#0a2540"
-  }, labelsGroup).textContent = "Current leaderboard";
-  svgEl("text", {
-    x: W - 8,
-    y: pad.top - 16,
-    "text-anchor": "end",
-    "font-family": "Inter, sans-serif",
-    "font-size": "12",
-    "font-weight": "800",
-    fill: "#0a2540"
-  }, labelsGroup).textContent = "Final cash";
 
   const labelRows = rankedRuns.map((run, index) => {
     const last = run.points[run.points.length - 1];
@@ -351,23 +320,13 @@ function drawCashPlot(runs, mount) {
     const { run, index } = row;
     const color = MODEL_COLORS[run.pretty] || "#0a2540";
     const last = run.points[run.points.length - 1];
-    const lastX = x(last[0]);
-    svgEl("line", {
-      x1: lastX + 7,
-      x2: plotRight + 10,
-      y1: y(last[1]),
-      y2: row.y,
-      stroke: color,
-      "stroke-width": "0.9",
-      opacity: "0.44"
-    }, labelsGroup);
     svgEl("text", {
       x: plotRight + 16,
       y: row.y + 4,
       "font-family": "Inter, sans-serif",
       "font-size": "11.5",
-      "font-weight": "800",
-      fill: "#697386"
+      "font-weight": "400",
+      fill: "#000000"
     }, labelsGroup).textContent = String(index + 1);
     const label = svgEl("text", {
       x: plotRight + 36,
@@ -389,23 +348,41 @@ function drawCashPlot(runs, mount) {
       "text-anchor": "end",
       "font-family": "Inter, sans-serif",
       "font-size": "11.5",
-      "font-weight": "800",
-      fill: run.bankrupt ? "#697386" : "#0a2540",
+      "font-weight": "400",
+      fill: "#000000",
       stroke: "#ffffff",
       "stroke-width": "3.5",
       "paint-order": "stroke fill"
     }, labelsGroup).textContent = run.bankrupt ? "DNF" : formatCash(last[1]);
   });
 
-  function syncModelLabels() {
-    const showLabels = !labelToggle || labelToggle.checked;
-    labelsGroup.style.display = showLabels ? "" : "none";
-    labelsGroup.setAttribute("aria-hidden", showLabels ? "false" : "true");
+  function setCurveHighlight(activeRun) {
+    runElements.forEach(({ path, baseStrokeWidth, baseOpacity }, run) => {
+      if (!activeRun) {
+        path.setAttribute("stroke-width", baseStrokeWidth);
+        path.setAttribute("opacity", baseOpacity);
+        return;
+      }
+      const isActive = run === activeRun;
+      path.setAttribute("stroke-width", isActive ? "4.6" : baseStrokeWidth);
+      path.setAttribute("opacity", isActive ? "1" : "0.18");
+      if (isActive) {
+        lineGroup.appendChild(path);
+      }
+    });
   }
 
-  if (labelToggle) {
-    labelToggle.addEventListener("change", syncModelLabels);
-    syncModelLabels();
+  function labelRowAtY(rawY) {
+    let nearest = null;
+    let nearestDistance = Infinity;
+    labelRows.forEach(row => {
+      const distance = Math.abs(rawY - row.y);
+      if (distance < nearestDistance) {
+        nearest = row;
+        nearestDistance = distance;
+      }
+    });
+    return nearestDistance <= 13 ? nearest : null;
   }
 
   const hoverGroup = svgEl("g", { opacity: "0" }, svg);
@@ -423,11 +400,27 @@ function drawCashPlot(runs, mount) {
   tooltip.className = "plot-tooltip";
   mount.appendChild(tooltip);
 
+  function clearTooltip() {
+    hoverGroup.setAttribute("opacity", "0");
+    tooltip.classList.remove("visible");
+  }
+
   function updateTooltip(event) {
     const svgRect = svg.getBoundingClientRect();
     const mountRect = mount.getBoundingClientRect();
     const sx = W / svgRect.width;
+    const sy = H / svgRect.height;
     const rawX = (event.clientX - svgRect.left) * sx;
+    const rawY = (event.clientY - svgRect.top) * sy;
+
+    if (rawX > plotRight) {
+      clearTooltip();
+      const row = labelRowAtY(rawY);
+      setCurveHighlight(row ? row.run : null);
+      return;
+    }
+
+    setCurveHighlight(null);
     const day = Math.max(xMin, Math.min(xMax, Math.round(invX(rawX))));
     const xx = x(day);
 
@@ -491,8 +484,8 @@ function drawCashPlot(runs, mount) {
   svg.addEventListener("pointermove", updateTooltip);
   svg.addEventListener("pointerenter", updateTooltip);
   svg.addEventListener("pointerleave", () => {
-    hoverGroup.setAttribute("opacity", "0");
-    tooltip.classList.remove("visible");
+    clearTooltip();
+    setCurveHighlight(null);
   });
 
 }

@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=26">
+  <link rel="stylesheet" href="styles.css?v=27">
   <script>
     window.MathJax = {
       tex: {
@@ -99,16 +99,9 @@
     </d-byline>
 
     <figure class="chart-panel intro-results-plot">
-      <div class="plot-controls" aria-label="Cash plot controls">
-        <label class="plot-toggle" for="model-label-toggle-intro">
-          <input class="plot-toggle-input" type="checkbox" id="model-label-toggle-intro" checked>
-          <span class="plot-toggle-switch" aria-hidden="true"></span>
-          <span>Display model names</span>
-        </label>
-      </div>
-      <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" data-label-toggle-id="model-label-toggle-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
+      <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
       <div id="cash-legend-intro" class="cash-legend"></div>
-      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
     </figure>
 
     <d-article>
@@ -565,22 +558,15 @@
         <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Qwen 3.7 Max, Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
       </article>
       <figure class="chart-panel results-overview-plot" id="benchmark">
-        <div class="plot-controls" aria-label="Cash plot controls">
-          <label class="plot-toggle" for="model-label-toggle">
-            <input class="plot-toggle-input" type="checkbox" id="model-label-toggle" checked>
-            <span class="plot-toggle-switch" aria-hidden="true"></span>
-            <span>Display model names</span>
-          </label>
-        </div>
-        <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" data-label-toggle-id="model-label-toggle" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
+        <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
           <iframe src="assets/figures/cash-trajectories-grid.html?v=11" title="Cash trajectories per model" data-width="740" data-height="625" loading="lazy"></iframe>
         </div>
-        <div class="fig-caption">Cash balance over time for all runs of each model. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</div>
+        <div class="fig-caption">Cash balance over time for all runs of each model. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></div>
       </div>
 
       <figure class="results-table-block">
@@ -720,7 +706,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results. <sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
       </figure>
     </section>
 
@@ -926,6 +912,6 @@
   </main>
 
   <script src="assets/runs-data.js?v=6"></script>
-  <script src="script.js?v=11"></script>
+  <script src="script.js?v=12"></script>
 </body>
 </html>
