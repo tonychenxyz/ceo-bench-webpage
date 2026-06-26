@@ -768,7 +768,7 @@ d-article > .intro-results-plot ~ .narrative {
 
 .results-table {
   width: 100%;
-  min-width: 780px;
+  min-width: 900px;
   border-collapse: collapse;
   color: var(--ink);
   font-size: 15px;

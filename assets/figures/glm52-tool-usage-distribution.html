@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench - GLM 5.2 Tool Usage Average per Week</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0a2540;
+    --line: #d6dde6;
+    --paper: #ffffff;
+    --bg: #ffffff;
+  }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    font-family: 'Inter', system-ui, sans-serif;
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 272px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .tile .body { padding: 0; }
+  .tile svg { display: block; width: 100%; height: auto; }
+  svg text { font-family: 'Inter', sans-serif; fill: #000000; font-weight: 400; }
+  .title { font-size: 14px; fill: #000000; font-weight: 400; }
+  .tool { font-family: 'Inter', system-ui, sans-serif; font-size: 7.6px; fill: #000000; font-weight: 400; }
+  .xt { font-size: 10px; fill: #000000; font-weight: 400; }
+  .axt { font-size: 11.5px; fill: #000000; font-weight: 400; }
+  .val { font-size: 10px; fill: #000000; font-weight: 400; font-variant-numeric: tabular-nums; }
+  @page {
+    size: 272px 200px;
+    margin: 0;
+  }
+  @media print {
+    html,
+    body {
+      width: 272px;
+      height: 200px;
+    }
+    .page {
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="tile"><div class="body"><div id="plot"></div></div></div>
+</div>
+
+<script>
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs={}, parent){
+  const n = document.createElementNS(SVG_NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+const PANEL = {
+  title: 'GLM 5.2',
+  color: '#7c2d6f',
+  fill: '#d69acb',
+  data: [
+    {rank:1, tool:'get_social_posts', total:79, avg:1.1127},
+    {rank:2, tool:'get_group_insights', total:67, avg:0.9437},
+    {rank:3, tool:'list_research_projects', total:66, avg:0.9296},
+    {rank:4, tool:'get_cost_info', total:47, avg:0.6620},
+    {rank:5, tool:'set_daily_spend', total:42, avg:0.5915},
+    {rank:6, tool:'post_social_media', total:34, avg:0.4789},
+    {rank:7, tool:'get_market_overview', total:33, avg:0.4648},
+    {rank:8, tool:'set_targeted_ad_spend', total:28, avg:0.3944},
+    {rank:9, tool:'set_lead_promotion', total:28, avg:0.3944},
+    {rank:10, tool:'set_model_tiers', total:25, avg:0.3521},
+  ],
+};
+
+const W = 272, H = 200;
+const PANEL_W = 270;
+const PAD_L = 118, PAD_R = 8, PAD_T = 24, PAD_B = 34;
+const INNER_W = PANEL_W - PAD_L - PAD_R;
+const INNER_H = H - PAD_T - PAD_B;
+const X_MAX = 2.0;
+const TICKS = [0, 0.5, 1.0, 1.5, 2.0];
+
+function fmtTick(v){
+  return Number.isInteger(v) ? v.toFixed(0) : v.toFixed(1);
+}
+
+function fmtValue(v){
+  return v.toFixed(2);
+}
+
+function displayToolName(tool){
+  return tool.replace(/_/g, ' ');
+}
+
+function drawPanel(svg, panel, x0){
+  const plotX0 = x0 + PAD_L;
+  const plotX1 = x0 + PANEL_W - PAD_R;
+  const y0 = PAD_T;
+  const y1 = H - PAD_B;
+  const xS = v => plotX0 + Math.max(0, Math.min(X_MAX, v)) / X_MAX * INNER_W;
+
+  const head = el('text', {x:x0 + PAD_L, y:15, class:'title'}, svg);
+  head.textContent = panel.title;
+
+  TICKS.forEach(tick => {
+    const x = xS(tick);
+    el('line', {x1:x, x2:x, y1:y0, y2:y1, stroke:tick === 0 ? '#0a2540' : '#d6dde6', 'stroke-width':tick === 0 ? 1 : 0.75, 'stroke-dasharray':tick === 0 ? '' : '2 3'}, svg);
+    const t = el('text', {x, y:y1 + 14, class:'xt', 'text-anchor':'middle'}, svg);
+    t.textContent = fmtTick(tick);
+  });
+
+  el('line', {x1:plotX0 - 2, x2:plotX1 + 2, y1:y1, y2:y1, stroke:'#0a2540', 'stroke-width':1}, svg);
+
+  const rowH = INNER_H / panel.data.length;
+  const barH = 8;
+  panel.data.forEach((d, i) => {
+    const cy = y0 + rowH * (i + 0.5);
+    const barY = cy - barH / 2;
+    const barX1 = xS(d.avg);
+    const labelY = cy + 3.2;
+
+    const lab = el('text', {x:plotX0 - 4, y:labelY, class:'tool', 'text-anchor':'end'}, svg);
+    lab.textContent = displayToolName(d.tool);
+
+    el('rect', {x:plotX0, y:barY, width:Math.max(1, barX1 - plotX0), height:barH, rx:2, fill:panel.fill}, svg);
+    el('line', {x1:barX1, x2:barX1, y1:barY, y2:barY + barH, stroke:panel.color, 'stroke-width':1.1}, svg);
+
+    const tight = barX1 > plotX1 - 28;
+    const vx = tight ? plotX1 - 2 : barX1 + 5;
+    const v = el('text', {x:vx, y:labelY, class:'val', 'text-anchor':tight ? 'end' : 'start'}, svg);
+    v.textContent = fmtValue(d.avg);
+  });
+
+  const axis = el('text', {x:plotX0 + INNER_W / 2, y:H - 5, class:'axt', 'text-anchor':'middle'}, svg);
+  axis.textContent = 'Avg. uses per week';
+}
+
+function draw(){
+  const mount = document.getElementById('plot');
+  const svg = el('svg', {viewBox:`0 0 ${W} ${H}`, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
+  drawPanel(svg, PANEL, 0);
+}
+
+draw();
+</script>
+</body>
+</html>

@@ -61,8 +61,9 @@ function drawBankruptcyMarker(parent, cx, cy, label) {
 
   const marker = svgEl("text", {
     x: cx,
-    y: cy + 4,
+    y: cy,
     "text-anchor": "middle",
+    "dominant-baseline": "middle",
     "font-size": "14",
     "font-family": "\"Apple Color Emoji\",\"Segoe UI Emoji\",\"Noto Color Emoji\",sans-serif"
   }, group);
@@ -276,7 +277,7 @@ function drawCashPlot(runs, mount) {
       drawBankruptcyMarker(
         lineGroup,
         x(last[0]),
-        y(last[1]) - 6,
+        0,
         `${run.pretty} bankrupt at day ${last[0]}`
       );
     } else {
