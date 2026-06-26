@@ -354,7 +354,7 @@ function drawCashPlot(runs, mount) {
       stroke: "#ffffff",
       "stroke-width": "3.5",
       "paint-order": "stroke fill"
-    }, labelsGroup).textContent = run.bankrupt ? `Bankrupted D${last[0]}` : formatCash(last[1]);
+    }, labelsGroup).textContent = run.bankrupt ? "Bankrupted" : formatCash(last[1]);
   });
 
   function setCurveHighlight(activeRun) {
