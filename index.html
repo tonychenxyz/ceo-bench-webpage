@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=27">
+  <link rel="stylesheet" href="styles.css?v=28">
   <script>
     window.MathJax = {
       tex: {
@@ -101,7 +101,7 @@
     <figure class="chart-panel intro-results-plot">
       <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
       <div id="cash-legend-intro" class="cash-legend"></div>
-      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline.</figcaption>
     </figure>
 
     <d-article>
@@ -111,9 +111,21 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Most models struggle to finish above the $1M starting balance; Claude Fable 5, Claude Opus 4.8, and GPT-5.5 are the only evaluated models that finish above the initial balance on their best run, and only Claude Fable 5 finishes above the initial balance for more than one run.</li>
+          <li>Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to maintain profit for entire runs. All other models either end below the starting cash or bankrupt.</li>
         </ul>
       </div>
+
+      <aside class="changelog-box" data-nosnippet>
+        <div class="section-label">Changelog</div>
+        <p><strong>July 8, 2026:</strong> Minor update to how insufficient quota impacts customer satisfaction.</p>
+        <details>
+          <summary>
+            <span class="read-more">Read more</span>
+            <span class="read-less">Read less</span>
+          </summary>
+          <p>The relative ranking between models remains largely the same. The upper bound and rule-based heuristics remain the same. The change makes the benchmark slightly more difficult. All plots and data on this page and in the codebase are updated. We are still updating information in the paper.</p>
+        </details>
+      </aside>
 
       <d-contents class="article-contents" data-nosnippet>
         <nav>
@@ -339,11 +351,11 @@
               <span class="summary-toggle"><span class="read-more">Read more</span><span class="read-less">Read less</span></span>
             </summary>
             <div class="details-body">
-              <p>Product quality is affected by daily development, research projects, model tier choices, targeted development, infrastructure capacity, support spending, usage quotas, and in-app ad strength. These controls shape customer experience through base product quality, quota saturation, system outages, support delays, relationship history, and ad load. Competitors add pressure by periodically raising customer quality expectations. Broad product development and research can make competitors catch up faster, while targeted development for specific groups is harder to copy and lets competitors catch up more slowly.</p>
+              <p>Product quality is affected by daily development, research projects, model tier choices, targeted development, infrastructure capacity, support spending, usage quotas, and in-app ad strength. These controls shape customer experience through base product quality, quota fulfillment, system outages, support delays, relationship history, and ad load. Quota shortfalls now enter as a multiplicative satisfaction factor rather than only as an additive quality penalty. Competitors add pressure by periodically raising customer quality expectations. Broad product development and research can make competitors catch up faster, while targeted development for specific groups is harder to copy and lets competitors catch up more slowly.</p>
               <div class="equation-wrap">
                 \[
                 \begin{aligned}
-                \underbrace{Q_{i,t}^{\mathrm{perc}}}_{\substack{\text{quality perceived}\\\text{by customer }i}}
+                \underbrace{\widetilde Q_{i,t}}_{\substack{\text{pre-quota perceived}\\\text{quality for customer }i}}
                 ={}&amp;
                 \underbrace{m_p}_{\text{model-tier effect}}\left(
                 \underbrace{q_0}_{\text{initial quality}}
@@ -355,8 +367,16 @@
                 &amp;+\underbrace{\beta_r(r_{i,t}-r_0)}_{\text{customer relationship}}
                 +\underbrace{\beta_d\log\!\left(\alpha_d+d_{i,t}/d_0\right)}_{\text{customer stickiness}}
                 -\underbrace{\beta_I I_{i,t}}_{\text{open issues penalty}}
-                -\underbrace{\beta_U\left(\nu_U-\frac{U_{p,t}}{D_Uu_i}\right)_+}_{\text{quota saturation penalty}}
-                -\underbrace{\eta_i^{\mathrm{ads}}a_{i,t}^{\mathrm{eff}}}_{\text{in-app ads penalty}}
+                -\underbrace{\eta_i^{\mathrm{ads}}a_{i,t}^{\mathrm{eff}}}_{\text{in-app ads penalty}}\\[2mm]
+                \underbrace{s_{i,t}^{\mathrm{quota}}}_{\text{quota satisfaction}}
+                ={}&amp;\min\!\left(1,\frac{U_{p,t}}{D_Uu_i}\right)\\[2mm]
+                \underbrace{S_{i,t}}_{\text{customer satisfaction}}
+                ={}&amp;
+                s_{i,t}^{\mathrm{quota}}\left(
+                \widetilde Q_{i,t}
+                -\underbrace{\theta_i(P_{p,t})}_{\text{price-adjusted expectation}}
+                -\underbrace{c_{g,t}}_{\text{competitor pressure}}
+                \right)
                 \end{aligned}
                 \]
               </div>
@@ -555,18 +575,18 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Qwen 3.7 Max, Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
       </article>
       <figure class="chart-panel results-overview-plot" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. Best run is selected first by longest survival, then by ending cash.</figcaption>
       </figure>
       <div class="figure-block">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=11" title="Cash trajectories per model" data-width="740" data-height="625" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=16" title="Cash trajectories per model" data-width="740" data-height="625" loading="lazy"></iframe>
         </div>
-        <div class="fig-caption">Cash balance over time for all runs of each model. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></div>
+        <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
 
       <figure class="results-table-block">
@@ -575,8 +595,9 @@
             <thead>
               <tr>
                 <th scope="col">Model</th>
+                <th scope="col">Valid runs</th>
                 <th scope="col">Bankruptcy</th>
-                <th scope="col">Max final cash</th>
+                <th scope="col">Best-run cash</th>
                 <th scope="col">Max survival days</th>
                 <th scope="col">Mean survival days</th>
                 <th scope="col">Turns/week</th>
@@ -585,124 +606,160 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Claude Fable 5<sup>*</sup></th>
-                <td>0/2</td>
-                <td>$47,148,164</td>
+                <th scope="row">Claude Fable 5</th>
+                <td>3/3</td>
+                <td>1/3</td>
+                <td>$12,630,078</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>15.4</td>
-                <td>$386.46</td>
+                <td>461.7 &plusmn; 54.2</td>
+                <td>9.86</td>
+                <td>$265.43</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
-                <td>0/3</td>
-                <td>$27,777,568</td>
+                <td>3/3</td>
+                <td>1/3</td>
+                <td>$2,399,209</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>10.9</td>
-                <td>$213.41</td>
-              </tr>
-              <tr>
-                <th scope="row">GPT-5.5</th>
-                <td>2/3</td>
-                <td>$21,297,707</td>
-                <td>500</td>
-                <td>333.7 &plusmn; 229.7</td>
-                <td>34.7</td>
-                <td>$200.49</td>
+                <td>378.0 &plusmn; 172.5</td>
+                <td>16.64</td>
+                <td>$348.49</td>
               </tr>
               <tr>
                 <th scope="row">Qwen 3.7 Max</th>
+                <td>3/3</td>
                 <td>0/3</td>
-                <td>$417,918</td>
+                <td>$365,346</td>
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
-                <td>6.1</td>
+                <td>7.82</td>
                 <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Gemini 3.5 Flash</th>
+                <td>3/3</td>
+                <td>0/3</td>
+                <td>$75,126</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>58.37</td>
+                <td>$67.09</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.7</th>
-                <td>0/3</td>
-                <td>$389,959</td>
+                <td>3/3</td>
+                <td>1/3</td>
+                <td>$70,620</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>14.6</td>
-                <td>$128.72</td>
+                <td>414.3 &plusmn; 121.2</td>
+                <td>14.33</td>
+                <td>$92.32</td>
               </tr>
               <tr>
-                <th scope="row">Kimi K2.6</th>
+                <th scope="row">Claude Sonnet 5</th>
+                <td>3/3</td>
                 <td>1/3</td>
-                <td>$98,050</td>
+                <td>$64,459</td>
                 <td>500</td>
-                <td>343.0 &plusmn; 110.0</td>
-                <td>30.5</td>
-                <td>--</td>
+                <td>470.7 &plusmn; 41.5</td>
+                <td>20.50</td>
+                <td>$68.25</td>
+              </tr>
+              <tr>
+                <th scope="row">Claude Haiku 4.5</th>
+                <td>3/6</td>
+                <td>2/3</td>
+                <td>$59,625</td>
+                <td>500</td>
+                <td>286.3 &plusmn; 153.3</td>
+                <td>19.35</td>
+                <td>$0.01</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
+                <td>3/3</td>
+                <td>2/3</td>
+                <td>$54,327</td>
+                <td>500</td>
+                <td>376.7 &plusmn; 105.6</td>
+                <td>25.24</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Kimi K2.6</th>
+                <td>3/3</td>
                 <td>0/3</td>
-                <td>$91,371</td>
+                <td>$43,598</td>
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
-                <td>12.9</td>
+                <td>16.64</td>
                 <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 4.6</th>
-                <td>2/3</td>
-                <td>$69,766</td>
+                <td>3/3</td>
+                <td>1/3</td>
+                <td>$38,166</td>
                 <td>500</td>
-                <td>282.3 &plusmn; 136.0</td>
-                <td>13.3</td>
-                <td>$82.84</td>
+                <td>419.3 &plusmn; 114.1</td>
+                <td>14.37</td>
+                <td>$73.28</td>
+              </tr>
+              <tr>
+                <th scope="row">GPT-5.5</th>
+                <td>3/3</td>
+                <td>2/3</td>
+                <td>$33,260</td>
+                <td>500</td>
+                <td>401.0 &plusmn; 98.3</td>
+                <td>30.41</td>
+                <td>$153.80</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
                 <td>3/3</td>
+                <td>3/3</td>
                 <td>$0</td>
-                <td>324</td>
-                <td>214.7 &plusmn; 91.1</td>
-                <td>51.5</td>
+                <td>319</td>
+                <td>155.7 &plusmn; 130.0</td>
+                <td>98.66</td>
                 <td>--</td>
-              </tr>
-              <tr>
-                <th scope="row">Claude Haiku 4.5</th>
-                <td>3/3</td>
-                <td>$0</td>
-                <td>231</td>
-                <td>144.7 &plusmn; 70.5</td>
-                <td>23.1</td>
-                <td>$6.68</td>
-              </tr>
-              <tr>
-                <th scope="row">Gemini 3 Flash</th>
-                <td>3/3</td>
-                <td>$0</td>
-                <td>226</td>
-                <td>154.0 &plusmn; 37.0</td>
-                <td>18.5</td>
-                <td>$2.98</td>
               </tr>
               <tr>
                 <th scope="row">DeepSeek V4 Pro</th>
                 <td>3/3</td>
-                <td>$0</td>
-                <td>176</td>
-                <td>114.3 &plusmn; 38.6</td>
-                <td>19.3</td>
-                <td>--</td>
-              </tr>
-              <tr class="pre-estimate-row">
-                <th scope="row">Grok 4.20</th>
                 <td>3/3</td>
                 <td>$0</td>
-                <td>37</td>
-                <td>28.3 &plusmn; 8.5</td>
-                <td>8.2</td>
-                <td>$0.75</td>
+                <td>160</td>
+                <td>136.3 &plusmn; 23.7</td>
+                <td>21.85</td>
+                <td>--</td>
               </tr>
+              <tr>
+                <th scope="row">Gemini 3 Flash</th>
+                <td>3/3</td>
+                <td>3/3</td>
+                <td>$0</td>
+                <td>150</td>
+                <td>137.0 &plusmn; 10.2</td>
+                <td>15.81</td>
+                <td>$1.19</td>
+              </tr>
+              <tr>
+                <th scope="row">Grok 4.20</th>
+                <td>3/3</td>
+                <td>3/3</td>
+                <td>$0</td>
+                <td>59</td>
+                <td>36.0 &plusmn; 18.4</td>
+                <td>13.49</td>
+                <td>$3.64</td>
+              </tr>
+
+
               <tr class="reference-row baseline-row">
                 <th scope="row">Rule-based baseline</th>
+                <td></td>
                 <td></td>
                 <td>$15,756,408</td>
                 <td></td>
@@ -713,6 +770,7 @@
               <tr class="reference-row estimate-row">
                 <th scope="row">Estimated final cash upper bound</th>
                 <td></td>
+                <td></td>
                 <td>$2,200,000,000</td>
                 <td></td>
                 <td></td>
@@ -722,7 +780,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
       </figure>
     </section>
 
@@ -814,22 +872,38 @@
 
       <div class="trajectory-card-row" aria-label="Highlighted model trajectories">
         <div class="trajectory-model-card">
-          <h3>Claude Fable 5<sup>*</sup></h3>
+          <h3>GPT-5.5</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=2d192ec1" class="trajectory-run-item">
-              <span class="trajectory-run-id">2d192ec1</span>
-              <span class="trajectory-run-meta">survived 500d · 1,123 actions · 3,917 subs</span>
-              <span class="trajectory-run-cash">$47.15M</span>
+            <a href="trajectory-viewer/run.html?run=8f92185d" class="trajectory-run-item">
+              <span class="trajectory-run-id">8f92185d</span>
+              <span class="trajectory-run-meta">survived 504d · 2,919 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$32.9K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=2bd22f52" class="trajectory-run-item">
-              <span class="trajectory-run-id">2bd22f52</span>
-              <span class="trajectory-run-meta">survived 500d · 1,022 actions · 39,448 subs</span>
-              <span class="trajectory-run-cash">$14.61M</span>
+            <a href="trajectory-viewer/run.html?run=9fa64d2e" class="trajectory-run-item">
+              <span class="trajectory-run-id">9fa64d2e</span>
+              <span class="trajectory-run-meta">survived 436d · 3,134 actions · 27,128 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=6284da19" class="trajectory-run-item">
-              <span class="trajectory-run-id">6284da19</span>
-              <span class="trajectory-run-meta">stopped 385d · 719 actions · 138,694 subs</span>
-              <span class="trajectory-run-cash trajectory-run-status">DNF</span>
+          </div>
+        </div>
+
+        <div class="trajectory-model-card">
+          <h3>Claude Sonnet 5</h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=051a15c4" class="trajectory-run-item">
+              <span class="trajectory-run-id">051a15c4</span>
+              <span class="trajectory-run-meta">survived 504d · 1,480 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$64.1K</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=a1d3f2f6" class="trajectory-run-item">
+              <span class="trajectory-run-id">a1d3f2f6</span>
+              <span class="trajectory-run-meta">survived 504d · 1,227 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$53.7K</span>
+            </a>
+            <a href="trajectory-viewer/run.html?run=24586283" class="trajectory-run-item">
+              <span class="trajectory-run-id">24586283</span>
+              <span class="trajectory-run-meta">survived 412d · 1,444 actions · 0 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
@@ -837,41 +911,52 @@
         <div class="trajectory-model-card">
           <h3>Claude Opus 4.8</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=c632730b" class="trajectory-run-item">
-              <span class="trajectory-run-id">c632730b</span>
-              <span class="trajectory-run-meta">survived 500d · 854 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$27.78M</span>
+            <a href="trajectory-viewer/run.html?run=e2cbe2de" class="trajectory-run-item">
+              <span class="trajectory-run-id">e2cbe2de</span>
+              <span class="trajectory-run-meta">survived 504d · 1,511 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$2.40M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=0bd6d7c0" class="trajectory-run-item">
-              <span class="trajectory-run-id">0bd6d7c0</span>
-              <span class="trajectory-run-meta">survived 500d · 880 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$611.8K</span>
+            <a href="trajectory-viewer/run.html?run=aad782be" class="trajectory-run-item">
+              <span class="trajectory-run-id">aad782be</span>
+              <span class="trajectory-run-meta">survived 504d · 714 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$605.6K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=fd00287f" class="trajectory-run-item">
-              <span class="trajectory-run-id">fd00287f</span>
-              <span class="trajectory-run-meta">survived 500d · 621 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$116.4K</span>
+            <a href="trajectory-viewer/run.html?run=3f8f3efd" class="trajectory-run-item">
+              <span class="trajectory-run-id">3f8f3efd</span>
+              <span class="trajectory-run-meta">survived 134d · 374 actions · 73,605 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
 
         <div class="trajectory-model-card">
-          <h3>GPT-5.5</h3>
+          <h3>Claude Opus 4.7</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=c8419b3b" class="trajectory-run-item">
-              <span class="trajectory-run-id">c8419b3b</span>
-              <span class="trajectory-run-meta">survived 500d · 3,527 actions · 81,834 subs</span>
-              <span class="trajectory-run-cash">$21.30M</span>
+            <a href="trajectory-viewer/run.html?run=c2b8b65e" class="trajectory-run-item">
+              <span class="trajectory-run-id">c2b8b65e</span>
+              <span class="trajectory-run-meta">survived 504d · 852 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$70.3K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=15c3d364" class="trajectory-run-item">
-              <span class="trajectory-run-id">15c3d364</span>
-              <span class="trajectory-run-meta">survived 441d · 1,150 actions · 64,474 subs</span>
-              <span class="trajectory-run-cash">$688.4K</span>
+            <a href="trajectory-viewer/run.html?run=a96f6989" class="trajectory-run-item">
+              <span class="trajectory-run-id">a96f6989</span>
+              <span class="trajectory-run-meta">survived 504d · 920 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$19.8K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=555049e4" class="trajectory-run-item">
-              <span class="trajectory-run-id">555049e4</span>
-              <span class="trajectory-run-meta">survived 70d · 329 actions · 137,652 subs</span>
-              <span class="trajectory-run-cash">$29.4K</span>
+            <a href="trajectory-viewer/run.html?run=babb5a25" class="trajectory-run-item">
+              <span class="trajectory-run-id">babb5a25</span>
+              <span class="trajectory-run-meta">survived 243d · 654 actions · 1,473 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="trajectory-model-card">
+          <h3>Claude Fable 5</h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=4f03ddc9" class="trajectory-run-item">
+              <span class="trajectory-run-id">4f03ddc9</span>
+              <span class="trajectory-run-meta">survived 385d · 421 actions · 0 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
@@ -927,7 +1012,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=6"></script>
-  <script src="script.js?v=18"></script>
+  <script src="assets/runs-data.js?v=11"></script>
+  <script src="script.js?v=24"></script>
 </body>
 </html>

@@ -273,6 +273,61 @@ code {
   margin-top: 8px;
 }
 
+.changelog-box {
+  color: var(--ink);
+  background: #f8fafc;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px 16px 15px;
+}
+
+.changelog-box p {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.changelog-box details {
+  margin-top: 8px;
+}
+
+.changelog-box summary {
+  display: inline-flex;
+  color: var(--brand);
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 500;
+  cursor: pointer;
+  list-style: none;
+}
+
+.changelog-box summary::-webkit-details-marker {
+  display: none;
+}
+
+.changelog-box summary:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 3px;
+}
+
+.changelog-box summary::before {
+  content: "(";
+}
+
+.changelog-box summary::after {
+  content: ")";
+}
+
+.changelog-box details[open] > summary .read-more,
+.changelog-box details:not([open]) > summary .read-less {
+  display: none;
+}
+
+.changelog-box details p {
+  margin-top: 9px;
+  color: var(--ink-2);
+}
+
 .article-byline {
   border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
@@ -327,6 +382,12 @@ d-article > .tldr {
   margin: 42px 0 18px;
 }
 
+d-article > .changelog-box {
+  grid-column: text-start / text-end;
+  grid-row: 2;
+  margin: 0 0 40px;
+}
+
 d-article .article-contents {
   grid-column: page-start / text-start;
   grid-row: 1;
@@ -340,7 +401,7 @@ d-article .article-contents {
 }
 
 d-article > .narrative {
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .article-contents nav {
@@ -713,13 +774,6 @@ d-article .image-figure.paper-wide-figure {
   font-size: 0.72em;
   line-height: 0;
   vertical-align: super;
-}
-
-.fig-caption .fable-note {
-  display: block;
-  margin-top: 4px;
-  font-size: 0.86em;
-  line-height: 1.38;
 }
 
 .chart-panel .fig-caption {
@@ -1378,6 +1432,10 @@ d-article .trajectory-card-row {
 
   d-article > .tldr {
     margin-top: 34px;
+    margin-bottom: 16px;
+  }
+
+  d-article > .changelog-box {
     margin-bottom: 54px;
   }
 
@@ -1468,7 +1526,8 @@ d-article .trajectory-card-row {
 
 }
 
-.tldr .section-label {
+.tldr .section-label,
+.changelog-box .section-label {
   color: var(--ink-3);
   font-size: 14px;
   line-height: 1.2;

@@ -1,18 +1,20 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
-  "Claude Fable 5*": "#111827",
-  "GPT-5.5": "#2f6df6",
-  "Claude Opus 4.8": "#c41e3a",
-  "Claude Opus 4.7": "#ed5b2c",
+  "Claude Fable 5": "#111827",
+  "Claude Opus 4.8": "#d55e00",
   "Qwen 3.7 Max": "#8a63d2",
-  "Claude Sonnet 4.6": "#00875a",
-  "Kimi K2.6": "#b15c00",
-  "GLM 5.2": "#7c2d6f",
-  "GLM 5.1": "#b8326b",
+  "Gemini 3.5 Flash": "#2f6df6",
+  "Claude Opus 4.7": "#cc79a7",
+  "Claude Sonnet 5": "#009e73",
   "Claude Haiku 4.5": "#0c6fa6",
-  "Gemini 3 Flash": "#697386",
+  "GLM 5.2": "#7c2d6f",
+  "Kimi K2.6": "#b15c00",
+  "Claude Sonnet 4.6": "#00875a",
+  "GPT-5.5": "#e69f00",
+  "GLM 5.1": "#b8326b",
   "DeepSeek V4 Pro": "#0a2540",
+  "Gemini 3 Flash": "#697386",
   "Grok 4.20": "#6b3fc8",
   "Rule-Based Baseline": "#6b6b6b"
 };
@@ -35,20 +37,11 @@ function formatCash(value) {
 }
 
 function appendModelName(node, name) {
-  if (name !== "Claude Fable 5*") {
-    node.textContent = name;
-    return;
-  }
-  node.textContent = "Claude Fable 5";
-  const marker = svgEl("tspan", {
-    "baseline-shift": "super",
-    "font-size": "8.5"
-  }, node);
-  marker.textContent = "*";
+  node.textContent = name;
 }
 
 function modelNameHtml(name) {
-  return name === "Claude Fable 5*" ? "Claude Fable 5<sup>*</sup>" : name;
+  return name;
 }
 
 function valueAtDay(points, day) {
@@ -76,6 +69,8 @@ function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
   const rankedRuns = runs.slice().sort((a, b) => {
+    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
+    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });
@@ -102,6 +97,7 @@ function drawCashPlot(runs, mount) {
 
   const x = value => pad.left + ((value - xMin) / (xMax - xMin)) * innerW;
   const y = value => {
+    if (value <= 0) return pad.top + innerH;
     const safe = Math.max(yFloor, value);
     return pad.top + innerH - ((Math.log10(safe) - yMinLog) / (yMaxLog - yMinLog)) * innerH;
   };
@@ -488,6 +484,8 @@ function fitAllFrames() {
 
 function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
+    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
+    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });
