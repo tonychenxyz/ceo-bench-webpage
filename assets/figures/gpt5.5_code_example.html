@@ -442,41 +442,47 @@ OPT    10.74/462 29.96/433</div></div>
       </div>
     </div>
 
-    <!-- Right: Example action — model billing-cohort survival -->
+    <!-- Right: Example action — infer hidden competitor events -->
     <div class="tile code">
       <div class="head">
         <span class="panel-mark">(b)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
-        <span class="card-title"><b>Claude Fable 5</b> · Model billing-cohort retention through the final week · <span style="color:#6e7781">Day 469</span></span>
+        <span class="card-title"><b>Claude Fable 5</b> · Infer hidden competitor events from social text · <span style="color:#6e7781">Day 392</span></span>
       </div>
       <div class="body">
-<pre class="code"><span class="str">"""Wk68+ cash model to d504, calibrated on wk67 measurements."""</span>
-CASH0=<span class="num">12_587_222</span>; U=<span class="num">166.4</span>; ADR=<span class="num">.0850</span>; SLIP=<span class="num">.9788</span>
-CAP=<span class="num">9_310</span>; COST={<span class="num">5</span>:<span class="num">.030</span>,<span class="num">4</span>:<span class="num">.012</span>}
-OPS={<span class="num">68</span>:<span class="num">35000</span>,<span class="num">69</span>:<span class="num">28000</span>,<span class="num">70</span>:<span class="num">28000</span>,<span class="num">71</span>:<span class="num">14000</span>,<span class="num">72</span>:<span class="num">7000</span>}
-TIER={<span class="num">68</span>:<span class="num">5</span>,<span class="num">69</span>:<span class="num">5</span>,<span class="num">70</span>:<span class="num">4</span>,<span class="num">71</span>:<span class="num">5</span>,<span class="num">72</span>:<span class="num">5</span>}
-<span class="suppress">⋯ d469 survivor-book buckets: billers, dues by final-week billing windows</span>
-B68=(<span class="num">2067</span>,<span class="num">348_593</span>); B69=(<span class="num">1607</span>,<span class="num">270_143</span>); B70=(<span class="num">325</span>,<span class="num">52_115</span>); F70_T4=<span class="num">.08</span>
-<span class="kw">def</span> <span class="fn">run</span>(F,label,f70=F70_T4,abort_after68=<span class="kw">False</span>):
-  cash,book=CASH0,<span class="num">7061</span>; traj={}
-  <span class="kw">for</span> wk <span class="kw">in</span> (<span class="num">68</span>,<span class="num">69</span>,<span class="num">70</span>,<span class="num">71</span>,<span class="num">72</span>):
-    tier=TIER[wk]; ops=OPS[wk]  <span class="suppress">⋯ abort path switches to T4/min ops</span>
-    billers,dues = {<span class="num">68</span>:B68,<span class="num">69</span>:B69,<span class="num">70</span>:B70}.get(wk,B68)
-    f = Fs[wk] <span class="kw">if</span> tier==<span class="num">5</span> <span class="kw">else</span> f70
-    pay=dues*f*SLIP; canc=billers*(<span class="num">1</span>-f); book_end=book-canc
-    avg=(book+book_end)/<span class="num">2</span>; compute=avg*U*COST[tier]*<span class="num">7</span>; adrev=avg*ADR*<span class="num">7</span>
-    cash += pay+adrev-compute-ops-CAP-<span class="num">30</span>; book=book_end
-    traj[wk]=(<span class="fn">round</span>(cash/<span class="num">1000</span>,<span class="num">1</span>),<span class="fn">int</span>(book))
-  <span class="kw">return</span> {<span class="num">476</span>:traj[<span class="num">68</span>],<span class="num">497</span>:traj[<span class="num">71</span>],<span class="num">504</span>:traj[<span class="num">72</span>]}
-<span class="kw">for</span> name,f <span class="kw">in</span> [(<span class="str">'UP'</span>,<span class="num">.90</span>),(<span class="str">'CENTRAL'</span>,<span class="num">.85</span>),(<span class="str">'DOWN'</span>,<span class="num">.65</span>)]: <span class="suppress">⋯ run scenarios</span></pre>
+<pre class="code"><span class="kw">import</span> novamind_api <span class="kw">as</span> nm
+<span class="kw">from</span> collections <span class="kw">import</span> defaultdict
 
-<div class="stdout"><span class="case">Fable 5 final-week cash model</span>
-UP F=.90       d504 12,651K  book 5,947
-CENTRAL F=.85  d504 12,603K  book 5,552
-DOWN F=.65     d504 12,421K  book 4,048
-STORM+abort    d504 12,245K  book   385
+<span class="com"># Social posts have no event/sentiment label; infer competitor shocks from text.</span>
+posts = nm.analytics.get_social_posts(days=<span class="num">7</span>, limit=<span class="num">60</span>)
+plist = posts <span class="kw">if</span> <span class="fn">isinstance</span>(posts, list) <span class="kw">else</span> posts.get(<span class="str">'posts'</span>, posts)
+comp_kw = (<span class="str">'rival'</span>, <span class="str">'cloudpeak'</span>, <span class="str">'competitor'</span>, <span class="str">'launch'</span>, <span class="str">'announc'</span>)
+<span class="kw">for</span> p <span class="kw">in</span> plist:
+  txt = p.get(<span class="str">'content'</span>, <span class="str">''</span>)[:<span class="num">110</span>].replace(<span class="str">'\n'</span>, <span class="str">' '</span>)
+  d = p.get(<span class="str">'day'</span>, <span class="str">'?'</span>)
+  flag = <span class="str">' <<<COMP?'</span> <span class="kw">if</span> <span class="fn">any</span>(k <span class="kw">in</span> txt.lower() <span class="kw">for</span> k <span class="kw">in</span> comp_kw) <span class="kw">else</span> <span class="str">''</span>
+  print(<span class="str">f"d{d}: {txt}{flag}"</span>)
 
-EV checkpoints: d476 12,570.5K | d497 12,474.5K | d504 12,533.7K</div>
+<span class="com"># Same file then maps the exposed renewal base through d504.</span>
+r = nm.query(<span class="str">"""SELECT start_day,billing_day_mod30,effective_price,seat_count
+FROM subscriptions WHERE status='subscribed'"""</span>)
+wk_dur, wk_fresh = defaultdict(float), defaultdict(float)
+<span class="kw">for</span> row <span class="kw">in</span> r[<span class="str">'rows'</span>]:
+  mrr = row[<span class="str">'effective_price'</span>] * row[<span class="str">'seat_count'</span>]
+  <span class="kw">for</span> day <span class="kw">in</span> <span class="fn">range</span>(<span class="num">393</span>, <span class="num">505</span>):
+    <span class="kw">if</span> day % <span class="num">30</span> == row[<span class="str">'billing_day_mod30'</span>] <span class="kw">and</span> day > row[<span class="str">'start_day'</span>]:
+      w = (day + <span class="num">6</span>) // <span class="num">7</span>
+      (wk_dur <span class="kw">if</span> row[<span class="str">'start_day'</span>] &lt; <span class="num">365</span> <span class="kw">else</span> wk_fresh)[w] += mrr</pre>
+
+<div class="stdout"><span class="case">Fable 5 hidden-event scan</span>
+d390 CloudPeak overhaul, ~0.1889 quality jump  <<<COMP?
+d388 CloudPeak new release changes things      <<<COMP?
+d388 RivalTech new release, +0.3221 quality    <<<COMP?
+d387 RivalTech release is a game-changer       <<<COMP?
+d385 RivalTech release, ~0.2543 quality jump   <<<COMP?
+d385 CloudPeak release, ~0.2543 quality boost  <<<COMP?
+
+renewal exposure: wk57 238.3K | wk65 213.2K | wk70 216.0K</div>
       </div>
     </div>
   </div>
