@@ -692,25 +692,26 @@ d-article .text-width-figure {
   margin-bottom: 3px;
 }
 
+.example-six-intro {
+  margin-top: 28px;
+}
+
 .gpt-failure-summary {
   max-width: var(--page-w);
   margin: 2px 0 30px;
-  border-top: 1.2px solid var(--ink);
-  border-bottom: 1.2px solid var(--ink);
 }
 
 .failure-run {
-  padding: 18px 0 20px;
-  border-bottom: 1px solid var(--border);
+  padding: 8px 0 16px;
 }
 
-.failure-run:last-child {
-  border-bottom: 0;
+.failure-run + .failure-run {
+  margin-top: 12px;
 }
 
 .failure-run-header {
   max-width: var(--article-w);
-  margin: 0 auto 13px;
+  margin: 0 auto 5px;
 }
 
 .failure-run-header h3 {
@@ -729,28 +730,41 @@ d-article .text-width-figure {
   line-height: 1.58;
 }
 
+.failure-run-copy {
+  max-width: var(--article-w);
+  margin: 0 auto 7px;
+  color: var(--ink);
+  font-size: 16px;
+  line-height: 1.72;
+}
+
 .failure-card-row {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 8px;
+  align-items: stretch;
 }
 
 .failure-card-item {
+  display: flex;
+  flex-direction: column;
   min-width: 0;
 }
 
 .failure-card-summary {
-  min-height: 38px;
-  margin: 0 0 6px;
+  order: 2;
+  margin: 4px 0 0;
   color: var(--ink);
   font-size: 13px;
   line-height: 1.35;
-  font-weight: 800;
+  font-weight: 400;
 }
 
 .failure-memo-card {
   display: flex;
-  min-height: 118px;
+  order: 1;
+  flex: 1;
+  min-height: 89px;
   flex-direction: column;
   overflow: hidden;
   background: var(--paper);
@@ -763,7 +777,7 @@ d-article .text-width-figure {
   border-bottom: 1px solid var(--ink);
   background: #eef2e8;
   color: var(--ink);
-  font-size: 10.5px;
+  font-size: 10.2px;
   line-height: 1;
   font-weight: 600;
 }
@@ -869,9 +883,26 @@ d-article .image-figure.paper-wide-figure {
   margin-top: 8px;
 }
 
+.tight-caption-figure .fig-caption {
+  margin-top: 0;
+}
+
 .results-overview-plot {
   max-width: var(--max-w);
-  margin: 0 auto 24px;
+  margin: 0 auto 20px;
+}
+
+.results-overview-plot .cash-legend {
+  padding-top: 0;
+}
+
+.results-overview-plot .cash-legend:empty,
+.results-overview-plot .cash-legend[hidden] {
+  display: none;
+}
+
+.results-overview-plot .fig-caption {
+  margin-top: -14px;
 }
 
 .intro-results-plot {
@@ -896,6 +927,12 @@ d-article > .intro-results-plot ~ .narrative {
 
 .frame-wrap + .fig-caption {
   margin-top: 4px;
+}
+
+.cash-grid-block .frame-wrap + .fig-caption,
+.memo-timeline-block .frame-wrap + .fig-caption,
+.code-example-block .frame-wrap + .fig-caption {
+  margin-top: 0;
 }
 
 .results-table-block {
@@ -1327,9 +1364,10 @@ d-appendix .bottom-note:first-child {
 
 .if-examples {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 240px;
+  grid-template-columns: 524px 267px;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
+  gap: 0;
   margin-top: 8px;
 }
 
@@ -1344,10 +1382,22 @@ d-appendix .bottom-note:first-child {
   max-width: 100%;
 }
 
+.if-examples > .figure-block:not(.if-frequency) .fig-caption {
+  max-width: 524px;
+  margin-left: auto;
+  margin-right: 0;
+}
+
 .if-frequency {
   max-width: none;
   margin-left: 0;
   margin-right: 0;
+}
+
+.if-frequency .fig-caption {
+  max-width: 267px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .targeted-dev-block {

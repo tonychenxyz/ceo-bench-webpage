@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="500" viewBox="0 0 640 500">
+<rect width="100%" height="100%" fill="white"/>
+<text x="320.0" y="43.0" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="middle" fill="black">Weekly avg. count of &quot;if&quot;</text>
+<text x="320.0" y="72.0" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700" text-anchor="middle" fill="black">in memory + rationale</text>
+<line x1="105" y1="365.0" x2="555" y2="365.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="372.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">0</text>
+<line x1="105" y1="340.5" x2="555" y2="340.5" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="347.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">2</text>
+<line x1="105" y1="316.0" x2="555" y2="316.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="323.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">4</text>
+<line x1="105" y1="291.5" x2="555" y2="291.5" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="298.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">6</text>
+<line x1="105" y1="267.0" x2="555" y2="267.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="274.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">8</text>
+<line x1="105" y1="242.5" x2="555" y2="242.5" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="249.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">10</text>
+<line x1="105" y1="218.0" x2="555" y2="218.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="225.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">12</text>
+<line x1="105" y1="193.5" x2="555" y2="193.5" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="200.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">14</text>
+<line x1="105" y1="169.0" x2="555" y2="169.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="176.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">16</text>
+<line x1="105" y1="144.5" x2="555" y2="144.5" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="151.5" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">18</text>
+<line x1="105" y1="120.0" x2="555" y2="120.0" stroke="#d7e0eb" stroke-width="1.4" stroke-dasharray="5 8"/>
+<text x="83.0" y="127.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">20</text>
+<line x1="105" y1="115" x2="105" y2="369" stroke="#16324f" stroke-width="3"/>
+<line x1="99" y1="365" x2="573" y2="365" stroke="#16324f" stroke-width="3"/>
+<rect x="153.0" y="294.8" width="64" height="70.2" rx="8" fill="#f17f9b"/>
+<line x1="185.0" y1="283.1" x2="185.0" y2="306.5" stroke="black" stroke-width="3"/>
+<line x1="168.0" y1="283.1" x2="202.0" y2="283.1" stroke="black" stroke-width="3"/>
+<line x1="168.0" y1="306.5" x2="202.0" y2="306.5" stroke="black" stroke-width="3"/>
+<text x="185.0" y="272.1" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">5.73</text>
+<rect x="243.0" y="189.9" width="64" height="175.1" rx="8" fill="#7fa6f4"/>
+<line x1="275.0" y1="136.9" x2="275.0" y2="242.9" stroke="black" stroke-width="3"/>
+<line x1="258.0" y1="136.9" x2="292.0" y2="136.9" stroke="black" stroke-width="3"/>
+<line x1="258.0" y1="242.9" x2="292.0" y2="242.9" stroke="black" stroke-width="3"/>
+<text x="275.0" y="138.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">14.29</text>
+<rect x="333.0" y="356.2" width="64" height="8.8" rx="8" fill="#f5a886"/>
+<line x1="365.0" y1="351.9" x2="365.0" y2="360.6" stroke="black" stroke-width="3"/>
+<line x1="348.0" y1="351.9" x2="382.0" y2="351.9" stroke="black" stroke-width="3"/>
+<line x1="348.0" y1="360.6" x2="382.0" y2="360.6" stroke="black" stroke-width="3"/>
+<text x="365.0" y="340.9" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">0.71</text>
+<rect x="423.0" y="299.9" width="64" height="65.1" rx="8" fill="#b8c6d6"/>
+<line x1="455.0" y1="209.9" x2="455.0" y2="365.0" stroke="black" stroke-width="3"/>
+<line x1="438.0" y1="209.9" x2="472.0" y2="209.9" stroke="black" stroke-width="3"/>
+<line x1="438.0" y1="365.0" x2="472.0" y2="365.0" stroke="black" stroke-width="3"/>
+<text x="455.0" y="198.9" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">5.32</text>
+<rect x="86" y="405" width="22" height="22" rx="5" fill="#f17f9b" stroke="#16324f" stroke-width="1.2"/>
+<text x="123.0" y="422.0" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="black">Fable 5</text>
+<rect x="332" y="405" width="22" height="22" rx="5" fill="#7fa6f4" stroke="#16324f" stroke-width="1.2"/>
+<text x="369.0" y="422.0" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="black">Opus 4.8</text>
+<rect x="86" y="446" width="22" height="22" rx="5" fill="#f5a886" stroke="#16324f" stroke-width="1.2"/>
+<text x="123.0" y="463.0" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="black">Qwen 3.7</text>
+<rect x="332" y="446" width="22" height="22" rx="5" fill="#b8c6d6" stroke="#16324f" stroke-width="1.2"/>
+<text x="369.0" y="463.0" font-family="Arial, Helvetica, sans-serif" font-size="21" font-weight="400" text-anchor="start" fill="black">Other models</text>
+</svg>

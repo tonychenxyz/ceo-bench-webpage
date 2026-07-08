@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="420" viewBox="0 0 1000 420">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="260" y1="80" x2="260" y2="300" stroke="#e5e9ef" stroke-width="1.4"/>
+<line x1="500" y1="80" x2="500" y2="300" stroke="#e5e9ef" stroke-width="1.4"/>
+<line x1="740" y1="80" x2="740" y2="300" stroke="#e5e9ef" stroke-width="1.4"/>
+<text x="140.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">Fable 5</text>
+<circle cx="140" cy="180" r="80" fill="#b9c6d3" stroke="#16324f" stroke-width="2.2"/>
+<path d="M 140.00 180.00 L 140.00 100.00 A 80.00 80.00 0 1 1 84.00 122.87 Z" fill="#82a6ee" stroke="#16324f" stroke-width="2.2"/>
+<text x="158.1" y="230.4" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">88%</text>
+<text x="121.9" y="141.6" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">12%</text>
+<text x="380.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">Opus 4.8</text>
+<circle cx="380" cy="180" r="80" fill="#b9c6d3" stroke="#16324f" stroke-width="2.2"/>
+<path d="M 380.00 180.00 L 380.00 100.00 A 80.00 80.00 0 1 1 374.19 259.79 Z" fill="#82a6ee" stroke="#16324f" stroke-width="2.2"/>
+<text x="428.0" y="187.7" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">51%</text>
+<text x="332.0" y="184.3" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">49%</text>
+<text x="620.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">Qwen 3.7</text>
+<circle cx="620" cy="180" r="80" fill="#b9c6d3" stroke="#16324f" stroke-width="2.2"/>
+<path d="M 620.00 180.00 L 620.00 100.00 A 80.00 80.00 0 0 1 700.00 179.34 Z" fill="#82a6ee" stroke="#16324f" stroke-width="2.2"/>
+<text x="653.8" y="151.9" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">25%</text>
+<text x="586.2" y="220.1" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">75%</text>
+<text x="860.0" y="62.0" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="400" text-anchor="middle" fill="black">Other</text>
+<circle cx="860" cy="180" r="80" fill="#b9c6d3" stroke="#16324f" stroke-width="2.2"/>
+<path d="M 860.00 180.00 L 860.00 100.00 A 80.00 80.00 0 1 1 780.79 168.80 Z" fill="#82a6ee" stroke="#16324f" stroke-width="2.2"/>
+<text x="891.5" y="222.2" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">77%</text>
+<text x="828.5" y="149.8" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="400" text-anchor="middle" fill="black">23%</text>
+<rect x="300" y="333" width="25" height="25" rx="4" fill="#82a6ee" stroke="#16324f" stroke-width="1.3"/>
+<text x="342.0" y="354.0" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="400" text-anchor="start" fill="black">Targeted dev spend</text>
+<rect x="610" y="333" width="25" height="25" rx="4" fill="#b9c6d3" stroke="#16324f" stroke-width="1.3"/>
+<text x="652.0" y="354.0" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="400" text-anchor="start" fill="black">Non-targeted dev spend</text>
+</svg>

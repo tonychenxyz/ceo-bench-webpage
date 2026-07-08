@@ -181,10 +181,19 @@ function drawPanel(svg, panel, x0){
     el('rect', {x:plotX0, y:barY, width:Math.max(1, barX1 - plotX0), height:barH, rx:2, fill:panel.fill}, svg);
     el('line', {x1:barX1, x2:barX1, y1:barY, y2:barY + barH, stroke:panel.color, 'stroke-width':1.1}, svg);
 
-    const tight = barX1 > plotX1 - 28;
-    const vx = tight ? plotX1 - 2 : barX1 + 5;
-    const v = el('text', {x:vx, y:labelY, class:'val', 'text-anchor':tight ? 'end' : 'start'}, svg);
+    const v = el('text', {x:barX1 + 5, y:labelY, class:'val', 'text-anchor':'start'}, svg);
     v.textContent = fmtValue(d.avg);
+    const maxLabelX = x0 + PANEL_W - 2;
+    try {
+      const box = v.getBBox();
+      const overflow = box.x + box.width - maxLabelX;
+      if (overflow > 0) {
+        const shiftedX = Math.max(barX1 + 2, barX1 + 5 - overflow);
+        v.setAttribute('x', shiftedX);
+      }
+    } catch (e) {
+      // Keep the default placement if the browser cannot measure SVG text.
+    }
   });
 
   const axis = el('text', {x:plotX0 + INNER_W / 2, y:H - 5, class:'axt', 'text-anchor':'middle'}, svg);

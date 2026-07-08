@@ -43,7 +43,7 @@
     box-sizing: border-box;
   }
   .page.single {
-    width: 204px;
+    width: 267px;
     padding: 0;
   }
   .row {
@@ -56,7 +56,11 @@
     display: block;
   }
   .page.single .panel {
-    width: 204px;
+    width: 267px;
+  }
+  .page.single .tile svg {
+    width: 235px;
+    margin: 0 auto;
   }
   .panel {
     min-width: 0;
@@ -86,13 +90,15 @@
 	    color: #000000;
   }
   .page.single .legend-row {
-    height: 30px;
+    height: 40px;
     flex-wrap: wrap;
-    justify-content: flex-start;
-    align-content: flex-start;
+    justify-content: center;
+    align-content: center;
     gap: 3px 8px;
-    padding: 4px 0 0 18px;
-    font-size: 8.5px;
+    width: 235px;
+    margin: 0 auto;
+    padding: 5px 0 0;
+    font-size: 9px;
     line-height: 1.05;
     box-sizing: border-box;
   }
@@ -136,7 +142,7 @@
 	    font-family: 'Inter', sans-serif;
 	  }
 	  .yt {
-	    font-size: 12px;
+	    font-size: 12.5px;
 	    fill: #000000;
 	  }
 	  .xt {
@@ -145,13 +151,13 @@
 	    font-weight: 400;
 	  }
 	  .axt {
-	    font-size: 11px;
+	    font-size: 11.7px;
 	    fill: #000000;
 	    font-weight: 800;
 	  }
 	  .val {
 	    font-family: 'Inter', system-ui, sans-serif;
-	    font-size: 11px;
+	    font-size: 11.7px;
 	    fill: #000000;
 	    font-weight: 400;
 	    font-variant-numeric: tabular-nums;
@@ -201,11 +207,18 @@
 </div>
 
 <script>
-const GROUPS = [
+const DEFAULT_GROUPS = [
   {key:'opus48',  label:'Claude Opus 4.8',  short:['Claude', 'Opus 4.8'], color:'#c41e3a', fill:'#f28ea0'},
   {key:'gpt',     label:'GPT 5.5',          short:['GPT 5.5'],             color:'#2f6df6', fill:'#86adff'},
   {key:'opus',    label:'Claude Opus 4.7',  short:['Claude', 'Opus 4.7'], color:'#ed5b2c', fill:'#ffad8d'},
   {key:'other',   label:'Other models',     short:['Other'],               color:'#697386', fill:'#bcc8d6'},
+];
+
+const IF_GROUPS = [
+  {key:'fable5',   label:'Claude Fable 5',   short:['Claude', 'Fable 5'],   color:'#b8326b', fill:'#f28ea0'},
+  {key:'opus48',   label:'Claude Opus 4.8',  short:['Claude', 'Opus 4.8'],  color:'#2f6df6', fill:'#86adff'},
+  {key:'qwen37',   label:'Qwen 3.7 Max',     short:['Qwen', '3.7 Max'],     color:'#ed5b2c', fill:'#ffad8d'},
+  {key:'gemini35', label:'Gemini 3.5 Flash', short:['Gemini', '3.5 Flash'], color:'#0c6f65', fill:'#72c2b2'},
 ];
 
 const requestedPlot = new URLSearchParams(window.location.search).get('plot');
@@ -269,16 +282,17 @@ const PLOTS = [
   {
     mountId: 'plotD',
     panelLabel: '(d)',
+    groups: IF_GROUPS,
     yLabel: ['Weekly avg. count of "if"', 'in agent memo'],
     kind: 'count',
-    yMax: 10,
-    ticks: [0, 2, 4, 6, 8, 10],
+    yMax: 20,
+    ticks: [0, 5, 10, 15, 20],
     yLabelOffset: 20,
     bars: [
-      {key:'opus48', mean:8.574, sd:0.231, n:3},
-      {key:'gpt', mean:7.47, sd:1.37, n:3},
-      {key:'opus', mean:2.74, sd:0.48, n:3},
-      {key:'other', mean:2.63, sd:2.37, n:21},
+      {key:'fable5', mean:5.34, sd:0.93, n:3},
+      {key:'opus48', mean:13.97, sd:4.44, n:3},
+      {key:'qwen37', mean:0.67, sd:0.33, n:3},
+      {key:'gemini35', mean:0.06, sd:0.07, n:3},
     ]
   },
 ];
@@ -306,8 +320,9 @@ function tickFmt(v, kind){
 
 function drawBarPlot(cfg){
 	  const singlePlot = Boolean(requestedPlot);
-	  const W = 204, H = singlePlot ? 118 : 210;
-	  const PAD_L = cfg.padL || 48, PAD_R = 6, PAD_T = singlePlot ? 34 : 50, PAD_B = singlePlot ? 8 : 32;
+	  const W = singlePlot ? 235 : 204, H = singlePlot ? 220 : 210;
+	  const PAD_L = cfg.padL || 48, PAD_R = 6, PAD_T = singlePlot ? 36 : 50, PAD_B = singlePlot ? 14 : 32;
+  const groups = cfg.groups || DEFAULT_GROUPS;
   const innerW = W - PAD_L - PAD_R;
   const innerH = H - PAD_T - PAD_B;
   const yMin = 0, yMax = cfg.yMax;
@@ -344,13 +359,13 @@ function drawBarPlot(cfg){
 	    dir.textContent = cfg.direction === 'up' ? '👍' : '👎';
 	  }
 
-  const gap = singlePlot ? 9 : 11;
-  const barW = singlePlot ? 17 : 18;
-  const totalW = barW * GROUPS.length + gap * (GROUPS.length - 1);
+  const gap = singlePlot ? 10 : 11;
+  const barW = singlePlot ? 19 : 18;
+  const totalW = barW * groups.length + gap * (groups.length - 1);
   const startX = PAD_L + (innerW - totalW) / 2;
 
   cfg.bars.forEach((d, i) => {
-    const g = GROUPS.find(x => x.key === d.key);
+    const g = groups.find(x => x.key === d.key);
     const x = startX + i * (barW + gap);
     const y0 = y(0);
     const yMean = y(d.mean);
@@ -394,7 +409,9 @@ function drawBarPlot(cfg){
 function drawLegend(){
   const legend = document.getElementById('legend');
   if (!legend) return;
-  legend.innerHTML = GROUPS.map(g => (
+  const activePlot = requestedPlot ? PLOTS.find(plot => plot.mountId === 'plot' + requestedPlot.toUpperCase()) : null;
+  const groups = activePlot && activePlot.groups ? activePlot.groups : DEFAULT_GROUPS;
+  legend.innerHTML = groups.map(g => (
     `<span class="legend-item"><span class="legend-swatch" style="background:${g.fill}"></span>${g.label}</span>`
   )).join('');
 }
