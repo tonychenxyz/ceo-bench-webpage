@@ -442,41 +442,41 @@ OPT    10.74/462 29.96/433</div></div>
       </div>
     </div>
 
-    <!-- Right: Example action — infer latent customer attributes -->
+    <!-- Right: Example action — model billing-cohort survival -->
     <div class="tile code">
       <div class="head">
         <span class="panel-mark">(b)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
-        <span class="card-title"><b>GPT-5.5</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
+        <span class="card-title"><b>Claude Fable 5</b> · Model billing-cohort retention through the final week · <span style="color:#6e7781">Day 469</span></span>
       </div>
       <div class="body">
-<pre class="code">rows=<span class="bn">nm</span>.query(<span class="str">"""select et.customer_id,c.group_id,et.offer_json,s.status from enterprise_turns et join customers c on c.customer_id=et.customer_id left join subscriptions s on s.customer_id=et.customer_id where et.sender='agent' and et.offer_json not in ('{}','')"""</span>)[<span class="str">'rows'</span>]
-<span class="suppress">⋯ 40+ lines suppressed</span>
-<span class="kw">def</span> <span class="fn">parse_prices</span>(o):
-  <span class="kw">try</span>: d=json.loads(o)
-  <span class="kw">except</span>: <span class="kw">return</span> []
-  <span class="kw">return</span> [(x.get(<span class="str">'plan'</span>),x.get(<span class="str">'price'</span>,x.get(<span class="str">'price_per_seat'</span>,x.get(<span class="str">'monthly_price'</span>)))) <span class="kw">for</span> x <span class="kw">in</span> ([d] <span class="kw">if</span> <span class="fn">isinstance</span>(d,<span class="bn">dict</span>) <span class="kw">else</span> d) <span class="kw">if</span> <span class="fn">isinstance</span>(x,<span class="bn">dict</span>) <span class="kw">and</span> x.get(<span class="str">'plan'</span>)]
-last={}; [last.setdefault(r[<span class="str">'customer_id'</span>],r) <span class="kw">for</span> r <span class="kw">in</span> rows]
-<span class="kw">for</span> gid <span class="kw">in</span> <span class="fn">set</span>(r[<span class="str">'group_id'</span>] <span class="kw">for</span> r <span class="kw">in</span> last.values()):
-  lr=[r <span class="kw">for</span> r <span class="kw">in</span> last.values() <span class="kw">if</span> r[<span class="str">'group_id'</span>]==gid]
-  <span class="kw">for</span> plan <span class="kw">in</span> [<span class="str">'A'</span>,<span class="str">'B'</span>,<span class="str">'C'</span>]:
-    by_status=collections.defaultdict(<span class="bn">list</span>)
-    <span class="kw">for</span> r <span class="kw">in</span> lr:
-      <span class="kw">for</span> p,v <span class="kw">in</span> parse_prices(r[<span class="str">'offer_json'</span>]):
-        <span class="kw">if</span> p==plan <span class="kw">and</span> v <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>: by_status[r[<span class="str">'status'</span>]].append(<span class="fn">float</span>(v))
-    <span class="kw">if</span> by_status:
-      <span class="fn">print</span>(gid,plan,{s:(<span class="fn">len</span>(v),<span class="fn">round</span>(statistics.mean(v),<span class="num">2</span>)) <span class="kw">for</span> s,v <span class="kw">in</span> by_status.items()})
-<span class="suppress">⋯ 20+ lines suppressed</span></pre>
+<pre class="code"><span class="str">"""Wk68+ cash model to d504, calibrated on wk67 measurements."""</span>
+CASH0=<span class="num">12_587_222</span>; U=<span class="num">166.4</span>; ADR=<span class="num">.0850</span>; SLIP=<span class="num">.9788</span>
+CAP=<span class="num">9_310</span>; COST={<span class="num">5</span>:<span class="num">.030</span>,<span class="num">4</span>:<span class="num">.012</span>}
+OPS={<span class="num">68</span>:<span class="num">35000</span>,<span class="num">69</span>:<span class="num">28000</span>,<span class="num">70</span>:<span class="num">28000</span>,<span class="num">71</span>:<span class="num">14000</span>,<span class="num">72</span>:<span class="num">7000</span>}
+TIER={<span class="num">68</span>:<span class="num">5</span>,<span class="num">69</span>:<span class="num">5</span>,<span class="num">70</span>:<span class="num">4</span>,<span class="num">71</span>:<span class="num">5</span>,<span class="num">72</span>:<span class="num">5</span>}
+<span class="suppress">⋯ d469 survivor-book buckets: billers, dues by final-week billing windows</span>
+B68=(<span class="num">2067</span>,<span class="num">348_593</span>); B69=(<span class="num">1607</span>,<span class="num">270_143</span>); B70=(<span class="num">325</span>,<span class="num">52_115</span>); F70_T4=<span class="num">.08</span>
+<span class="kw">def</span> <span class="fn">run</span>(F,label,f70=F70_T4,abort_after68=<span class="kw">False</span>):
+  cash,book=CASH0,<span class="num">7061</span>; traj={}
+  <span class="kw">for</span> wk <span class="kw">in</span> (<span class="num">68</span>,<span class="num">69</span>,<span class="num">70</span>,<span class="num">71</span>,<span class="num">72</span>):
+    tier=TIER[wk]; ops=OPS[wk]  <span class="suppress">⋯ abort path switches to T4/min ops</span>
+    billers,dues = {<span class="num">68</span>:B68,<span class="num">69</span>:B69,<span class="num">70</span>:B70}.get(wk,B68)
+    f = Fs[wk] <span class="kw">if</span> tier==<span class="num">5</span> <span class="kw">else</span> f70
+    pay=dues*f*SLIP; canc=billers*(<span class="num">1</span>-f); book_end=book-canc
+    avg=(book+book_end)/<span class="num">2</span>; compute=avg*U*COST[tier]*<span class="num">7</span>; adrev=avg*ADR*<span class="num">7</span>
+    cash += pay+adrev-compute-ops-CAP-<span class="num">30</span>; book=book_end
+    traj[wk]=(<span class="fn">round</span>(cash/<span class="num">1000</span>,<span class="num">1</span>),<span class="fn">int</span>(book))
+  <span class="kw">return</span> {<span class="num">476</span>:traj[<span class="num">68</span>],<span class="num">497</span>:traj[<span class="num">71</span>],<span class="num">504</span>:traj[<span class="num">72</span>]}
+<span class="kw">for</span> name,f <span class="kw">in</span> [(<span class="str">'UP'</span>,<span class="num">.90</span>),(<span class="str">'CENTRAL'</span>,<span class="num">.85</span>),(<span class="str">'DOWN'</span>,<span class="num">.65</span>)]: <span class="suppress">⋯ run scenarios</span></pre>
 
-<div class="stdout"><span class="case">Active enterprise accepted price distribution</span>
-{'group_id':'E3','plan':'B','n':154,'seats':167595,'minp':1.69,'avgp':56.01,'maxp':89.0}
-{'group_id':'E3','plan':'C','n':3,'seats':3341,'minp':25.0,'avgp':101.0,'maxp':139.0}
+<div class="stdout"><span class="case">Fable 5 final-week cash model</span>
+UP F=.90       d504 12,651K  book 5,947
+CENTRAL F=.85  d504 12,603K  book 5,552
+DOWN F=.65     d504 12,421K  book 4,048
+STORM+abort    d504 12,245K  book   385
 
-<span class="case">Enterprise lost by latest agent offer and day groups summary</span>
-GID D_E02 n 413 statuses Counter({'lost':403,'lead':10})
-  B all avg 40.19 min 39.0 max 49.0 by_status {'lost':(403,40.22,39,49),'lead':(10,39,39,39)}
-  C all avg 61.15 min 59.0 max 79.0 by_status {'lost':(403,61.21,59,79),'lead':(10,59,59,59)}
-<span class="suppress">⋯ 40+ lines suppressed</span></div>
+EV checkpoints: d476 12,570.5K | d497 12,474.5K | d504 12,533.7K</div>
       </div>
     </div>
   </div>
