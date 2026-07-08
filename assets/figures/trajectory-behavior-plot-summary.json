@@ -1,0 +1,1988 @@
+{
+  "groups": [
+    "Fable 5",
+    "Opus 4.8",
+    "Qwen 3.7",
+    "Other models"
+  ],
+  "if_summary": {
+    "Fable 5": {
+      "mean": 5.731046604334275,
+      "sd": 0.9562734960984851,
+      "n": 3,
+      "values": [
+        6.808219178082192,
+        5.402777777777778,
+        4.982142857142857
+      ]
+    },
+    "Opus 4.8": {
+      "mean": 14.294935657949356,
+      "sd": 4.329163719680399,
+      "n": 3,
+      "values": [
+        18.65753424657534,
+        10.0,
+        14.227272727272727
+      ]
+    },
+    "Qwen 3.7": {
+      "mean": 0.7149346395921738,
+      "sd": 0.3557400701270356,
+      "n": 3,
+      "values": [
+        0.5616438356164384,
+        0.46153846153846156,
+        1.1216216216216217
+      ]
+    },
+    "Other models": {
+      "mean": 5.315926642900109,
+      "sd": 7.3451628472842625,
+      "n": 36,
+      "values": [
+        0.028169014084507043,
+        0.014084507042253521,
+        0.140625,
+        4.1506849315068495,
+        3.7916666666666665,
+        5.5675675675675675,
+        6.54054054054054,
+        7.027027027027027,
+        10.564516129032258,
+        10.381578947368421,
+        8.8,
+        13.40625,
+        2.6619718309859155,
+        3.5428571428571427,
+        4.12280701754386,
+        2.2837837837837838,
+        2.0136986301369864,
+        1.8860759493670887,
+        5.152777777777778,
+        4.777777777777778,
+        8.763157894736842,
+        9.125,
+        42.94871794871795,
+        9.828125,
+        2.9019607843137254,
+        1.96,
+        0.0,
+        2.0588235294117645,
+        2.782608695652174,
+        1.0,
+        0.7727272727272727,
+        2.0,
+        0.7777777777777778,
+        2.6,
+        1.0,
+        6.0
+      ]
+    }
+  },
+  "spend_summary": {
+    "Fable 5": {
+      "targeted": 11585700.0,
+      "broad": 1631000.0,
+      "weeks": 200,
+      "runs": 3
+    },
+    "Opus 4.8": {
+      "targeted": 959000.0,
+      "broad": 915600.0,
+      "weeks": 166,
+      "runs": 3
+    },
+    "Qwen 3.7": {
+      "targeted": 46480.0,
+      "broad": 140420.0,
+      "weeks": 225,
+      "runs": 3
+    },
+    "Other models": {
+      "targeted": 13673590.0,
+      "broad": 4030180.0,
+      "weeks": 1692,
+      "runs": 36
+    }
+  },
+  "run_if_rows": [
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "2c0aeba9",
+      "avg_if_per_week_memory_plus_rationale": 6.808219178082192,
+      "if_count": 497,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 71,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "3def3647",
+      "avg_if_per_week_memory_plus_rationale": 5.402777777777778,
+      "if_count": 389,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 81,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "4f03ddc9",
+      "avg_if_per_week_memory_plus_rationale": 4.982142857142857,
+      "if_count": 279,
+      "weeks_counted": 56,
+      "weeks_with_memory": 56,
+      "memory_changes": 60,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "e2cbe2de",
+      "avg_if_per_week_memory_plus_rationale": 18.65753424657534,
+      "if_count": 1362,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 298,
+      "memory_edit_misses": 35,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "aad782be",
+      "avg_if_per_week_memory_plus_rationale": 10.0,
+      "if_count": 720,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 182,
+      "memory_edit_misses": 20,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "3f8f3efd",
+      "avg_if_per_week_memory_plus_rationale": 14.227272727272727,
+      "if_count": 313,
+      "weeks_counted": 22,
+      "weeks_with_memory": 22,
+      "memory_changes": 33,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "7717b7d9",
+      "avg_if_per_week_memory_plus_rationale": 0.5616438356164384,
+      "if_count": 41,
+      "weeks_counted": 73,
+      "weeks_with_memory": 72,
+      "memory_changes": 79,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "20d908a4",
+      "avg_if_per_week_memory_plus_rationale": 0.46153846153846156,
+      "if_count": 36,
+      "weeks_counted": 78,
+      "weeks_with_memory": 77,
+      "memory_changes": 69,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "b2a565d0",
+      "avg_if_per_week_memory_plus_rationale": 1.1216216216216217,
+      "if_count": 83,
+      "weeks_counted": 74,
+      "weeks_with_memory": 73,
+      "memory_changes": 79,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "dda3ca49",
+      "avg_if_per_week_memory_plus_rationale": 0.028169014084507043,
+      "if_count": 2,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 70,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "943710ab",
+      "avg_if_per_week_memory_plus_rationale": 0.014084507042253521,
+      "if_count": 1,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 70,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "994d00ad",
+      "avg_if_per_week_memory_plus_rationale": 0.140625,
+      "if_count": 9,
+      "weeks_counted": 64,
+      "weeks_with_memory": 63,
+      "memory_changes": 64,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "c2b8b65e",
+      "avg_if_per_week_memory_plus_rationale": 4.1506849315068495,
+      "if_count": 303,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 218,
+      "memory_edit_misses": 22,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "a96f6989",
+      "avg_if_per_week_memory_plus_rationale": 3.7916666666666665,
+      "if_count": 273,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 159,
+      "memory_edit_misses": 21,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "babb5a25",
+      "avg_if_per_week_memory_plus_rationale": 5.5675675675675675,
+      "if_count": 206,
+      "weeks_counted": 37,
+      "weeks_with_memory": 37,
+      "memory_changes": 40,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "051a15c4",
+      "avg_if_per_week_memory_plus_rationale": 6.54054054054054,
+      "if_count": 484,
+      "weeks_counted": 74,
+      "weeks_with_memory": 74,
+      "memory_changes": 111,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "a1d3f2f6",
+      "avg_if_per_week_memory_plus_rationale": 7.027027027027027,
+      "if_count": 520,
+      "weeks_counted": 74,
+      "weeks_with_memory": 74,
+      "memory_changes": 134,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "24586283",
+      "avg_if_per_week_memory_plus_rationale": 10.564516129032258,
+      "if_count": 655,
+      "weeks_counted": 62,
+      "weeks_with_memory": 62,
+      "memory_changes": 86,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "613d71c8",
+      "avg_if_per_week_memory_plus_rationale": 10.381578947368421,
+      "if_count": 789,
+      "weeks_counted": 76,
+      "weeks_with_memory": 76,
+      "memory_changes": 49,
+      "memory_edit_misses": 14,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "84df360d",
+      "avg_if_per_week_memory_plus_rationale": 8.8,
+      "if_count": 220,
+      "weeks_counted": 25,
+      "weeks_with_memory": 25,
+      "memory_changes": 45,
+      "memory_edit_misses": 4,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "e0d5dcb6",
+      "avg_if_per_week_memory_plus_rationale": 13.40625,
+      "if_count": 429,
+      "weeks_counted": 32,
+      "weeks_with_memory": 32,
+      "memory_changes": 38,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "e2823227",
+      "avg_if_per_week_memory_plus_rationale": 2.6619718309859155,
+      "if_count": 189,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 89,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "809a7547",
+      "avg_if_per_week_memory_plus_rationale": 3.5428571428571427,
+      "if_count": 124,
+      "weeks_counted": 35,
+      "weeks_with_memory": 34,
+      "memory_changes": 38,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "27bb1cbc",
+      "avg_if_per_week_memory_plus_rationale": 4.12280701754386,
+      "if_count": 235,
+      "weeks_counted": 57,
+      "weeks_with_memory": 56,
+      "memory_changes": 54,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "313833b0",
+      "avg_if_per_week_memory_plus_rationale": 2.2837837837837838,
+      "if_count": 169,
+      "weeks_counted": 74,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "83b4fecf",
+      "avg_if_per_week_memory_plus_rationale": 2.0136986301369864,
+      "if_count": 147,
+      "weeks_counted": 73,
+      "weeks_with_memory": 72,
+      "memory_changes": 73,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "7e753caf",
+      "avg_if_per_week_memory_plus_rationale": 1.8860759493670887,
+      "if_count": 149,
+      "weeks_counted": 79,
+      "weeks_with_memory": 78,
+      "memory_changes": 66,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "6384895d",
+      "avg_if_per_week_memory_plus_rationale": 5.152777777777778,
+      "if_count": 371,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9c8dd0d5",
+      "avg_if_per_week_memory_plus_rationale": 4.777777777777778,
+      "if_count": 344,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 89,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9f383152",
+      "avg_if_per_week_memory_plus_rationale": 8.763157894736842,
+      "if_count": 333,
+      "weeks_counted": 38,
+      "weeks_with_memory": 38,
+      "memory_changes": 38,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "8f92185d",
+      "avg_if_per_week_memory_plus_rationale": 9.125,
+      "if_count": 657,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "16d10bb6",
+      "avg_if_per_week_memory_plus_rationale": 42.94871794871795,
+      "if_count": 1675,
+      "weeks_counted": 39,
+      "weeks_with_memory": 39,
+      "memory_changes": 39,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "9fa64d2e",
+      "avg_if_per_week_memory_plus_rationale": 9.828125,
+      "if_count": 629,
+      "weeks_counted": 64,
+      "weeks_with_memory": 64,
+      "memory_changes": 63,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c1c2dbe4",
+      "avg_if_per_week_memory_plus_rationale": 2.9019607843137254,
+      "if_count": 148,
+      "weeks_counted": 51,
+      "weeks_with_memory": 50,
+      "memory_changes": 42,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "f5d25ac4",
+      "avg_if_per_week_memory_plus_rationale": 1.96,
+      "if_count": 49,
+      "weeks_counted": 25,
+      "weeks_with_memory": 23,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c8a526c1",
+      "avg_if_per_week_memory_plus_rationale": 0.0,
+      "if_count": 0,
+      "weeks_counted": 2,
+      "weeks_with_memory": 0,
+      "memory_changes": 0,
+      "memory_edit_misses": 0,
+      "source": "rationale_only_no_MEMORY_actions_found"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e8ebec03",
+      "avg_if_per_week_memory_plus_rationale": 2.0588235294117645,
+      "if_count": 35,
+      "weeks_counted": 17,
+      "weeks_with_memory": 16,
+      "memory_changes": 13,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e3e087c5",
+      "avg_if_per_week_memory_plus_rationale": 2.782608695652174,
+      "if_count": 64,
+      "weeks_counted": 23,
+      "weeks_with_memory": 22,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "6d80cf7a",
+      "avg_if_per_week_memory_plus_rationale": 1.0,
+      "if_count": 25,
+      "weeks_counted": 25,
+      "weeks_with_memory": 24,
+      "memory_changes": 23,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "60b6594b",
+      "avg_if_per_week_memory_plus_rationale": 0.7727272727272727,
+      "if_count": 17,
+      "weeks_counted": 22,
+      "weeks_with_memory": 21,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "0b562a01",
+      "avg_if_per_week_memory_plus_rationale": 2.0,
+      "if_count": 40,
+      "weeks_counted": 20,
+      "weeks_with_memory": 19,
+      "memory_changes": 19,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "7ca27419",
+      "avg_if_per_week_memory_plus_rationale": 0.7777777777777778,
+      "if_count": 14,
+      "weeks_counted": 18,
+      "weeks_with_memory": 17,
+      "memory_changes": 17,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "63f17af6",
+      "avg_if_per_week_memory_plus_rationale": 2.6,
+      "if_count": 13,
+      "weeks_counted": 5,
+      "weeks_with_memory": 4,
+      "memory_changes": 4,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "1a24cf53",
+      "avg_if_per_week_memory_plus_rationale": 1.0,
+      "if_count": 2,
+      "weeks_counted": 2,
+      "weeks_with_memory": 1,
+      "memory_changes": 1,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "52a07bac",
+      "avg_if_per_week_memory_plus_rationale": 6.0,
+      "if_count": 54,
+      "weeks_counted": 9,
+      "weeks_with_memory": 7,
+      "memory_changes": 2,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_plus_rationale"
+    }
+  ],
+  "run_spend_rows": [
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "2c0aeba9",
+      "targeted_dev_total": 6597500.0,
+      "broad_dev_total": 1358000.0,
+      "weeks": 73,
+      "targeted_share": 0.829300483941927
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "3def3647",
+      "targeted_dev_total": 4718000.0,
+      "broad_dev_total": 203000.0,
+      "weeks": 72,
+      "targeted_share": 0.9587482219061166
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "4f03ddc9",
+      "targeted_dev_total": 270200.0,
+      "broad_dev_total": 70000.0,
+      "weeks": 55,
+      "targeted_share": 0.7942386831275721
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "e2cbe2de",
+      "targeted_dev_total": 731500.0,
+      "broad_dev_total": 276500.0,
+      "weeks": 73,
+      "targeted_share": 0.7256944444444444
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "aad782be",
+      "targeted_dev_total": 38500.0,
+      "broad_dev_total": 58100.0,
+      "weeks": 72,
+      "targeted_share": 0.39855072463768115
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "3f8f3efd",
+      "targeted_dev_total": 189000.0,
+      "broad_dev_total": 581000.0,
+      "weeks": 21,
+      "targeted_share": 0.24545454545454545
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "7717b7d9",
+      "targeted_dev_total": 0.0,
+      "broad_dev_total": 60900.0,
+      "weeks": 73,
+      "targeted_share": 0.0
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "20d908a4",
+      "targeted_dev_total": 28980.0,
+      "broad_dev_total": 48020.0,
+      "weeks": 78,
+      "targeted_share": 0.37636363636363634
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "b2a565d0",
+      "targeted_dev_total": 17500.0,
+      "broad_dev_total": 31500.0,
+      "weeks": 74,
+      "targeted_share": 0.35714285714285715
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "dda3ca49",
+      "targeted_dev_total": 0.0,
+      "broad_dev_total": 12950.0,
+      "weeks": 71,
+      "targeted_share": 0.0
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "943710ab",
+      "targeted_dev_total": 0.0,
+      "broad_dev_total": 38500.0,
+      "weeks": 71,
+      "targeted_share": 0.0
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "994d00ad",
+      "targeted_dev_total": 168000.0,
+      "broad_dev_total": 121800.0,
+      "weeks": 64,
+      "targeted_share": 0.5797101449275363
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "c2b8b65e",
+      "targeted_dev_total": 9450.0,
+      "broad_dev_total": 44100.0,
+      "weeks": 73,
+      "targeted_share": 0.17647058823529413
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "a96f6989",
+      "targeted_dev_total": 51450.0,
+      "broad_dev_total": 36050.0,
+      "weeks": 72,
+      "targeted_share": 0.588
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "babb5a25",
+      "targeted_dev_total": 54600.0,
+      "broad_dev_total": 85400.0,
+      "weeks": 36,
+      "targeted_share": 0.39
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "051a15c4",
+      "targeted_dev_total": 65905.0,
+      "broad_dev_total": 94290.0,
+      "weeks": 74,
+      "targeted_share": 0.41140485033864976
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "a1d3f2f6",
+      "targeted_dev_total": 128450.0,
+      "broad_dev_total": 107800.0,
+      "weeks": 74,
+      "targeted_share": 0.5437037037037037
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "24586283",
+      "targeted_dev_total": 226450.0,
+      "broad_dev_total": 33600.0,
+      "weeks": 61,
+      "targeted_share": 0.8707940780619112
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "613d71c8",
+      "targeted_dev_total": 25200.0,
+      "broad_dev_total": 121800.0,
+      "weeks": 76,
+      "targeted_share": 0.17142857142857143
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "84df360d",
+      "targeted_dev_total": 89600.0,
+      "broad_dev_total": 72800.0,
+      "weeks": 25,
+      "targeted_share": 0.5517241379310345
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "e0d5dcb6",
+      "targeted_dev_total": 0.0,
+      "broad_dev_total": 25550.0,
+      "weeks": 32,
+      "targeted_share": 0.0
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "e2823227",
+      "targeted_dev_total": 22050.0,
+      "broad_dev_total": 35700.0,
+      "weeks": 71,
+      "targeted_share": 0.38181818181818183
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "809a7547",
+      "targeted_dev_total": 9450.0,
+      "broad_dev_total": 31150.0,
+      "weeks": 35,
+      "targeted_share": 0.23275862068965517
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "27bb1cbc",
+      "targeted_dev_total": 5250.0,
+      "broad_dev_total": 42000.0,
+      "weeks": 57,
+      "targeted_share": 0.1111111111111111
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "313833b0",
+      "targeted_dev_total": 32550.0,
+      "broad_dev_total": 45500.0,
+      "weeks": 74,
+      "targeted_share": 0.4170403587443946
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "83b4fecf",
+      "targeted_dev_total": 148400.0,
+      "broad_dev_total": 47600.0,
+      "weeks": 73,
+      "targeted_share": 0.7571428571428571
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "7e753caf",
+      "targeted_dev_total": 30100.0,
+      "broad_dev_total": 95900.0,
+      "weeks": 78,
+      "targeted_share": 0.2388888888888889
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "6384895d",
+      "targeted_dev_total": 133910.0,
+      "broad_dev_total": 141400.0,
+      "weeks": 72,
+      "targeted_share": 0.48639715230104247
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9c8dd0d5",
+      "targeted_dev_total": 170380.0,
+      "broad_dev_total": 93450.0,
+      "weeks": 72,
+      "targeted_share": 0.6457946404881931
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9f383152",
+      "targeted_dev_total": 225750.0,
+      "broad_dev_total": 135800.0,
+      "weeks": 38,
+      "targeted_share": 0.6243949661181026
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "8f92185d",
+      "targeted_dev_total": 338800.0,
+      "broad_dev_total": 136150.0,
+      "weeks": 72,
+      "targeted_share": 0.7133382461311717
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "16d10bb6",
+      "targeted_dev_total": 5187000.0,
+      "broad_dev_total": 329000.0,
+      "weeks": 39,
+      "targeted_share": 0.9403553299492385
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "9fa64d2e",
+      "targeted_dev_total": 5656000.0,
+      "broad_dev_total": 425600.0,
+      "weeks": 63,
+      "targeted_share": 0.9300184162062615
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c1c2dbe4",
+      "targeted_dev_total": 12600.0,
+      "broad_dev_total": 72800.0,
+      "weeks": 51,
+      "targeted_share": 0.14754098360655737
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "f5d25ac4",
+      "targeted_dev_total": 6265.0,
+      "broad_dev_total": 6300.0,
+      "weeks": 25,
+      "targeted_share": 0.4986072423398329
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c8a526c1",
+      "targeted_dev_total": 140.0,
+      "broad_dev_total": 0.0,
+      "weeks": 2,
+      "targeted_share": 1.0
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e8ebec03",
+      "targeted_dev_total": 213150.0,
+      "broad_dev_total": 441000.0,
+      "weeks": 17,
+      "targeted_share": 0.3258426966292135
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e3e087c5",
+      "targeted_dev_total": 75880.0,
+      "broad_dev_total": 106750.0,
+      "weeks": 23,
+      "targeted_share": 0.415484860099655
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "6d80cf7a",
+      "targeted_dev_total": 138320.0,
+      "broad_dev_total": 336700.0,
+      "weeks": 25,
+      "targeted_share": 0.29118773946360155
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "60b6594b",
+      "targeted_dev_total": 340900.0,
+      "broad_dev_total": 60900.0,
+      "weeks": 22,
+      "targeted_share": 0.8484320557491289
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "0b562a01",
+      "targeted_dev_total": 1890.0,
+      "broad_dev_total": 50540.0,
+      "weeks": 20,
+      "targeted_share": 0.036048064085447265
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "7ca27419",
+      "targeted_dev_total": 28700.0,
+      "broad_dev_total": 68600.0,
+      "weeks": 18,
+      "targeted_share": 0.2949640287769784
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "63f17af6",
+      "targeted_dev_total": 17500.0,
+      "broad_dev_total": 55300.0,
+      "weeks": 5,
+      "targeted_share": 0.2403846153846154
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "1a24cf53",
+      "targeted_dev_total": 5600.0,
+      "broad_dev_total": 364000.0,
+      "weeks": 2,
+      "targeted_share": 0.015151515151515152
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "52a07bac",
+      "targeted_dev_total": 53900.0,
+      "broad_dev_total": 113400.0,
+      "weeks": 9,
+      "targeted_share": 0.32217573221757323
+    }
+  ],
+  "targeted_parse_miss_events_sample": [
+    [
+      "3def3647",
+      91,
+      191,
+      "cd /home/agent 2>/dev/null; ./novamind-operation python-c \" import novamind_api as nm  def safe(fn, *a, **k):     try:         r = fn(*a, **k); print('OK', fn.__name__, k if k else a); return r     except Exception as e:"
+    ],
+    [
+      "3def3647",
+      91,
+      196,
+      "cd /home/agent 2>/dev/null; ./novamind-operation python-c \" import novamind_api as nm def safe(fn, *a, **k):     try:         r = fn(*a, **k); print('OK', fn.__name__); return r     except Exception as e:         print('"
+    ],
+    [
+      "20d908a4",
+      28,
+      95,
+      "./novamind-operation python-c \" import novamind_api as nm  # Check current daily spend r = nm.marketing.set_daily_spend(operations=200, development=500) print('Set daily spend result:', r)  # Check targeted dev spend - t"
+    ],
+    [
+      "e2823227",
+      21,
+      101,
+      "./novamind-operation python-c \" import novamind_api as nm  # Check analytics API for set_targeted_dev_spend import json with open('docs/api/analytics.json') as f:     a = json.load(f) print(json.dumps(a, indent=2)) \""
+    ],
+    [
+      "809a7547",
+      231,
+      1065,
+      "./novamind-operation python-c \" import novamind_api as nm # Check analytics API for set_targeted_ops_spend and set_targeted_dev_spend import json with open('docs/api/analytics.json') as f:     analytics_api = json.load(f"
+    ],
+    [
+      "313833b0",
+      91,
+      378,
+      "./novamind-operation python-c \" import novamind_api as nm # Check current targeted ops and dev ops = nm.analytics.set_targeted_ops_spend() dev = nm.analytics.set_targeted_dev_spend() print('ops:', ops) print('dev:', dev)"
+    ],
+    [
+      "83b4fecf",
+      7,
+      46,
+      "./novamind-operation python-c \" import novamind_api as nm  # 1. Pricing aligned with S1 WTP ($25.87) and capturing more value from S3 ($192 WTP) nm.pricing.set_prices(A=5, B=18, C=59)  # 2. Cut daily burn but preserve op"
+    ],
+    [
+      "c1c2dbe4",
+      140,
+      860,
+      "./novamind-operation python-c \" import novamind_api as nm  # Wait, I need to think about this more carefully. # The targeted dev spend ACCUMULATES - it's per-day spending that adds up over time. # Actually, let me re-rea"
+    ],
+    [
+      "c1c2dbe4",
+      140,
+      862,
+      "./novamind-operation python-c \" import novamind_api as nm  # OK, so set_targeted_dev_spend is PER DAY spending, not one-time # The bonus 'accumulates' daily - it grows over time while spending continues # The bonus 'pers"
+    ],
+    [
+      "c1c2dbe4",
+      189,
+      1185,
+      "./novamind-operation python-c \" # Key insight from ads_strength docs: # 'Dollar return = ads_return_sensitivity \u00d7 log_scaled_effective_ads per customer per day' # Log scaling: effective = log(1+9*x)/log(10) # So at stren"
+    ],
+    [
+      "f5d25ac4",
+      56,
+      306,
+      "./novamind-operation python-c \" import json  # Check analytics API for targeted dev/ops spend details with open('docs/api/analytics.json') as f:     data = json.load(f) for func in data:     if func['name'] in ['set_targ"
+    ],
+    [
+      "e8ebec03",
+      42,
+      137,
+      "./novamind-operation python-c \" import novamind_api as nm  # Check infrastructure print('=== Capacity & Cost Info ===') cost_info = nm.infrastructure.get_cost_info() print(f'  Current tier: {cost_info.get(\\\"current_tier\\"
+    ],
+    [
+      "6d80cf7a",
+      154,
+      500,
+      "./novamind-operation python-c \" import novamind_api as nm  # Increase S1 targeted ops from $200 to $400/day nm.analytics.set_targeted_ops_spend(targeted_spend={\\\"by_group\\\": {\\\"S1\\\": 400.0}})  # Increase S1 targeted dev "
+    ],
+    [
+      "6d80cf7a",
+      154,
+      502,
+      "./novamind-operation python-c \" import novamind_api as nm  # 1. Increase S1 targeted ops to $500/day nm.analytics.set_targeted_ops_spend(by_group={\\\"S1\\\": 500.0})  # 2. Increase S1 targeted dev to $300/day nm.analytics.s"
+    ],
+    [
+      "6d80cf7a",
+      154,
+      503,
+      "./novamind-operation python-c \" import novamind_api as nm  # 1. Increase S1 targeted ops to $500/day nm.analytics.set_targeted_ops_spend(targeted_spend={\\\"S1\\\": 500.0})  # 2. Increase S1 targeted dev to $300/day nm.analy"
+    ]
+  ],
+  "targeted_parse_miss_events_count": 15,
+  "if_metric_definition": "weekly count of word if in reconstructed MEMORY.md plus the same week rationale; averaged per run, then summarized by group",
+  "group_order_with_gemini35": [
+    "Fable 5",
+    "Opus 4.8",
+    "Qwen 3.7",
+    "Gemini 3.5 Flash",
+    "Other models"
+  ],
+  "if_split_metric_definition": "weekly count of word if, separately in reconstructed MEMORY.md and in same-week rationale; averaged per run, then summarized by group",
+  "if_memory_summary_with_gemini35": {
+    "Fable 5": {
+      "mean": 5.341541639486845,
+      "sd": 0.9266041537845618,
+      "n": 3,
+      "values": [
+        6.36986301369863,
+        5.083333333333333,
+        4.571428571428571
+      ]
+    },
+    "Opus 4.8": {
+      "mean": 13.970907707209077,
+      "sd": 4.4421815615251345,
+      "n": 3,
+      "values": [
+        18.465753424657535,
+        9.583333333333334,
+        13.863636363636363
+      ]
+    },
+    "Qwen 3.7": {
+      "mean": 0.6659546796533098,
+      "sd": 0.32912854370090916,
+      "n": 3,
+      "values": [
+        0.5342465753424658,
+        0.4230769230769231,
+        1.0405405405405406
+      ]
+    },
+    "Gemini 3.5 Flash": {
+      "mean": 0.06095950704225352,
+      "sd": 0.06935082126987674,
+      "n": 3,
+      "values": [
+        0.028169014084507043,
+        0.014084507042253521,
+        0.140625
+      ]
+    },
+    "Other models": {
+      "mean": 4.43595158115783,
+      "sd": 3.3586454662606844,
+      "n": 33,
+      "values": [
+        3.684931506849315,
+        3.4722222222222223,
+        5.1891891891891895,
+        6.175675675675675,
+        6.702702702702703,
+        10.32258064516129,
+        9.894736842105264,
+        7.68,
+        12.59375,
+        2.408450704225352,
+        3.3142857142857145,
+        3.789473684210526,
+        2.0135135135135136,
+        1.7397260273972603,
+        1.6075949367088607,
+        5.069444444444445,
+        4.375,
+        8.421052631578947,
+        8.916666666666666,
+        7.897435897435898,
+        9.59375,
+        2.4705882352941178,
+        1.8,
+        0.0,
+        1.8823529411764706,
+        2.5652173913043477,
+        0.8,
+        0.7727272727272727,
+        2.0,
+        0.7777777777777778,
+        2.4,
+        0.5,
+        5.555555555555555
+      ]
+    }
+  },
+  "if_rationale_summary_with_gemini35": {
+    "Fable 5": {
+      "mean": 0.3895049648474306,
+      "sd": 0.06222841596445046,
+      "n": 3,
+      "values": [
+        0.4383561643835616,
+        0.3194444444444444,
+        0.4107142857142857
+      ]
+    },
+    "Opus 4.8": {
+      "mean": 0.3240279507402795,
+      "sd": 0.11755862610294462,
+      "n": 3,
+      "values": [
+        0.1917808219178082,
+        0.4166666666666667,
+        0.36363636363636365
+      ]
+    },
+    "Qwen 3.7": {
+      "mean": 0.04897995993886405,
+      "sd": 0.02834547665666308,
+      "n": 3,
+      "values": [
+        0.0273972602739726,
+        0.038461538461538464,
+        0.08108108108108109
+      ]
+    },
+    "Gemini 3.5 Flash": {
+      "mean": 0.0,
+      "sd": 0.0,
+      "n": 3,
+      "values": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "Other models": {
+      "mean": 1.3576993468202663,
+      "sd": 6.052705773954117,
+      "n": 33,
+      "values": [
+        0.4657534246575342,
+        0.3194444444444444,
+        0.3783783783783784,
+        0.36486486486486486,
+        0.32432432432432434,
+        0.24193548387096775,
+        0.4868421052631579,
+        1.12,
+        0.8125,
+        0.2535211267605634,
+        0.22857142857142856,
+        0.3333333333333333,
+        0.2702702702702703,
+        0.273972602739726,
+        0.27848101265822783,
+        0.08333333333333333,
+        0.4027777777777778,
+        0.34210526315789475,
+        0.20833333333333334,
+        35.05128205128205,
+        0.234375,
+        0.43137254901960786,
+        0.16,
+        0.0,
+        0.17647058823529413,
+        0.21739130434782608,
+        0.2,
+        0.0,
+        0.0,
+        0.0,
+        0.2,
+        0.5,
+        0.4444444444444444
+      ]
+    }
+  },
+  "run_if_split_rows": [
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "2c0aeba9",
+      "memory_avg_if_per_week": 6.36986301369863,
+      "rationale_avg_if_per_week": 0.4383561643835616,
+      "memory_if_total": 465,
+      "rationale_if_total": 32,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 71,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "3def3647",
+      "memory_avg_if_per_week": 5.083333333333333,
+      "rationale_avg_if_per_week": 0.3194444444444444,
+      "memory_if_total": 366,
+      "rationale_if_total": 23,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 81,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Fable 5",
+      "model": "Claude Fable 5",
+      "run_id": "4f03ddc9",
+      "memory_avg_if_per_week": 4.571428571428571,
+      "rationale_avg_if_per_week": 0.4107142857142857,
+      "memory_if_total": 256,
+      "rationale_if_total": 23,
+      "weeks_counted": 56,
+      "weeks_with_memory": 56,
+      "memory_changes": 60,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "e2cbe2de",
+      "memory_avg_if_per_week": 18.465753424657535,
+      "rationale_avg_if_per_week": 0.1917808219178082,
+      "memory_if_total": 1348,
+      "rationale_if_total": 14,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 298,
+      "memory_edit_misses": 35,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "aad782be",
+      "memory_avg_if_per_week": 9.583333333333334,
+      "rationale_avg_if_per_week": 0.4166666666666667,
+      "memory_if_total": 690,
+      "rationale_if_total": 30,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 182,
+      "memory_edit_misses": 20,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Opus 4.8",
+      "model": "Claude Opus 4.8",
+      "run_id": "3f8f3efd",
+      "memory_avg_if_per_week": 13.863636363636363,
+      "rationale_avg_if_per_week": 0.36363636363636365,
+      "memory_if_total": 305,
+      "rationale_if_total": 8,
+      "weeks_counted": 22,
+      "weeks_with_memory": 22,
+      "memory_changes": 33,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "7717b7d9",
+      "memory_avg_if_per_week": 0.5342465753424658,
+      "rationale_avg_if_per_week": 0.0273972602739726,
+      "memory_if_total": 39,
+      "rationale_if_total": 2,
+      "weeks_counted": 73,
+      "weeks_with_memory": 72,
+      "memory_changes": 79,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "20d908a4",
+      "memory_avg_if_per_week": 0.4230769230769231,
+      "rationale_avg_if_per_week": 0.038461538461538464,
+      "memory_if_total": 33,
+      "rationale_if_total": 3,
+      "weeks_counted": 78,
+      "weeks_with_memory": 77,
+      "memory_changes": 69,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Qwen 3.7",
+      "model": "Qwen 3.7 Max",
+      "run_id": "b2a565d0",
+      "memory_avg_if_per_week": 1.0405405405405406,
+      "rationale_avg_if_per_week": 0.08108108108108109,
+      "memory_if_total": 77,
+      "rationale_if_total": 6,
+      "weeks_counted": 74,
+      "weeks_with_memory": 73,
+      "memory_changes": 79,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Gemini 3.5 Flash",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "dda3ca49",
+      "memory_avg_if_per_week": 0.028169014084507043,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 2,
+      "rationale_if_total": 0,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 70,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Gemini 3.5 Flash",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "943710ab",
+      "memory_avg_if_per_week": 0.014084507042253521,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 1,
+      "rationale_if_total": 0,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 70,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Gemini 3.5 Flash",
+      "model": "Gemini 3.5 Flash",
+      "run_id": "994d00ad",
+      "memory_avg_if_per_week": 0.140625,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 9,
+      "rationale_if_total": 0,
+      "weeks_counted": 64,
+      "weeks_with_memory": 63,
+      "memory_changes": 64,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "c2b8b65e",
+      "memory_avg_if_per_week": 3.684931506849315,
+      "rationale_avg_if_per_week": 0.4657534246575342,
+      "memory_if_total": 269,
+      "rationale_if_total": 34,
+      "weeks_counted": 73,
+      "weeks_with_memory": 73,
+      "memory_changes": 218,
+      "memory_edit_misses": 22,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "a96f6989",
+      "memory_avg_if_per_week": 3.4722222222222223,
+      "rationale_avg_if_per_week": 0.3194444444444444,
+      "memory_if_total": 250,
+      "rationale_if_total": 23,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 159,
+      "memory_edit_misses": 21,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Opus 4.7",
+      "run_id": "babb5a25",
+      "memory_avg_if_per_week": 5.1891891891891895,
+      "rationale_avg_if_per_week": 0.3783783783783784,
+      "memory_if_total": 192,
+      "rationale_if_total": 14,
+      "weeks_counted": 37,
+      "weeks_with_memory": 37,
+      "memory_changes": 40,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "051a15c4",
+      "memory_avg_if_per_week": 6.175675675675675,
+      "rationale_avg_if_per_week": 0.36486486486486486,
+      "memory_if_total": 457,
+      "rationale_if_total": 27,
+      "weeks_counted": 74,
+      "weeks_with_memory": 74,
+      "memory_changes": 111,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "a1d3f2f6",
+      "memory_avg_if_per_week": 6.702702702702703,
+      "rationale_avg_if_per_week": 0.32432432432432434,
+      "memory_if_total": 496,
+      "rationale_if_total": 24,
+      "weeks_counted": 74,
+      "weeks_with_memory": 74,
+      "memory_changes": 134,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 5",
+      "run_id": "24586283",
+      "memory_avg_if_per_week": 10.32258064516129,
+      "rationale_avg_if_per_week": 0.24193548387096775,
+      "memory_if_total": 640,
+      "rationale_if_total": 15,
+      "weeks_counted": 62,
+      "weeks_with_memory": 62,
+      "memory_changes": 86,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "613d71c8",
+      "memory_avg_if_per_week": 9.894736842105264,
+      "rationale_avg_if_per_week": 0.4868421052631579,
+      "memory_if_total": 752,
+      "rationale_if_total": 37,
+      "weeks_counted": 76,
+      "weeks_with_memory": 76,
+      "memory_changes": 49,
+      "memory_edit_misses": 14,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "84df360d",
+      "memory_avg_if_per_week": 7.68,
+      "rationale_avg_if_per_week": 1.12,
+      "memory_if_total": 192,
+      "rationale_if_total": 28,
+      "weeks_counted": 25,
+      "weeks_with_memory": 25,
+      "memory_changes": 45,
+      "memory_edit_misses": 4,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Haiku 4.5",
+      "run_id": "e0d5dcb6",
+      "memory_avg_if_per_week": 12.59375,
+      "rationale_avg_if_per_week": 0.8125,
+      "memory_if_total": 403,
+      "rationale_if_total": 26,
+      "weeks_counted": 32,
+      "weeks_with_memory": 32,
+      "memory_changes": 38,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "e2823227",
+      "memory_avg_if_per_week": 2.408450704225352,
+      "rationale_avg_if_per_week": 0.2535211267605634,
+      "memory_if_total": 171,
+      "rationale_if_total": 18,
+      "weeks_counted": 71,
+      "weeks_with_memory": 70,
+      "memory_changes": 89,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "809a7547",
+      "memory_avg_if_per_week": 3.3142857142857145,
+      "rationale_avg_if_per_week": 0.22857142857142856,
+      "memory_if_total": 116,
+      "rationale_if_total": 8,
+      "weeks_counted": 35,
+      "weeks_with_memory": 34,
+      "memory_changes": 38,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.2",
+      "run_id": "27bb1cbc",
+      "memory_avg_if_per_week": 3.789473684210526,
+      "rationale_avg_if_per_week": 0.3333333333333333,
+      "memory_if_total": 216,
+      "rationale_if_total": 19,
+      "weeks_counted": 57,
+      "weeks_with_memory": 56,
+      "memory_changes": 54,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "313833b0",
+      "memory_avg_if_per_week": 2.0135135135135136,
+      "rationale_avg_if_per_week": 0.2702702702702703,
+      "memory_if_total": 149,
+      "rationale_if_total": 20,
+      "weeks_counted": 74,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "83b4fecf",
+      "memory_avg_if_per_week": 1.7397260273972603,
+      "rationale_avg_if_per_week": 0.273972602739726,
+      "memory_if_total": 127,
+      "rationale_if_total": 20,
+      "weeks_counted": 73,
+      "weeks_with_memory": 72,
+      "memory_changes": 73,
+      "memory_edit_misses": 1,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Kimi K2.6",
+      "run_id": "7e753caf",
+      "memory_avg_if_per_week": 1.6075949367088607,
+      "rationale_avg_if_per_week": 0.27848101265822783,
+      "memory_if_total": 127,
+      "rationale_if_total": 22,
+      "weeks_counted": 79,
+      "weeks_with_memory": 78,
+      "memory_changes": 66,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "6384895d",
+      "memory_avg_if_per_week": 5.069444444444445,
+      "rationale_avg_if_per_week": 0.08333333333333333,
+      "memory_if_total": 365,
+      "rationale_if_total": 6,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9c8dd0d5",
+      "memory_avg_if_per_week": 4.375,
+      "rationale_avg_if_per_week": 0.4027777777777778,
+      "memory_if_total": 315,
+      "rationale_if_total": 29,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 89,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Claude Sonnet 4.6",
+      "run_id": "9f383152",
+      "memory_avg_if_per_week": 8.421052631578947,
+      "rationale_avg_if_per_week": 0.34210526315789475,
+      "memory_if_total": 320,
+      "rationale_if_total": 13,
+      "weeks_counted": 38,
+      "weeks_with_memory": 38,
+      "memory_changes": 38,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "8f92185d",
+      "memory_avg_if_per_week": 8.916666666666666,
+      "rationale_avg_if_per_week": 0.20833333333333334,
+      "memory_if_total": 642,
+      "rationale_if_total": 15,
+      "weeks_counted": 72,
+      "weeks_with_memory": 72,
+      "memory_changes": 72,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "16d10bb6",
+      "memory_avg_if_per_week": 7.897435897435898,
+      "rationale_avg_if_per_week": 35.05128205128205,
+      "memory_if_total": 308,
+      "rationale_if_total": 1367,
+      "weeks_counted": 39,
+      "weeks_with_memory": 39,
+      "memory_changes": 39,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GPT-5.5",
+      "run_id": "9fa64d2e",
+      "memory_avg_if_per_week": 9.59375,
+      "rationale_avg_if_per_week": 0.234375,
+      "memory_if_total": 614,
+      "rationale_if_total": 15,
+      "weeks_counted": 64,
+      "weeks_with_memory": 64,
+      "memory_changes": 63,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c1c2dbe4",
+      "memory_avg_if_per_week": 2.4705882352941178,
+      "rationale_avg_if_per_week": 0.43137254901960786,
+      "memory_if_total": 126,
+      "rationale_if_total": 22,
+      "weeks_counted": 51,
+      "weeks_with_memory": 50,
+      "memory_changes": 42,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "f5d25ac4",
+      "memory_avg_if_per_week": 1.8,
+      "rationale_avg_if_per_week": 0.16,
+      "memory_if_total": 45,
+      "rationale_if_total": 4,
+      "weeks_counted": 25,
+      "weeks_with_memory": 23,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "GLM-5.1",
+      "run_id": "c8a526c1",
+      "memory_avg_if_per_week": 0.0,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 0,
+      "rationale_if_total": 0,
+      "weeks_counted": 2,
+      "weeks_with_memory": 0,
+      "memory_changes": 0,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e8ebec03",
+      "memory_avg_if_per_week": 1.8823529411764706,
+      "rationale_avg_if_per_week": 0.17647058823529413,
+      "memory_if_total": 32,
+      "rationale_if_total": 3,
+      "weeks_counted": 17,
+      "weeks_with_memory": 16,
+      "memory_changes": 13,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "e3e087c5",
+      "memory_avg_if_per_week": 2.5652173913043477,
+      "rationale_avg_if_per_week": 0.21739130434782608,
+      "memory_if_total": 59,
+      "rationale_if_total": 5,
+      "weeks_counted": 23,
+      "weeks_with_memory": 22,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "DeepSeek V4 Pro",
+      "run_id": "6d80cf7a",
+      "memory_avg_if_per_week": 0.8,
+      "rationale_avg_if_per_week": 0.2,
+      "memory_if_total": 20,
+      "rationale_if_total": 5,
+      "weeks_counted": 25,
+      "weeks_with_memory": 24,
+      "memory_changes": 23,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "60b6594b",
+      "memory_avg_if_per_week": 0.7727272727272727,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 17,
+      "rationale_if_total": 0,
+      "weeks_counted": 22,
+      "weeks_with_memory": 21,
+      "memory_changes": 20,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "0b562a01",
+      "memory_avg_if_per_week": 2.0,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 40,
+      "rationale_if_total": 0,
+      "weeks_counted": 20,
+      "weeks_with_memory": 19,
+      "memory_changes": 19,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Gemini 3 Flash",
+      "run_id": "7ca27419",
+      "memory_avg_if_per_week": 0.7777777777777778,
+      "rationale_avg_if_per_week": 0.0,
+      "memory_if_total": 14,
+      "rationale_if_total": 0,
+      "weeks_counted": 18,
+      "weeks_with_memory": 17,
+      "memory_changes": 17,
+      "memory_edit_misses": 2,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "63f17af6",
+      "memory_avg_if_per_week": 2.4,
+      "rationale_avg_if_per_week": 0.2,
+      "memory_if_total": 12,
+      "rationale_if_total": 1,
+      "weeks_counted": 5,
+      "weeks_with_memory": 4,
+      "memory_changes": 4,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "1a24cf53",
+      "memory_avg_if_per_week": 0.5,
+      "rationale_avg_if_per_week": 0.5,
+      "memory_if_total": 1,
+      "rationale_if_total": 1,
+      "weeks_counted": 2,
+      "weeks_with_memory": 1,
+      "memory_changes": 1,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    },
+    {
+      "group": "Other models",
+      "model": "Grok 4.20",
+      "run_id": "52a07bac",
+      "memory_avg_if_per_week": 5.555555555555555,
+      "rationale_avg_if_per_week": 0.4444444444444444,
+      "memory_if_total": 50,
+      "rationale_if_total": 4,
+      "weeks_counted": 9,
+      "weeks_with_memory": 7,
+      "memory_changes": 2,
+      "memory_edit_misses": 0,
+      "source": "trajectory_MEMORY_actions_and_rationale"
+    }
+  ],
+  "spend_summary_with_gemini35": {
+    "Fable 5": {
+      "targeted": 11585700.0,
+      "broad": 1631000.0,
+      "runs": 3,
+      "weeks": 200
+    },
+    "Opus 4.8": {
+      "targeted": 959000.0,
+      "broad": 915600.0,
+      "runs": 3,
+      "weeks": 166
+    },
+    "Qwen 3.7": {
+      "targeted": 46480.0,
+      "broad": 140420.0,
+      "runs": 3,
+      "weeks": 225
+    },
+    "Gemini 3.5 Flash": {
+      "targeted": 168000.0,
+      "broad": 173250.0,
+      "runs": 3,
+      "weeks": 206
+    },
+    "Other models": {
+      "targeted": 13505590.0,
+      "broad": 3856930.0,
+      "runs": 33,
+      "weeks": 1486
+    }
+  }
+}

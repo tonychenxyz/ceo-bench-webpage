@@ -46,7 +46,7 @@
   .page {
     width: 816px; /* Letter */
     margin: 0 auto;
-    padding: 16px;
+    padding: 16px 16px 2px;
     box-sizing: border-box;
   }
 
@@ -120,7 +120,7 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 8px;
-    margin-bottom: 8px;
+    margin-bottom: 0;
   }
 
   /* Code tile */
@@ -370,10 +370,10 @@
     height: 15px;
   }
   @media print {
-    @page { size: 816px 449px; margin: 0; }
+    @page { size: 816px 426px; margin: 0; }
     html, body {
       width: 816px;
-      height: 449px;
+      height: 426px;
       background: #fff !important;
       -webkit-print-color-adjust: exact !important;
       print-color-adjust: exact !important;
@@ -386,7 +386,7 @@
       width: 816px !important;
       max-width: 816px !important;
       margin: 0 !important;
-      padding: 16px !important;
+      padding: 16px 16px 2px !important;
     }
     .row, .row-2col, .tile {
       break-inside: avoid;
@@ -399,84 +399,79 @@
 
 <div class="page" id="page">
   <div class="row-2col">
-    <!-- Left: Example action — simulating multiple scenarios -->
+    <!-- Left: Example action — infer latent customer regimes -->
     <div class="tile code">
       <div class="head">
         <span class="panel-mark">(a)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 3 L3 11 L11 11" stroke="#0a2540" stroke-width="1.4" fill="none"/><path d="M5 9 L7 6 L9 8 L11 4" stroke="#0a2540" stroke-width="1.4" fill="none" stroke-linejoin="round"/></svg></span>
-        <span class="card-title"><b>Claude Opus 4.8</b> · Simulating growth scenarios into the future · <span style="color:#6e7781">Day 77</span></span>
+        <span class="card-title"><b>Claude Opus 4.8</b> · Infer latent loyalty and churn regimes · <span style="color:#6e7781">Day 231</span></span>
       </div>
       <div class="body">
-<pre class="code">D0=<span class="num">77</span>; START_CASH=<span class="num">1269489</span>
-S1_TOUCHED0=<span class="num">159258</span>+<span class="num">54467</span>+<span class="num">987</span>
-RAW=[(<span class="num">0</span>,<span class="num">19</span>,<span class="num">15</span>),(<span class="num">5</span>,<span class="num">22</span>,<span class="num">1830</span>),(<span class="num">8</span>,<span class="num">26</span>,<span class="num">20562</span>), <span class="suppress">⋯ active cohorts</span>]
-<span class="kw">def</span> <span class="fn">build_cohorts</span>():
-  cohorts=[]
-  <span class="suppress">⋯ expand observed signup weeks into renewal cohorts</span>
-  <span class="kw">return</span> cohorts
-<span class="kw">def</span> <span class="fn">simulate</span>(cap=<span class="num">450000</span>,conv=<span class="num">.72</span>,first=<span class="num">.13</span>,ongoing=<span class="num">.04</span>):
-  cohorts=build_cohorts(); touched=S1_TOUCHED0; cash=START_CASH
-  REMAIN0=cap-S1_TOUCHED0
-  targets={<span class="num">84</span>:<span class="str">'1wk'</span>,<span class="num">105</span>:<span class="str">'4wk'</span>,<span class="num">161</span>:<span class="str">'12wk'</span>,<span class="num">259</span>:<span class="str">'26wk'</span>}; results={}
-  <span class="kw">for</span> step <span class="kw">in</span> <span class="fn">range</span>(<span class="num">1</span>,<span class="num">183</span>):
-    day=D0+step; active=<span class="fn">sum</span>(c[<span class="num">1</span>] <span class="kw">for</span> c <span class="kw">in</span> cohorts)
-    pen=<span class="fn">max</span>(<span class="num">0.02</span>,(cap-touched)/<span class="fn">max</span>(<span class="num">1</span>,REMAIN0))
-    ad_spend=<span class="num">85000</span> <span class="kw">if</span> step&lt;=<span class="num">7</span> <span class="kw">else</span> (<span class="num">120000</span> <span class="kw">if</span> step&lt;=<span class="num">77</span> <span class="kw">else</span> <span class="num">90000</span>)
-    leads=<span class="num">4.25</span>*(ad_spend**<span class="num">0.71</span>)*pen + <span class="num">0.0132</span>*active*pen
-    new=leads*conv; touched+=leads; cohorts.append([<span class="num">26.0</span>,new])
-    cash += new*<span class="num">15.0</span> - (ad_spend + leads*<span class="num">0.5</span> + active*<span class="num">0.15</span> + <span class="num">58500</span>)
-    <span class="suppress">⋯ apply re-bills/churn; record target days</span>
-  <span class="kw">return</span> results
-scen={<span class="str">'DISAST'</span>:(<span class="num">260000</span>,<span class="num">.62</span>,<span class="num">.25</span>,<span class="num">.08</span>),<span class="str">'PESS'</span>:(<span class="num">320000</span>,<span class="num">.68</span>,<span class="num">.18</span>,<span class="num">.06</span>), <span class="suppress">⋯ BASE/OPT</span>}</pre>
+<pre class="code"><span class="kw">import</span> novamind_api <span class="kw">as</span> nm
+<span class="kw">def</span> <span class="fn">q</span>(sql): <span class="kw">return</span> nm.query(sql)[<span class="str">'rows'</span>]
+<span class="com"># Infer hidden loyalty buckets from renewal survivors/cancellations.</span>
+bds_this = <span class="str">"15,16,17,18,19,20,21"</span>
+r = q(<span class="str">f"""SELECT CASE WHEN start_day&lt;=70 THEN 'loyal' WHEN start_day&lt;=127 THEN 'mid'
+                ELSE 'marg' END bucket, plan,
+                SUM(CASE WHEN status='subscribed' THEN 1 ELSE 0 END) surv,
+                SUM(CASE WHEN status='cancelled' AND end_day BETWEEN 225 AND 231
+                         THEN 1 ELSE 0 END) churn
+         FROM subscriptions WHERE billing_day_mod30 IN ({bds_this}) GROUP BY bucket, plan"""</span>)
+calib = {}
+<span class="kw">for</span> row <span class="kw">in</span> r:
+  tot = row[<span class="str">'surv'</span>] + row[<span class="str">'churn'</span>]
+  <span class="kw">if</span> tot &gt; <span class="num">50</span>:
+    calib[(row[<span class="str">'bucket'</span>], row[<span class="str">'plan'</span>])] = row[<span class="str">'churn'</span>] / tot
+<span class="com"># Apply the latent bucket rates to next week's renewal exposure.</span>
+<span class="kw">for</span> row <span class="kw">in</span> next_week_rows:
+  key = (row[<span class="str">'bucket'</span>], row[<span class="str">'plan'</span>])
+  ch = calib.get(key, <span class="num">0.50</span> <span class="kw">if</span> row[<span class="str">'bucket'</span>]==<span class="str">'marg'</span> <span class="kw">else</span> <span class="num">0.15</span>)
+  surv_rev = row[<span class="str">'n'</span>] * (<span class="num">1</span> - ch) * row[<span class="str">'px'</span>]</pre>
 
-<div class="stdout stdout-2col"><div><span class="case">scen    1wk M/k   4wk M/k</span>
-DISAST   .69/182   .07/152
-PESS     .99/202   .54/204
-BASE    1.23/216  1.53/291
-OPT     1.40/225  2.81/397</div>
-<div><span class="case">scen    12wk M/k  26wk M/k</span>
-DISAST <span class="neg">-4.58/131</span> <span class="neg">-8.39/102</span>
-PESS   <span class="neg">-1.97/183</span> <span class="neg">-1.91/158</span>
-BASE    2.79/273  8.99/248
-OPT    10.74/462 29.96/433</div></div>
+<div class="stdout"><span class="case">stdout</span>
+  loyal A: rebilled~  3301 surv=   948 churn=  2353 = 71.3%
+  loyal B: rebilled~   680 surv=   660 churn=    20 = 2.9%
+  marg  A: rebilled~ 10613 surv=     0 churn= 10613 = 100.0%
+  mid   B: rebilled~  1405 surv=   729 churn=   676 = 48.1%
+  RECURRING next wk: mid=$142,127  [barrage-worse $90,360 .. barrage-settle $209,409]</div>
       </div>
     </div>
 
-    <!-- Right: Example action — infer latent customer attributes -->
+    <!-- Right: Example action — model billing-cohort survival -->
     <div class="tile code">
       <div class="head">
         <span class="panel-mark">(b)</span>
         <span class="ico"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="5.5" r="2.4" stroke="#0a2540" stroke-width="1.4"/><path d="M2.5 12 c1-2.5 8-2.5 9 0" stroke="#0a2540" stroke-width="1.4" fill="none"/><circle cx="11.5" cy="3" r="1.2" fill="#0a2540"/></svg></span>
-        <span class="card-title"><b>GPT-5.5</b> · Infer latent customer attributes from noisy negotiation outcomes · <span style="color:#6e7781">Day 133</span></span>
+        <span class="card-title"><b>Claude Fable 5</b> · Model billing-cohort retention through the final week · <span style="color:#6e7781">Day 469</span></span>
       </div>
       <div class="body">
-<pre class="code">rows=<span class="bn">nm</span>.query(<span class="str">"""select et.customer_id,c.group_id,et.offer_json,s.status from enterprise_turns et join customers c on c.customer_id=et.customer_id left join subscriptions s on s.customer_id=et.customer_id where et.sender='agent' and et.offer_json not in ('{}','')"""</span>)[<span class="str">'rows'</span>]
-<span class="suppress">⋯ 40+ lines suppressed</span>
-<span class="kw">def</span> <span class="fn">parse_prices</span>(o):
-  <span class="kw">try</span>: d=json.loads(o)
-  <span class="kw">except</span>: <span class="kw">return</span> []
-  <span class="kw">return</span> [(x.get(<span class="str">'plan'</span>),x.get(<span class="str">'price'</span>,x.get(<span class="str">'price_per_seat'</span>,x.get(<span class="str">'monthly_price'</span>)))) <span class="kw">for</span> x <span class="kw">in</span> ([d] <span class="kw">if</span> <span class="fn">isinstance</span>(d,<span class="bn">dict</span>) <span class="kw">else</span> d) <span class="kw">if</span> <span class="fn">isinstance</span>(x,<span class="bn">dict</span>) <span class="kw">and</span> x.get(<span class="str">'plan'</span>)]
-last={}; [last.setdefault(r[<span class="str">'customer_id'</span>],r) <span class="kw">for</span> r <span class="kw">in</span> rows]
-<span class="kw">for</span> gid <span class="kw">in</span> <span class="fn">set</span>(r[<span class="str">'group_id'</span>] <span class="kw">for</span> r <span class="kw">in</span> last.values()):
-  lr=[r <span class="kw">for</span> r <span class="kw">in</span> last.values() <span class="kw">if</span> r[<span class="str">'group_id'</span>]==gid]
-  <span class="kw">for</span> plan <span class="kw">in</span> [<span class="str">'A'</span>,<span class="str">'B'</span>,<span class="str">'C'</span>]:
-    by_status=collections.defaultdict(<span class="bn">list</span>)
-    <span class="kw">for</span> r <span class="kw">in</span> lr:
-      <span class="kw">for</span> p,v <span class="kw">in</span> parse_prices(r[<span class="str">'offer_json'</span>]):
-        <span class="kw">if</span> p==plan <span class="kw">and</span> v <span class="kw">is</span> <span class="kw">not</span> <span class="kw">None</span>: by_status[r[<span class="str">'status'</span>]].append(<span class="fn">float</span>(v))
-    <span class="kw">if</span> by_status:
-      <span class="fn">print</span>(gid,plan,{s:(<span class="fn">len</span>(v),<span class="fn">round</span>(statistics.mean(v),<span class="num">2</span>)) <span class="kw">for</span> s,v <span class="kw">in</span> by_status.items()})
-<span class="suppress">⋯ 20+ lines suppressed</span></pre>
+<pre class="code"><span class="str">"""Wk68+ cash model to d504, calibrated on wk67 measurements."""</span>
+CASH0=<span class="num">12_587_222</span>; U=<span class="num">166.4</span>; ADR=<span class="num">.0850</span>; SLIP=<span class="num">.9788</span>
+CAP=<span class="num">9_310</span>; COST={<span class="num">5</span>:<span class="num">.030</span>,<span class="num">4</span>:<span class="num">.012</span>}
+OPS={<span class="num">68</span>:<span class="num">35000</span>,<span class="num">69</span>:<span class="num">28000</span>,<span class="num">70</span>:<span class="num">28000</span>,<span class="num">71</span>:<span class="num">14000</span>,<span class="num">72</span>:<span class="num">7000</span>}
+TIER={<span class="num">68</span>:<span class="num">5</span>,<span class="num">69</span>:<span class="num">5</span>,<span class="num">70</span>:<span class="num">4</span>,<span class="num">71</span>:<span class="num">5</span>,<span class="num">72</span>:<span class="num">5</span>}
+B68=(<span class="num">2067</span>,<span class="num">348_593</span>); B69=(<span class="num">1607</span>,<span class="num">270_143</span>); B70=(<span class="num">325</span>,<span class="num">52_115</span>)
+B71=(<span class="num">2300</span>,<span class="num">381_470</span>); B72a=(<span class="num">762</span>,<span class="num">126_188</span>); B72b=(<span class="num">1565</span>,<span class="num">264_110</span>)
+F70_T4=<span class="num">.08</span>
+<span class="kw">def</span> <span class="fn">run</span>(F,label,f70=F70_T4,abort_after68=<span class="kw">False</span>):
+  cash,book=CASH0,<span class="num">7061</span>; traj={}
+  <span class="kw">for</span> wk <span class="kw">in</span> (<span class="num">68</span>,<span class="num">69</span>,<span class="num">70</span>,<span class="num">71</span>,<span class="num">72</span>):
+    tier=TIER[wk]; ops=OPS[wk]  <span class="suppress">⋯ abort path switches to T4/min ops</span>
+    billers,dues = {<span class="num">68</span>:B68,<span class="num">69</span>:B69,<span class="num">70</span>:B70,<span class="num">71</span>:B71}.get(wk,B72a)
+    f = Fs[wk] <span class="kw">if</span> tier==<span class="num">5</span> <span class="kw">else</span> f70
+    pay=dues*f*SLIP; canc=billers*(<span class="num">1</span>-f); book_end=book-canc
+    avg=(book+book_end)/<span class="num">2</span>; compute=avg*U*COST[tier]*<span class="num">7</span>; adrev=avg*ADR*<span class="num">7</span>
+    cash += pay+adrev-compute-ops-CAP-<span class="num">30</span>; book=book_end
+    traj[wk]=(<span class="fn">round</span>(cash/<span class="num">1000</span>,<span class="num">1</span>),<span class="fn">int</span>(book))
+  <span class="kw">return</span> {<span class="num">476</span>:traj[<span class="num">68</span>],<span class="num">497</span>:traj[<span class="num">71</span>],<span class="num">504</span>:traj[<span class="num">72</span>]}</pre>
 
-<div class="stdout"><span class="case">Active enterprise accepted price distribution</span>
-{'group_id':'E3','plan':'B','n':154,'seats':167595,'minp':1.69,'avgp':56.01,'maxp':89.0}
-{'group_id':'E3','plan':'C','n':3,'seats':3341,'minp':25.0,'avgp':101.0,'maxp':139.0}
-
-<span class="case">Enterprise lost by latest agent offer and day groups summary</span>
-GID D_E02 n 413 statuses Counter({'lost':403,'lead':10})
-  B all avg 40.19 min 39.0 max 49.0 by_status {'lost':(403,40.22,39,49),'lead':(10,39,39,39)}
-  C all avg 61.15 min 59.0 max 79.0 by_status {'lost':(403,61.21,59,79),'lead':(10,59,59,59)}
-<span class="suppress">⋯ 40+ lines suppressed</span></div>
+<div class="stdout"><span class="case">stdout</span>
+                    UP F=.90: wk68 net   +23.8 cash  12611.0 book6854 | wk69 net   -32.0 cash  12578.9 book6693 | wk70 net  -120.8 cash  12458.1 book6394 | wk71 net   +97.0 cash  12555.1 book6164 | wk72 net   +96.2 cash  12651.3 book5947
+               CENTRAL F=.85: wk68 net    +8.5 cash  12595.7 book6750 | wk69 net   -40.3 cash  12555.4 book6509 | wk70 net  -118.4 cash  12437.0 book6210 | wk71 net   +86.6 cash  12523.6 book5865 | wk72 net   +79.3 cash  12602.9 book5552
+                   DOWN F=.65: wk68 net   -52.7 cash  12534.6 book6337 | wk69 net   -73.5 cash  12461.1 book5775 | wk70 net  -108.5 cash  12352.5 book5476 | wk71 net   +45.1 cash  12397.6 book4671 | wk72 net   +23.4 cash  12421.0 book4048
+          STORM F68=.40+abort: wk68 net  -129.1 cash  12458.1 book5820 | wk69 net   -78.9 cash  12379.3 book4262 | wk70 net   -67.3 cash  12312.0 book3963 | wk71 net   -43.2 cash  12268.7 book1732 | wk72 net   -23.7 cash  12245.0 book385
+               DRIFT .88-&gt;.76: wk68 net   +17.6 cash  12604.9 book6812 | wk69 net   -42.5 cash  12562.4 book6571 | wk70 net  -119.2 cash  12443.2 book6272 | wk71 net   +64.5 cash  12507.6 book5789 | wk72 net   +60.4 cash  12568.0 book5276
+d504: EV 12,533.7K | UP F=.90:12,651 CENTRAL F=.85:12,603 DOWN F=.65:12,421 STORM F68=.40+abort:12,245 DRIFT .88-&gt;.76:12,568</div>
       </div>
     </div>
   </div>

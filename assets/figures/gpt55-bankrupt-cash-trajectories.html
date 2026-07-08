@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GPT-5.5 Bankrupt Cash Trajectories</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #000000;
+      --line: #d6dde6;
+      --line-2: #eef1f5;
+      --paper: #ffffff;
+      --bg: #ffffff;
+      --gpt: #e69f00;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Inter", system-ui, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+
+    .chart {
+      position: relative;
+      width: 648px;
+      height: 250px;
+      background: var(--paper);
+    }
+
+    svg {
+      display: block;
+      width: 648px;
+      height: 250px;
+    }
+
+    .axis {
+      stroke: var(--ink);
+      stroke-width: 1;
+      shape-rendering: crispEdges;
+    }
+
+    .grid {
+      stroke: var(--line);
+      stroke-width: 0.7;
+      stroke-dasharray: 2 3;
+      shape-rendering: crispEdges;
+    }
+
+    .tick-label {
+      fill: var(--ink);
+      font-size: 9.5px;
+      font-weight: 400;
+    }
+
+    .axis-label {
+      fill: var(--ink);
+      font-size: 10.5px;
+      font-weight: 400;
+    }
+
+    .series {
+      fill: none;
+      stroke: var(--gpt);
+      stroke-width: 1.8;
+      stroke-linejoin: round;
+      stroke-linecap: round;
+      opacity: 0.95;
+    }
+
+    .run1 {
+      stroke-dasharray: none;
+    }
+
+    .run2 {
+      stroke-dasharray: 5 3;
+    }
+
+    .endpoint {
+      fill: var(--paper);
+      stroke: var(--gpt);
+      stroke-width: 1.8;
+    }
+
+    .legend text {
+      fill: var(--ink);
+      font-size: 10.5px;
+      font-weight: 400;
+    }
+
+    .hover-line {
+      display: none;
+      stroke: var(--ink);
+      stroke-width: 0.9;
+      stroke-dasharray: 3 3;
+      opacity: 0.78;
+      shape-rendering: crispEdges;
+    }
+
+    .hover-dot {
+      display: none;
+      fill: var(--gpt);
+      stroke: #ffffff;
+      stroke-width: 0.9;
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 12px;
+      left: 430px;
+      min-width: 172px;
+      max-width: 224px;
+      padding: 8px 9px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.97);
+      box-shadow: 0 10px 24px rgba(10, 37, 64, 0.14);
+      color: var(--ink);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(2px);
+      transition: opacity 0.1s, transform 0.1s;
+    }
+
+    .tooltip.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .tooltip-title {
+      color: var(--ink);
+      font-size: 10.5px;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 5px;
+    }
+
+    .tooltip-row {
+      display: grid;
+      grid-template-columns: 8px minmax(0, 1fr) auto;
+      gap: 6px;
+      align-items: center;
+      color: var(--ink);
+      font-size: 10px;
+      font-weight: 400;
+      line-height: 1.25;
+    }
+
+    .tooltip-row + .tooltip-row {
+      margin-top: 3px;
+    }
+
+    .tooltip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--gpt);
+    }
+
+    .tooltip-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tooltip-value {
+      color: var(--ink);
+      font-weight: 400;
+      white-space: nowrap;
+    }
+
+    .plot-error {
+      padding: 20px;
+      color: #e69f00;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chart" id="chart">
+    <svg id="plot" viewBox="0 0 648 250" role="img" aria-label="Cash balance over time for two GPT-5.5 bankrupt runs"></svg>
+    <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+  </div>
+
+  <script>
+    const RUN2_POINTS = [
+      { day: 0, cash: 1000000.00 },
+      { day: 7, cash: 450752.00 },
+      { day: 14, cash: 405863.00 },
+      { day: 21, cash: 358606.00 },
+      { day: 28, cash: 305466.00 },
+      { day: 35, cash: 289096.00 },
+      { day: 42, cash: 268920.00 },
+      { day: 49, cash: 248338.00 },
+      { day: 56, cash: 231505.00 },
+      { day: 63, cash: 267652.00 },
+      { day: 70, cash: 333854.00 },
+      { day: 77, cash: 361631.00 },
+      { day: 84, cash: 389794.00 },
+      { day: 91, cash: 436837.00 },
+      { day: 98, cash: 528978.00 },
+      { day: 105, cash: 682606.00 },
+      { day: 112, cash: 873716.00 },
+      { day: 119, cash: 1116559.00 },
+      { day: 126, cash: 1931164.00 },
+      { day: 133, cash: 1693397.00 },
+      { day: 140, cash: 1343939.00 },
+      { day: 147, cash: 1706965.00 },
+      { day: 154, cash: 2189137.00 },
+      { day: 161, cash: 2457252.00 },
+      { day: 168, cash: 2392768.00 },
+      { day: 175, cash: 1935834.00 },
+      { day: 182, cash: 2580595.00 },
+      { day: 189, cash: 2333763.00 },
+      { day: 196, cash: 2633283.00 },
+      { day: 203, cash: 2949758.00 },
+      { day: 210, cash: 3569957.00 },
+      { day: 217, cash: 3138920.00 },
+      { day: 224, cash: 3896970.00 },
+      { day: 231, cash: 2642001.00 },
+      { day: 238, cash: 4512851.00 },
+      { day: 245, cash: 6687454.00 },
+      { day: 252, cash: 4470609.00 },
+      { day: 259, cash: 1775566.00 },
+      { day: 266, cash: 86959.00 },
+      { day: 267, cash: -38359.00 },
+    ];
+
+    const width = 648;
+    const height = 250;
+    const margin = { top: 18, right: 10, bottom: 34, left: 58 };
+    const innerW = width - margin.left - margin.right;
+    const innerH = height - margin.top - margin.bottom;
+    const svg = document.getElementById("plot");
+    const tooltip = document.getElementById("tooltip");
+    const ns = "http://www.w3.org/2000/svg";
+
+    function el(name, attrs = {}, parent = svg) {
+      const node = document.createElementNS(ns, name);
+      Object.entries(attrs).forEach(([key, value]) => node.setAttribute(key, value));
+      parent.appendChild(node);
+      return node;
+    }
+
+    function fmtCash(value) {
+      const sign = value < 0 ? "-" : "";
+      const abs = Math.abs(value);
+      if (abs >= 1000000) return `${sign}$${(abs / 1000000).toFixed(abs >= 10000000 ? 0 : 1)}M`;
+      if (abs >= 1000) return `${sign}$${(abs / 1000).toFixed(0)}K`;
+      return `${sign}$${abs.toFixed(0)}`;
+    }
+
+    function pathFor(points, x, y) {
+      return points.map((point, index) => `${index === 0 ? "M" : "L"}${x(point.day).toFixed(2)},${y(Math.max(0, point.cash)).toFixed(2)}`).join(" ");
+    }
+
+    function nearest(points, day) {
+      return points.reduce((best, point) => Math.abs(point.day - day) < Math.abs(best.day - day) ? point : best, points[0]);
+    }
+
+    async function loadRun1() {
+      const response = await fetch("../../trajectory-viewer/data/runs/9fa64d2e.json");
+      if (!response.ok) throw new Error("Could not load run 1 trajectory data.");
+      const data = await response.json();
+      return data.cash_series.map((point) => ({
+        day: Number(point.day),
+        cash: Number(point.cash)
+      }));
+    }
+
+    async function render() {
+      const run1 = await loadRun1();
+      const run2 = RUN2_POINTS;
+      const all = run1.concat(run2);
+      const xDomain = [0, 500];
+      const yMin = 0;
+      const yMax = Math.max(7000000, Math.max(...all.map((d) => d.cash)) * 1.04);
+      const x = (day) => margin.left + ((day - xDomain[0]) / (xDomain[1] - xDomain[0])) * innerW;
+      const y = (cash) => margin.top + (1 - ((cash - yMin) / (yMax - yMin))) * innerH;
+      const dayFromX = (px) => xDomain[0] + ((px - margin.left) / innerW) * (xDomain[1] - xDomain[0]);
+
+      const yTicks = [0, 2000000, 4000000, 6000000];
+      yTicks.forEach((tick) => {
+        if (tick > 0) {
+          el("line", { class: "grid", x1: margin.left, y1: y(tick), x2: width - margin.right, y2: y(tick) });
+        }
+        const label = el("text", { class: "tick-label", x: margin.left - 8, y: y(tick) + 3, "text-anchor": "end" });
+        label.textContent = fmtCash(tick);
+      });
+
+      const xTicks = [0, 100, 200, 300, 400];
+      xTicks.forEach((tick) => {
+        el("line", { x1: x(tick), y1: height - margin.bottom, x2: x(tick), y2: height - margin.bottom + 2.5, stroke: "#000000", "stroke-width": 0.8 });
+        const label = el("text", { class: "tick-label", x: x(tick), y: height - 12, "text-anchor": "middle" });
+        label.textContent = tick;
+      });
+      el("line", { x1: x(500), y1: height - margin.bottom, x2: x(500), y2: height - margin.bottom + 2.5, stroke: "#000000", "stroke-width": 0.8 });
+      let endTick = el("text", { class: "tick-label", x: x(500), y: height - 12, "text-anchor": "end" });
+      endTick.textContent = "500";
+
+      el("line", { class: "axis", x1: margin.left, y1: margin.top, x2: margin.left, y2: height - margin.bottom });
+      el("line", { class: "axis", x1: margin.left, y1: height - margin.bottom, x2: width - margin.right, y2: height - margin.bottom });
+
+      el("line", {
+        x1: margin.left, x2: width - margin.right, y1: y(1000000), y2: y(1000000),
+        stroke: "#000000", "stroke-width": 0.8, "stroke-dasharray": "3 2", opacity: 0.55
+      });
+
+      let axis = el("text", { class: "axis-label", x: margin.left, y: 10 });
+      axis.textContent = "Cash on hand (USD)";
+      axis = el("text", { class: "axis-label", x: margin.left + innerW / 2, y: height - 3, "text-anchor": "middle" });
+      axis.textContent = "Day";
+
+      el("path", { class: "series run1", d: pathFor(run1, x, y) });
+      el("path", { class: "series run2", d: pathFor(run2, x, y) });
+
+      const end1 = run1[run1.length - 1];
+      const end2 = run2[run2.length - 1];
+      el("circle", { class: "endpoint", cx: x(end1.day), cy: y(Math.max(0, end1.cash)), r: 3 });
+      el("circle", { class: "endpoint", cx: x(end2.day), cy: y(Math.max(0, end2.cash)), r: 3 });
+
+      const legend = el("g", { class: "legend", transform: "translate(430 20)" });
+      el("line", { x1: 0, y1: 0, x2: 18, y2: 0, stroke: "var(--gpt)", "stroke-width": 1.8, "stroke-linecap": "round" }, legend);
+      let text = el("text", { x: 24, y: 4 }, legend);
+      text.textContent = "Run 1";
+      el("line", { x1: 86, y1: 0, x2: 104, y2: 0, stroke: "var(--gpt)", "stroke-width": 1.8, "stroke-linecap": "round", "stroke-dasharray": "5 3" }, legend);
+      text = el("text", { x: 110, y: 4 }, legend);
+      text.textContent = "Run 2";
+
+      const hoverLine = el("line", { class: "hover-line", y1: margin.top, y2: height - margin.bottom });
+      const dot1 = el("circle", { class: "hover-dot", r: 2.5 });
+      const dot2 = el("circle", { class: "hover-dot", r: 2.5 });
+      const overlay = el("rect", { x: margin.left, y: margin.top, width: innerW, height: innerH, fill: "transparent" });
+
+      function showHover(event) {
+        const rect = svg.getBoundingClientRect();
+        const scale = width / rect.width;
+        const px = (event.clientX - rect.left) * scale;
+        const bounded = Math.max(margin.left, Math.min(width - margin.right, px));
+        const day = Math.round(dayFromX(bounded));
+        const p1 = nearest(run1, day);
+        const p2 = nearest(run2, day);
+        hoverLine.style.display = "block";
+        hoverLine.setAttribute("x1", bounded);
+        hoverLine.setAttribute("x2", bounded);
+        dot1.style.display = "block";
+        dot1.setAttribute("cx", x(p1.day));
+        dot1.setAttribute("cy", y(Math.max(0, p1.cash)));
+        dot2.style.display = "block";
+        dot2.setAttribute("cx", x(p2.day));
+        dot2.setAttribute("cy", y(Math.max(0, p2.cash)));
+        tooltip.innerHTML = `
+          <div class="tooltip-title">GPT-5.5 · Day ${day}</div>
+          <div class="tooltip-row"><span class="tooltip-dot"></span><span class="tooltip-name">Run 1 day ${p1.day}</span><span class="tooltip-value">${fmtCash(p1.cash)}</span></div>
+          <div class="tooltip-row"><span class="tooltip-dot"></span><span class="tooltip-name">Run 2 day ${p2.day}</span><span class="tooltip-value">${fmtCash(p2.cash)}</span></div>
+        `;
+        tooltip.classList.add("visible");
+        tooltip.setAttribute("aria-hidden", "false");
+      }
+
+      function hideHover() {
+        hoverLine.style.display = "none";
+        dot1.style.display = "none";
+        dot2.style.display = "none";
+        tooltip.classList.remove("visible");
+        tooltip.setAttribute("aria-hidden", "true");
+      }
+
+      overlay.addEventListener("pointermove", showHover);
+      overlay.addEventListener("pointerleave", hideHover);
+    }
+
+    render().catch((error) => {
+      document.getElementById("chart").innerHTML = `<div class="plot-error">${error.message}</div>`;
+    });
+  </script>
+</body>
+</html>

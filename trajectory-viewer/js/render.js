@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 8;
+const DATA_VERSION = 12;
 
 // ---------- formatters ----------
 function fmtMoney(n) {
@@ -356,6 +356,16 @@ function buildSubsChart(container, seatSeriesByGroup, currentDay) {
   `;
 }
 
+function getCustomerGroupSeries(run) {
+  if (Array.isArray(run.customer_series_by_group) && run.customer_series_by_group.length > 0) {
+    return { series: run.customer_series_by_group, label: 'CUSTOMERS' };
+  }
+  if (Array.isArray(run.seat_series_by_group_detailed) && run.seat_series_by_group_detailed.length > 0) {
+    return { series: run.seat_series_by_group_detailed, label: 'SEATS' };
+  }
+  return { series: run.seat_series_by_group || [], label: 'SEATS' };
+}
+
 // ---------- action rendering ----------
 function suppressLong(s, maxLines = 60) {
   const lines = String(s).split('\n');
@@ -366,11 +376,13 @@ function suppressLong(s, maxLines = 60) {
   return head + '\n⋯ ' + skipped + '+ lines suppressed ⋯\n' + tail;
 }
 
-function renderAction(action, idx) {
+function renderAction(action, idx, key = idx, marker = idx + 1) {
   const tool = action.tool || 'unknown';
   const args = action.arguments || {};
   const result = action.result || '';
-  const turn = action.turn || idx;
+  const turn = (action.turn !== undefined && action.turn !== null) ? action.turn : idx;
+  const dataIdx = String(key);
+  const toggleArg = JSON.stringify(dataIdx);
   let ts = '';
   if (action.timestamp) {
     let d = null;
@@ -494,16 +506,40 @@ function renderAction(action, idx) {
   const collapsedCls = defaultCollapsed ? 'collapsed' : '';
 
   return `
-    <div class="tile action ${collapsedCls}" data-idx="${idx}">
+    <div class="tile action ${collapsedCls}" data-idx="${escHTML(dataIdx)}">
       <div class="head ${headClass}">
-        <span class="panel-mark">${idx+1}</span>
+        <span class="panel-mark">${marker}</span>
         <span><b>${escHTML(label)}</b></span>
         ${subtitle ? `<span class="path">${escHTML(subtitle)}</span>` : ''}
         <span class="turn">turn ${turn}</span>
         <span class="ts">${ts}</span>
-        <button class="toggle" onclick="toggleAction(${idx})" aria-label="toggle">${defaultCollapsed ? '▸' : '▾'}</button>
+        <button class="toggle" onclick="toggleAction(${escHTML(toggleArg)})" aria-label="toggle">${defaultCollapsed ? '▸' : '▾'}</button>
       </div>
       <div class="body">${bodyHtml || '<div style="color:#8792a2;font-size:11px;">(no output)</div>'}</div>
+    </div>
+  `;
+}
+
+function isWorkspaceEditAction(action) {
+  const tool = action && action.tool;
+  return tool === 'write_file' || tool === 'Write'
+    || tool === 'edit_file' || tool === 'Edit'
+    || tool === 'apply_patch';
+}
+
+function renderWorkspaceEditPanel(day, actions) {
+  const edits = (actions || []).filter(isWorkspaceEditAction);
+  if (edits.length === 0) return '';
+  const body = edits.map((action, i) => renderAction(action, i, `ws-${i}`, i + 1)).join('');
+  return `
+    <div class="tile action collapsed" data-idx="workspace-edits">
+      <div class="head" style="background:#0c6fa6;color:#fff;">
+        <span class="panel-mark" style="background:#fff;color:#0c6fa6;">W</span>
+        <span><b>Day ${day} Workspace file edits</b></span>
+        <span class="path">${edits.length} file ${edits.length === 1 ? 'action' : 'actions'}</span>
+        <button class="toggle" onclick="toggleAction('workspace-edits')" aria-label="toggle">▸</button>
+      </div>
+      <div class="body">${body}</div>
     </div>
   `;
 }
@@ -633,7 +669,9 @@ function renderDay(idx) {
 
   // Charts
   buildCashChart(document.getElementById('cash-body'), STATE.run.cash_series, day);
-  buildSubsChart(document.getElementById('subs-body'), STATE.run.seat_series_by_group, day);
+  const customerGroupData = getCustomerGroupSeries(STATE.run);
+  document.getElementById('subs-lbl').textContent = customerGroupData.label;
+  buildSubsChart(document.getElementById('subs-body'), customerGroupData.series, day);
 
   // Day content
   const container = document.getElementById('day-content');
@@ -647,6 +685,9 @@ function renderDay(idx) {
   const weekRow = weeksIndex.find(w => w.day === day);
   if (weekRow) {
     html += renderWeekTile(weekRow);
+  }
+  if (dayData && dayData.actions) {
+    html += renderWorkspaceEditPanel(day, dayData.actions);
   }
   if (dayData && dayData.actions && dayData.actions.length > 0) {
     for (let i = 0; i < dayData.actions.length; i++) {
@@ -687,7 +728,7 @@ async function init() {
   subParts.push(`<b>${r.label || ''}</b>`);
   subParts.push(`run <code>${runId}</code>`);
   const isDnf = r.status === 'dnf' || r.dnf;
-  const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
+  const survival = (r.survival_days !== undefined && r.survival_days !== null) ? r.survival_days : (r.bankrupt ? (r.current_day || 0) : 500);
   if (isDnf) {
     subParts.push(`<span style="background:#6b7280;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 6px;border-radius:3px;">DNF</span>`);
     subParts.push(`stopped at <b>${survival}d</b>`);

@@ -158,28 +158,30 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js?v=6"></script>
+<script src="runs-by-model.js?v=11"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
 function modelNameHtml(name) {
-  return name === 'Claude Fable 5*' ? 'Claude Fable 5<sup>*</sup>' : name;
+  return name;
 }
 
 // Same Okabe–Ito palette as the master plot, used for the model color.
 const PALETTE = {
-  'Claude Fable 5*':   {c:'#111827'},
-  'GPT-5.5':           {c:'#2f6df6'},
-  'Claude Opus 4.8':   {c:'#c41e3a'},
-  'Claude Opus 4.7':   {c:'#ed5b2c'},
+  'Claude Fable 5':    {c:'#111827'},
+  'Claude Opus 4.8':   {c:'#d55e00'},
   'Qwen 3.7 Max':      {c:'#8a63d2'},
-  'Claude Sonnet 4.6': {c:'#00875a'},
-  'Kimi K2.6':         {c:'#b15c00'},
-  'GLM 5.2':           {c:'#7c2d6f'},
-  'GLM 5.1':           {c:'#bf4f8f'},
+  'Gemini 3.5 Flash':  {c:'#2f6df6'},
+  'Claude Opus 4.7':   {c:'#cc79a7'},
+  'Claude Sonnet 5':   {c:'#009e73'},
   'Claude Haiku 4.5':  {c:'#0c6fa6'},
-  'Gemini 3 Flash':    {c:'#697386'},
+  'GLM 5.2':           {c:'#7c2d6f'},
+  'Kimi K2.6':         {c:'#b15c00'},
+  'Claude Sonnet 4.6': {c:'#00875a'},
+  'GPT-5.5':           {c:'#e69f00'},
+  'GLM 5.1':           {c:'#bf4f8f'},
   'DeepSeek V4 Pro':   {c:'#0a2540'},
+  'Gemini 3 Flash':    {c:'#697386'},
   'Grok 4.20':         {c:'#6f52c1'},
 };
 // All runs use solid lines.
@@ -187,18 +189,20 @@ const RUN_DASH = ['', '', ''];
 
 // Match the leaderboard table order, excluding non-run summary rows.
 const MODEL_ORDER = [
-  'Claude Fable 5*',
+  'Claude Fable 5',
   'Claude Opus 4.8',
-  'GPT-5.5',
   'Qwen 3.7 Max',
+  'Gemini 3.5 Flash',
   'Claude Opus 4.7',
-  'Kimi K2.6',
-  'GLM 5.2',
-  'Claude Sonnet 4.6',
-  'GLM 5.1',
+  'Claude Sonnet 5',
   'Claude Haiku 4.5',
-  'Gemini 3 Flash',
+  'GLM 5.2',
+  'Kimi K2.6',
+  'Claude Sonnet 4.6',
+  'GPT-5.5',
+  'GLM 5.1',
   'DeepSeek V4 Pro',
+  'Gemini 3 Flash',
   'Grok 4.20',
 ];
 
@@ -215,6 +219,7 @@ const xS = v => PAD_L + (Math.min(Math.max(v, xMin), xMax) - xMin) / (xMax - xMi
 const yMinLog = Math.log10(100);
 const yMaxLog = Math.log10(1e8);
 const yS = v => {
+  if (v <= 0) return PAD_T + innerH;
   const lv = Math.log10(Math.max(v, 100));
   return PAD_T + innerH - (lv - yMinLog) / (yMaxLog - yMinLog) * innerH;
 };
@@ -293,36 +298,8 @@ function placeDetailBox(selectedX, preferredTop) {
   detailTooltip.style.top = `${top}px`;
 }
 
-// These two GPT-5.5 trajectories terminated shortly after their last observed
-// positive-cash point. The raw grid data keeps the day-500 duplicate for
-// normalization, but the grid should show the bankruptcy event.
-const FORCE_BANKRUPT_AFTER_WEEK = {
-  '555049e4': true,
-  '15c3d364': true,
-};
-function maybeForceBankrupt(run) {
-  if (!FORCE_BANKRUPT_AFTER_WEEK[run.run_id]) return run;
-  const pts = run.points.slice();
-  const last = pts[pts.length - 1];
-  const prev = pts[pts.length - 2];
-  if (last && prev && last[0] === 500 && last[1] === prev[1]) {
-    pts.pop();
-  }
-  const [lastDay, lastCash] = pts[pts.length - 1];
-  if (lastCash <= 0) return run;
-
-  const steps = 7;
-  const target = -100;
-  for (let i = 1; i <= steps; i++) {
-    const t = i / steps;
-    const cash = lastCash + (target - lastCash) * t;
-    pts.push([lastDay + i, cash]);
-  }
-  return Object.assign({}, run, { points: pts });
-}
-
 MODEL_ORDER.forEach(modelName => {
-  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3).map(maybeForceBankrupt);
+  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3);
   const color = (PALETTE[modelName] || {c:'#0a2540'}).c;
 
   // tile shell
@@ -394,7 +371,7 @@ MODEL_ORDER.forEach(modelName => {
     for (const [day, cash] of run.points) {
       if (cash <= 0) {
         bankruptDay = day;
-        pts.push([day, 100]);
+        pts.push([day, 0]);
         break;
       }
       pts.push([day, cash]);
@@ -427,7 +404,7 @@ MODEL_ORDER.forEach(modelName => {
   series.forEach(s => {
     if (s.bankruptDay != null) {
       const x = xS(s.bankruptDay);
-      const y = yS(100);
+      const y = yS(0);
       skull(x, y - 6, svg);
     }
   });

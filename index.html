@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=27">
+  <link rel="stylesheet" href="styles.css?v=33">
   <script>
     window.MathJax = {
       tex: {
@@ -101,7 +101,7 @@
     <figure class="chart-panel intro-results-plot">
       <div id="cash-plot-intro" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend-intro" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
       <div id="cash-legend-intro" class="cash-legend"></div>
-      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+      <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline.</figcaption>
     </figure>
 
     <d-article>
@@ -111,9 +111,21 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Most models struggle to finish above the $1M starting balance; Claude Fable 5, Claude Opus 4.8, and GPT-5.5 are the only evaluated models that finish above the initial balance on their best run, and only Claude Fable 5 finishes above the initial balance for more than one run.</li>
+          <li>Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to maintain profit for entire runs. All other models either end below the starting cash or bankrupt.</li>
         </ul>
       </div>
+
+      <aside class="changelog-box" data-nosnippet>
+        <div class="section-label">Changelog</div>
+        <p><strong>July 8, 2026:</strong> Minor update to how insufficient quota impacts customer satisfaction.</p>
+        <details>
+          <summary>
+            <span class="read-more">Read more</span>
+            <span class="read-less">Read less</span>
+          </summary>
+          <p>The relative ranking between models remains largely the same. The upper bound and rule-based heuristics remain the same. The change makes the benchmark slightly more difficult. All plots and data on this page and in the codebase are updated. We are still updating information in the paper.</p>
+        </details>
+      </aside>
 
       <d-contents class="article-contents" data-nosnippet>
         <nav>
@@ -156,7 +168,7 @@
 
       <div class="figure-block text-width-figure">
         <div class="frame-wrap" data-label="Task intelligence and steering intelligence">
-          <iframe src="assets/figures/task-steering-intelligence.html?v=2" title="Task intelligence and steering intelligence" data-width="1600" data-height="840" loading="lazy"></iframe>
+          <iframe src="assets/figures/task-steering-intelligence.html?v=2" title="Task intelligence and steering intelligence" data-width="1600" data-height="840" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Today, we measure AI agent's intelligence to perform isolated tasks. The next frontier is measuring intelligence to steer systems across long horizon towards distant goals.</div>
       </div>
@@ -179,7 +191,7 @@
 
       <div class="figure-block teaser-block text-width-figure">
         <div class="frame-wrap" data-label="CEO-Bench teaser figure">
-          <iframe src="assets/figures/teaser.html?v=3" title="CEO-Bench simulator overview" data-width="980" data-height="400" loading="lazy"></iframe>
+          <iframe src="assets/figures/teaser.html?v=3" title="CEO-Bench simulator overview" data-width="980" data-height="400" loading="lazy" scrolling="no"></iframe>
         </div>
       </div>
 
@@ -339,24 +351,25 @@
               <span class="summary-toggle"><span class="read-more">Read more</span><span class="read-less">Read less</span></span>
             </summary>
             <div class="details-body">
-              <p>Product quality is affected by daily development, research projects, model tier choices, targeted development, infrastructure capacity, support spending, usage quotas, and in-app ad strength. These controls shape customer experience through base product quality, quota saturation, system outages, support delays, relationship history, and ad load. Competitors add pressure by periodically raising customer quality expectations. Broad product development and research can make competitors catch up faster, while targeted development for specific groups is harder to copy and lets competitors catch up more slowly.</p>
+              <p>Product quality is affected by daily development, research projects, model tier choices, targeted development, infrastructure capacity, support spending, usage quotas, and in-app ad strength. These controls shape customer experience through base product quality, quota fulfillment, system overload, support delays, relationship history, and ad load. Quota shortfalls multiply the whole perceived-quality expression. Competitors add pressure by periodically raising customer quality expectations. Broad product development and research can make competitors catch up faster, while targeted development for specific groups is harder to copy and lets competitors catch up more slowly.</p>
               <div class="equation-wrap">
                 \[
                 \begin{aligned}
-                \underbrace{Q_{i,t}^{\mathrm{perc}}}_{\substack{\text{quality perceived}\\\text{by customer }i}}
+                \underbrace{Q_{i,t}^{\mathrm{perc}}}_{\substack{\text{perceived}\\\text{quality for customer }i}}
                 ={}&amp;
+                \underbrace{\min\!\left(1,\frac{U_{p,t}}{D_Uu_i}\right)}_{\text{quota satisfaction}}
+                \Bigg[
                 \underbrace{m_p}_{\text{model-tier effect}}\left(
                 \underbrace{q_0}_{\text{initial quality}}
                 +\underbrace{b_t^{\mathrm{shared}}}_{\text{dev improvement}}
                 +\underbrace{b_{g,t}^{\mathrm{group}}}_{\text{targeted dev improvement}}
                 \right)
-                -\underbrace{\beta_o o_t}_{\text{overload penalty}}
-                -\underbrace{\beta_{\mathrm{out}}\mathbb{1}\{\mathrm{outage}_t\}}_{\text{outage penalty}}\\
+                -\underbrace{\beta_o o_t}_{\text{overload penalty}}\\
                 &amp;+\underbrace{\beta_r(r_{i,t}-r_0)}_{\text{customer relationship}}
                 +\underbrace{\beta_d\log\!\left(\alpha_d+d_{i,t}/d_0\right)}_{\text{customer stickiness}}
                 -\underbrace{\beta_I I_{i,t}}_{\text{open issues penalty}}
-                -\underbrace{\beta_U\left(\nu_U-\frac{U_{p,t}}{D_Uu_i}\right)_+}_{\text{quota saturation penalty}}
                 -\underbrace{\eta_i^{\mathrm{ads}}a_{i,t}^{\mathrm{eff}}}_{\text{in-app ads penalty}}
+                \Bigg]
                 \end{aligned}
                 \]
               </div>
@@ -502,7 +515,7 @@
 
           <div class="figure-block text-width-figure interface-figure">
             <div class="frame-wrap" data-label="Agent interface examples">
-              <iframe src="assets/figures/interface-examples.html?v=2" title="Agent interface examples" data-width="720" data-height="430" loading="lazy" scrolling="no"></iframe>
+              <iframe src="assets/figures/interface-examples.html?v=2" title="Agent interface examples" data-width="720" data-height="434" loading="lazy" scrolling="no"></iframe>
             </div>
             <div class="fig-caption">Agents interact with CEO-Bench through a versatile Python interface: diverse business databases, fine-grained actions, and composable custom workflows.</div>
           </div>
@@ -555,18 +568,18 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5, Claude Opus 4.8, and GPT-5.5 finish above the $1M starting balance on their best runs, while Qwen 3.7 Max, Claude Opus 4.7, Kimi K2.6, GLM 5.2, and Claude Sonnet 4.6 end with positive cash but below the starting balance. Claude Fable 5 is the only evaluated model with more than one run above the initial balance. The rule-based baseline finishes with $15.8M. This preliminary evaluation shows that Claude Fable 5, Claude Opus 4.8, and GPT-5.5 demonstrate high-upside strategic behavior, while most models fail to coordinate growth, quality, and cash flow.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
       </article>
-      <figure class="chart-panel results-overview-plot" id="benchmark">
+      <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
         <div id="cash-legend" class="cash-legend"></div>
-        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+        <figcaption class="fig-caption" data-nosnippet>We measure cash balance as the performance metric. This plot shows cash balance over time for the best run of each model and the rule-based baseline. Best run is selected first by longest survival, then by ending cash.</figcaption>
       </figure>
-      <div class="figure-block">
+      <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=11" title="Cash trajectories per model" data-width="740" data-height="625" loading="lazy"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=16" title="Cash trajectories per model" data-width="740" data-height="623" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Cash balance over time for all runs of each model. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></div>
+        <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
 
       <figure class="results-table-block">
@@ -576,7 +589,7 @@
               <tr>
                 <th scope="col">Model</th>
                 <th scope="col">Bankruptcy</th>
-                <th scope="col">Max final cash</th>
+                <th scope="col">Best-run cash</th>
                 <th scope="col">Max survival days</th>
                 <th scope="col">Mean survival days</th>
                 <th scope="col">Turns/week</th>
@@ -585,122 +598,142 @@
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Claude Fable 5<sup>*</sup></th>
-                <td>0/2</td>
-                <td>$47,148,164</td>
+                <th scope="row">Claude Fable 5</th>
+                <td>1/3</td>
+                <td>$12,630,078</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>15.4</td>
-                <td>$386.46</td>
+                <td>461.7 &plusmn; 54.2</td>
+                <td>9.86</td>
+                <td>$265.43</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
-                <td>0/3</td>
-                <td>$27,777,568</td>
+                <td>1/3</td>
+                <td>$2,399,209</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>10.9</td>
-                <td>$213.41</td>
-              </tr>
-              <tr>
-                <th scope="row">GPT-5.5</th>
-                <td>2/3</td>
-                <td>$21,297,707</td>
-                <td>500</td>
-                <td>333.7 &plusmn; 229.7</td>
-                <td>34.7</td>
-                <td>$200.49</td>
+                <td>378.0 &plusmn; 172.5</td>
+                <td>16.64</td>
+                <td>$348.49</td>
               </tr>
               <tr>
                 <th scope="row">Qwen 3.7 Max</th>
                 <td>0/3</td>
-                <td>$417,918</td>
+                <td>$365,346</td>
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
-                <td>6.1</td>
+                <td>7.82</td>
                 <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Gemini 3.5 Flash</th>
+                <td>0/3</td>
+                <td>$75,126</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>58.37</td>
+                <td>$67.09</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.7</th>
-                <td>0/3</td>
-                <td>$389,959</td>
+                <td>1/3</td>
+                <td>$70,620</td>
                 <td>500</td>
-                <td>500.0 &plusmn; 0.0</td>
-                <td>14.6</td>
-                <td>$128.72</td>
+                <td>414.3 &plusmn; 121.2</td>
+                <td>14.33</td>
+                <td>$92.32</td>
               </tr>
               <tr>
-                <th scope="row">Kimi K2.6</th>
+                <th scope="row">Claude Sonnet 5</th>
                 <td>1/3</td>
-                <td>$98,050</td>
+                <td>$64,459</td>
                 <td>500</td>
-                <td>343.0 &plusmn; 110.0</td>
-                <td>30.5</td>
-                <td>--</td>
+                <td>470.7 &plusmn; 41.5</td>
+                <td>20.50</td>
+                <td>$68.25</td>
+              </tr>
+              <tr>
+                <th scope="row">Claude Haiku 4.5</th>
+                <td>2/3</td>
+                <td>$59,625</td>
+                <td>500</td>
+                <td>286.3 &plusmn; 153.3</td>
+                <td>19.35</td>
+                <td>$0.01</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
+                <td>2/3</td>
+                <td>$54,327</td>
+                <td>500</td>
+                <td>376.7 &plusmn; 105.6</td>
+                <td>25.24</td>
+                <td>--</td>
+              </tr>
+              <tr>
+                <th scope="row">Kimi K2.6</th>
                 <td>0/3</td>
-                <td>$91,371</td>
+                <td>$43,598</td>
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
-                <td>12.9</td>
+                <td>16.64</td>
                 <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 4.6</th>
-                <td>2/3</td>
-                <td>$69,766</td>
+                <td>1/3</td>
+                <td>$38,166</td>
                 <td>500</td>
-                <td>282.3 &plusmn; 136.0</td>
-                <td>13.3</td>
-                <td>$82.84</td>
+                <td>419.3 &plusmn; 114.1</td>
+                <td>14.37</td>
+                <td>$73.28</td>
+              </tr>
+              <tr>
+                <th scope="row">GPT-5.5</th>
+                <td>2/3</td>
+                <td>$33,260</td>
+                <td>500</td>
+                <td>401.0 &plusmn; 98.3</td>
+                <td>30.41</td>
+                <td>$153.80</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
                 <td>3/3</td>
                 <td>$0</td>
-                <td>324</td>
-                <td>214.7 &plusmn; 91.1</td>
-                <td>51.5</td>
+                <td>319</td>
+                <td>155.7 &plusmn; 130.0</td>
+                <td>98.66</td>
                 <td>--</td>
-              </tr>
-              <tr>
-                <th scope="row">Claude Haiku 4.5</th>
-                <td>3/3</td>
-                <td>$0</td>
-                <td>231</td>
-                <td>144.7 &plusmn; 70.5</td>
-                <td>23.1</td>
-                <td>$6.68</td>
-              </tr>
-              <tr>
-                <th scope="row">Gemini 3 Flash</th>
-                <td>3/3</td>
-                <td>$0</td>
-                <td>226</td>
-                <td>154.0 &plusmn; 37.0</td>
-                <td>18.5</td>
-                <td>$2.98</td>
               </tr>
               <tr>
                 <th scope="row">DeepSeek V4 Pro</th>
                 <td>3/3</td>
                 <td>$0</td>
-                <td>176</td>
-                <td>114.3 &plusmn; 38.6</td>
-                <td>19.3</td>
+                <td>160</td>
+                <td>136.3 &plusmn; 23.7</td>
+                <td>21.85</td>
                 <td>--</td>
               </tr>
-              <tr class="pre-estimate-row">
+              <tr>
+                <th scope="row">Gemini 3 Flash</th>
+                <td>3/3</td>
+                <td>$0</td>
+                <td>150</td>
+                <td>137.0 &plusmn; 10.2</td>
+                <td>15.81</td>
+                <td>$1.19</td>
+              </tr>
+              <tr>
                 <th scope="row">Grok 4.20</th>
                 <td>3/3</td>
                 <td>$0</td>
-                <td>37</td>
-                <td>28.3 &plusmn; 8.5</td>
-                <td>8.2</td>
-                <td>$0.75</td>
+                <td>59</td>
+                <td>36.0 &plusmn; 18.4</td>
+                <td>13.49</td>
+                <td>$3.64</td>
               </tr>
+
+
               <tr class="reference-row baseline-row">
                 <th scope="row">Rule-based baseline</th>
                 <td></td>
@@ -722,7 +755,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results. <span class="fable-note"><sup>*</sup>For Claude Fable 5, one run stopped due to refusal. For the other two runs, requests sometimes fallback to Opus 4.8 due to refusal.</span></figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
       </figure>
     </section>
 
@@ -733,74 +766,155 @@
       <article class="prose">
         <p>We released all agent trajectories at our <a href="trajectory-viewer/" class="text-link">interactive trajectory viewer</a>.</p>
         <p>We conducted preliminary analysis on agent trajectories. Below are some examples of our findings. Read more findings in our <a href="https://arxiv.org/pdf/2606.18543" class="text-link" target="_blank" rel="noopener noreferrer">paper</a>.</p>
-        <p><strong class="example-label">Example 1: Stronger models explore and adapt across broader strategy spaces.</strong> GPT-5.5 repeatedly reallocates acquisition, development, operations, capacity, and pricing decisions as conditions change. Claude Opus 4.8 first explores various strategies and then settles into maintaining a passive strategy, while Claude Opus 4.7 more often converges toward narrow cash-preservation and repeated hold-or-harvest decisions. The tool-usage distribution shows this quantitatively: Opus 4.8 and GPT-5.5 distribute tool usage more evenly than Claude Opus 4.7.</p>
+        <p><strong class="example-label">Example 1: Stronger models explore and adapt across broader strategy spaces.</strong> Claude Fable 5 keeps trying different ways to run the company as the situation changes, and continues adjusting late in the run. Claude Opus 4.8 explores broadly at first, then becomes more passive after building a cash cushion. Claude Opus 4.7 narrows much earlier, repeatedly choosing to spend less, wait, and protect cash. The tool-usage distribution shows the same pattern quantitatively: Claude Fable 5 and Claude Opus 4.8 spread their actions more evenly across tools than Claude Opus 4.7.</p>
       </article>
 
       <div class="two-up">
-        <div class="figure-block memo-timeline-block">
-          <div class="frame-wrap" data-label="Memo timeline comparison">
-            <iframe src="assets/figures/memo-timeline-comparison.html?v=4" title="Memo timeline comparison" data-width="816" data-height="676" loading="lazy"></iframe>
+        <div class="figure-block memo-timeline-block tight-caption-figure">
+          <div class="frame-wrap" data-label="Rationale timeline comparison">
+            <iframe src="assets/figures/best-trajectory-behavior-comparison.html?v=4" title="Rationale timeline comparison" data-width="816" data-height="616" loading="lazy" scrolling="no"></iframe>
           </div>
-          <div class="fig-caption">Example memos written by Claude Opus 4.8, GPT-5.5, and Claude Opus 4.7 during the best trajectory of each model. GPT-5.5 actively adjusts strategy across changing conditions, Claude Opus 4.8 first explores various strategies and then settles into maintaining a passive strategy, and Claude Opus 4.7 more often settles into a narrow cash-preservation strategy.</div>
+          <div class="fig-caption">Example rationales written by Claude Opus 4.7, Claude Opus 4.8, and Claude Fable 5 during the best trajectory of each model. Claude Fable 5 keeps adjusting its plan across the run, Claude Opus 4.8 explores broadly early and then becomes more passive, and Claude Opus 4.7 narrows earlier into waiting and protecting cash.</div>
         </div>
         <div class="figure-block">
           <div class="frame-wrap" data-label="Tool usage distribution">
-            <iframe src="assets/figures/tool-usage-distribution.html?v=3" title="Tool usage distribution" data-width="816" data-height="200" loading="lazy"></iframe>
+            <iframe src="assets/figures/tool-usage-distribution.html?v=5" title="Tool usage distribution" data-width="816" data-height="200" loading="lazy" scrolling="no"></iframe>
           </div>
-          <div class="fig-caption">Average per-week tool usage frequency for the best runs of Claude Opus 4.8, GPT-5.5, and Claude Opus 4.7 (top 10 tools per model). Opus 4.8 and GPT-5.5 distribute tool usage more evenly.</div>
+          <div class="fig-caption">Average per-week tool usage frequency for the best new runs of Claude Opus 4.7, Claude Opus 4.8, and Claude Fable 5 (top 10 tools per model). Claude Fable 5 and Claude Opus 4.8 show a more even spread across business levers, including growth, pricing, development, and monitoring tools.</div>
         </div>
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 2: Models take very different strategies even with similar ending cash.</strong> Claude Opus 4.8 and GPT-5.5 both finish with high final cash on their best runs, but they take different paths. Claude Opus 4.8 drops to zero customers mid-simulation, while GPT-5.5 sustains customers throughout the simulation, and the two agents focus on different customer groups.</p>
+        <p><strong class="example-label">Example 2: GPT-5.5 builds profitable businesses but fails to preserve them.</strong> In the two GPT-5.5 runs that make big money and then go bankrupt, the model shows the same late-game failure pattern: it treats active MRR and upcoming billing schedules as if they were secure cash, then makes coupled changes to quality, quota, pricing, acquisition, support, and research after the customer base is already fragile.</p>
+      </article>
+
+      <div class="figure-block text-width-figure gpt55-cash-figure">
+        <div class="frame-wrap" data-label="GPT-5.5 bankrupt cash trajectories">
+          <iframe src="assets/figures/gpt55-bankrupt-cash-trajectories.html?v=4" title="GPT-5.5 bankrupt cash trajectories" data-width="648" data-height="250" loading="lazy" scrolling="no"></iframe>
+        </div>
+        <div class="fig-caption">Cash balance over time for the two GPT-5.5 trajectories that become profitable mid-run and then bankrupt.</div>
+      </div>
+
+      <div class="gpt-failure-summary">
+        <section class="failure-run">
+          <p class="failure-run-copy">In run 1, a profitable Individual Group 2 business collapsed after the agent repeatedly cut the quality that renewals depended on.</p>
+          <div class="failure-card-row">
+            <article class="failure-card-item">
+              <p class="failure-card-summary">Wins came from a paying base.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 329 | Cash $4.65M</div>
+                <div class="failure-card-body">"Old Individual Group 2 book paid $3.6M ... first-renewal cohorts again <strong>paid zero and churned</strong>."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">The agent tried to harvest margin.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 350 | Cash $6.58M</div>
+                <div class="failure-card-body">"Individual Group 2 base is profitable ... <strong>cut serving cost via A1/B1/C2</strong>."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">The quality cut broke renewals.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 357 | Cash $4.20M</div>
+                <div class="failure-card-body">"C2/B1 cost-cut caused <strong>near-total due-cohort churn</strong> (20k cancels, only $30k subs)."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">It repeated the quality cut late.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 434 | Cash $95.9K</div>
+                <div class="failure-card-body">"<strong>C3 produced catastrophic Individual Group 2 billing churn</strong> ... only $7.6k payments."</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="failure-run">
+          <p class="failure-run-copy">In run 2, a huge subscriber base briefly made money, then the agent stacked too many bets before churn and support stabilized.</p>
+          <div class="failure-card-row">
+            <article class="failure-card-item">
+              <p class="failure-card-summary">The win triggered expansion.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 245 | Cash $6.69M</div>
+                <div class="failure-card-body">"Raised B/C pricing ... shifted ads ... <strong>started L3 research and fast T11 R&amp;D</strong>."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">Research spend drained the buffer.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 252 | Cash $3.60M</div>
+                <div class="failure-card-body">"Cash is $3.60M after funding L3 research ... base individual business is <strong>only modestly cash positive</strong>."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">Cost cuts arrived after churn.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 259 | Cash $1.78M</div>
+                <div class="failure-card-body">"Cash preservation: stopped D_S04/D_S10 paid ads ... <strong>cut ops/dev burn</strong>."</div>
+              </div>
+            </article>
+            <article class="failure-card-item">
+              <p class="failure-card-summary">It waited for bills to save it.</p>
+              <div class="failure-memo-card">
+                <div class="failure-card-daybar">Day 266 | Cash $87K</div>
+                <div class="failure-card-body">"Cash is critically low ($87K) ... but <strong>$8.7M of active billings are due</strong>."</div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <article class="prose">
+        <p><strong class="example-label">Example 3: Models take very different strategies even among high-performing runs.</strong> Claude Opus 4.8 and Claude Fable 5 both finish above the starting cash on their best new runs, but they take different paths. Claude Opus 4.8 builds a larger early customer base and then drops to zero customers mid-simulation, while Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 into the final week.</p>
       </article>
 
       <div class="figure-block">
         <div class="frame-wrap" data-label="Customer groups over time">
-          <iframe src="assets/figures/customer-groups-by-model.html?v=4" title="Customer groups over time" data-width="816" data-height="320" loading="lazy"></iframe>
+          <iframe src="assets/figures/customer-groups-by-model.html?v=6" title="Customer groups over time" data-width="816" data-height="320" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Number of customers by customer group over time for the best runs of Claude Opus 4.8 and GPT-5.5. While Claude Opus 4.8 obtains more customers initially and drops to zero customers mid-simulation, GPT-5.5 sustains a consistent customer base throughout. The two agents also focus on different customer groups and attain similar final cash balance via distinct strategy styles. Discoverable customer groups are initially hidden to the agent and can only be discovered through paid market research.</div>
+        <div class="fig-caption">Number of customers by customer group over time for the best runs of Claude Opus 4.8 and Claude Fable 5. While Claude Opus 4.8 obtains more customers initially and drops to zero customers mid-simulation, Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 through the end of the simulation. The two agents also focus on different customer groups and attain high final cash balance via distinct strategy styles. Discoverable customer groups are initially hidden to the agent and can only be discovered through paid market research.</div>
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 3: Stronger models use fine-grained targeted development more heavily.</strong> Proper usage of customer-group-specific targeted product development tools, based on understanding each customer group, can create advantages such as slower competitor catch-up. GPT-5.5 allocates 89% of development dollars to targeted improvements, compared with 87% for Claude Opus 4.8, 44% for Claude Opus 4.7, 10% for Kimi K2.6, and 43% for the remaining models. This reflects a stronger tendency to use granular customer-group-specific levers instead of relying mainly on broad product development.</p>
+        <p><strong class="example-label">Example 4: Stronger models use fine-grained targeted development more heavily.</strong> Proper usage of customer-group-specific targeted product development tools, based on understanding each customer group, can create advantages such as slower competitor catch-up. For example, Claude Fable 5 allocates 88% of development dollars to targeted improvements, Claude Opus 4.8 allocates 51%, and Qwen 3.7 Max allocates 25%. This reflects how strongly each agent leans on granular customer-group-specific levers instead of relying mainly on broad product development.</p>
       </article>
 
       <div class="figure-block targeted-dev-block">
         <div class="frame-wrap compact" data-label="Targeted development spending breakdown">
-          <iframe src="assets/figures/targeted-dev-spend-pie-row.html" title="Targeted development spending breakdown" data-width="408" data-height="162" loading="lazy"></iframe>
+          <iframe src="assets/figures/targeted-dev-spend-pie-row.html?v=3" title="Targeted development spending breakdown" data-width="408" data-height="162" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Dollar-weighted split between targeted and non-targeted development spending. GPT-5.5 and Claude Opus 4.8 direct much larger shares of development spend toward fine-grained group-specific improvements than most other models.</div>
+        <div class="fig-caption">Dollar-weighted split between targeted and non-targeted development spending for the latest Claude Fable 5, Claude Opus 4.8, and Qwen 3.7 Max trajectories.</div>
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 4: Claude Opus 4.8 and GPT-5.5 write more conditional plans.</strong> Stronger runs frequently anticipate future contingencies in their memos. They set possible future conditions and pre-commit to follow-up actions, using "if" more frequently than other models.</p>
+        <p><strong class="example-label">Example 5: Claude Fable 5 and Claude Opus 4.8 write conditional plans.</strong> Stronger runs frequently anticipate future contingencies in their memos. They set possible future conditions and pre-commit to follow-up actions, using "if" to encode explicit decision branches.</p>
       </article>
 
       <div class="if-examples">
         <div class="figure-block">
           <div class="frame-wrap" data-label="Conditional memo examples">
-            <iframe src="assets/figures/conditional-memo-examples-row.html?v=5" title="Conditional memo examples" data-width="816" data-height="148" loading="lazy"></iframe>
+            <iframe src="assets/figures/conditional-memo-examples-row.html?v=13" title="Conditional memo examples" data-width="524" data-height="260" loading="lazy" scrolling="no"></iframe>
           </div>
-          <div class="fig-caption">Examples of planning in GPT-5.5 and Claude Opus 4.8 memos. The agents anticipate scenarios and solutions with "if-then" contingencies.</div>
+          <div class="fig-caption">Examples of planning in Claude Fable 5 and Claude Opus 4.8 memos from the latest trajectories. The agents anticipate scenarios and solutions with "if-then" contingencies.</div>
         </div>
         <div class="figure-block if-frequency">
           <div class="frame-wrap compact" data-label="If frequency comparison">
-            <iframe src="assets/figures/survival-bar-row.html?plot=D&amp;v=6" title="If frequency comparison" data-width="204" data-height="148" loading="lazy"></iframe>
+            <iframe src="assets/figures/survival-bar-row.html?plot=D&amp;v=10" title="If frequency comparison" data-width="267" data-height="260" loading="lazy" scrolling="no"></iframe>
           </div>
-          <div class="fig-caption">Frequency of "if" in agent's memos.</div>
+          <div class="fig-caption">Frequency of "if" in each agent's memos.</div>
         </div>
       </div>
 
-      <article class="prose">
-        <p><strong class="example-label">Example 5: Top-performing agents write sophisticated code to reason about future cash and customer preferences.</strong> In their best trajectories, Claude Opus 4.8 and GPT-5.5 wrote their own code files to probe the simulator and negotiation history: Opus 4.8 runs simulations to forecast cash under different scenarios, while GPT-5.5 infers latent enterprise-customer price and quality preferences from noisy negotiation outcomes.</p>
+      <article class="prose example-six-intro">
+        <p><strong class="example-label">Example 6: Top-performing agents write code to reason about future cash and unseen customer behavior.</strong> In their best trajectories, Claude Opus 4.8 and Claude Fable 5 wrote their own code files to inspect simulator outputs and forecast delayed consequences: Opus 4.8 estimates which customers are likely to stay or leave by looking at who keeps paying and who cancels, while Fable 5 tracks when payments arrive, how costs accumulate, and how much cash remains in the final weeks under different customer-loss assumptions.</p>
       </article>
 
-      <div class="figure-block">
+      <div class="figure-block code-example-block tight-caption-figure">
         <div class="frame-wrap code-example-frame" data-label="Agent code examples">
-          <iframe src="assets/figures/gpt5.5_code_example.html?v=2" title="Agent code examples" data-width="816" data-height="449" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/gpt5.5_code_example.html?v=7" title="Agent code examples" data-width="816" data-height="426" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Example code files written by top-performing agents during their best trajectories. (a) Claude Opus 4.8 runs its own simulation to forecast cash under different scenarios. (b) GPT-5.5 infers latent enterprise-customer price and quality preferences by mining noisy negotiation outcomes.</div>
+        <div class="fig-caption">Example code files written by top-performing agents during their best trajectories. (a) Claude Opus 4.8 uses customer counts and cancellations to estimate future cash. (b) Claude Fable 5 tracks payment timing, customer losses, and final-week cash under different scenarios.</div>
       </div>
     </section>
 
@@ -814,22 +928,22 @@
 
       <div class="trajectory-card-row" aria-label="Highlighted model trajectories">
         <div class="trajectory-model-card">
-          <h3>Claude Fable 5<sup>*</sup></h3>
+          <h3>GPT-5.5</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=2d192ec1" class="trajectory-run-item">
-              <span class="trajectory-run-id">2d192ec1</span>
-              <span class="trajectory-run-meta">survived 500d · 1,123 actions · 3,917 subs</span>
-              <span class="trajectory-run-cash">$47.15M</span>
+            <a href="trajectory-viewer/run.html?run=8f92185d" class="trajectory-run-item">
+              <span class="trajectory-run-id">8f92185d</span>
+              <span class="trajectory-run-meta">survived 504d · 2,919 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$32.9K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=2bd22f52" class="trajectory-run-item">
-              <span class="trajectory-run-id">2bd22f52</span>
-              <span class="trajectory-run-meta">survived 500d · 1,022 actions · 39,448 subs</span>
-              <span class="trajectory-run-cash">$14.61M</span>
+            <a href="trajectory-viewer/run.html?run=16d10bb6" class="trajectory-run-item">
+              <span class="trajectory-run-id">16d10bb6</span>
+              <span class="trajectory-run-meta">survived 266d · 1,954 actions · 0 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=6284da19" class="trajectory-run-item">
-              <span class="trajectory-run-id">6284da19</span>
-              <span class="trajectory-run-meta">stopped 385d · 719 actions · 138,694 subs</span>
-              <span class="trajectory-run-cash trajectory-run-status">DNF</span>
+            <a href="trajectory-viewer/run.html?run=9fa64d2e" class="trajectory-run-item">
+              <span class="trajectory-run-id">9fa64d2e</span>
+              <span class="trajectory-run-meta">survived 436d · 3,134 actions · 27,128 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
@@ -837,41 +951,41 @@
         <div class="trajectory-model-card">
           <h3>Claude Opus 4.8</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=c632730b" class="trajectory-run-item">
-              <span class="trajectory-run-id">c632730b</span>
-              <span class="trajectory-run-meta">survived 500d · 854 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$27.78M</span>
+            <a href="trajectory-viewer/run.html?run=e2cbe2de" class="trajectory-run-item">
+              <span class="trajectory-run-id">e2cbe2de</span>
+              <span class="trajectory-run-meta">survived 504d · 1,511 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$2.40M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=0bd6d7c0" class="trajectory-run-item">
-              <span class="trajectory-run-id">0bd6d7c0</span>
-              <span class="trajectory-run-meta">survived 500d · 880 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$611.8K</span>
+            <a href="trajectory-viewer/run.html?run=aad782be" class="trajectory-run-item">
+              <span class="trajectory-run-id">aad782be</span>
+              <span class="trajectory-run-meta">survived 504d · 714 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$605.6K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=fd00287f" class="trajectory-run-item">
-              <span class="trajectory-run-id">fd00287f</span>
-              <span class="trajectory-run-meta">survived 500d · 621 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$116.4K</span>
+            <a href="trajectory-viewer/run.html?run=3f8f3efd" class="trajectory-run-item">
+              <span class="trajectory-run-id">3f8f3efd</span>
+              <span class="trajectory-run-meta">survived 134d · 374 actions · 73,605 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
 
         <div class="trajectory-model-card">
-          <h3>GPT-5.5</h3>
+          <h3>Claude Fable 5</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=c8419b3b" class="trajectory-run-item">
-              <span class="trajectory-run-id">c8419b3b</span>
-              <span class="trajectory-run-meta">survived 500d · 3,527 actions · 81,834 subs</span>
-              <span class="trajectory-run-cash">$21.30M</span>
+            <a href="trajectory-viewer/run.html?run=2c0aeba9" class="trajectory-run-item">
+              <span class="trajectory-run-id">2c0aeba9</span>
+              <span class="trajectory-run-meta">survived 504d · 818 actions · 6,129 subs</span>
+              <span class="trajectory-run-cash">$12.67M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=15c3d364" class="trajectory-run-item">
-              <span class="trajectory-run-id">15c3d364</span>
-              <span class="trajectory-run-meta">survived 441d · 1,150 actions · 64,474 subs</span>
-              <span class="trajectory-run-cash">$688.4K</span>
+            <a href="trajectory-viewer/run.html?run=3def3647" class="trajectory-run-item">
+              <span class="trajectory-run-id">3def3647</span>
+              <span class="trajectory-run-meta">survived 504d · 787 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$277.4K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=555049e4" class="trajectory-run-item">
-              <span class="trajectory-run-id">555049e4</span>
-              <span class="trajectory-run-meta">survived 70d · 329 actions · 137,652 subs</span>
-              <span class="trajectory-run-cash">$29.4K</span>
+            <a href="trajectory-viewer/run.html?run=4f03ddc9" class="trajectory-run-item">
+              <span class="trajectory-run-id">4f03ddc9</span>
+              <span class="trajectory-run-meta">survived 385d · 421 actions · 0 subs</span>
+              <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
         </div>
@@ -927,7 +1041,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=6"></script>
-  <script src="script.js?v=18"></script>
+  <script src="assets/runs-data.js?v=11"></script>
+  <script src="script.js?v=24"></script>
 </body>
 </html>

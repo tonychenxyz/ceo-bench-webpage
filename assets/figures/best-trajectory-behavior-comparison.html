@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CEOBench - Best Trajectory Behavior Comparison</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #000000;
+    --line: #d6dde6;
+    --paper: #ffffff;
+    --bg: #ffffff;
+  }
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    width: 816px;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
+  }
+  .tile {
+    background: var(--paper);
+    border: 0;
+    border-radius: 0;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .tile + .tile {
+    margin-top: 8px;
+  }
+  .tile .head {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0 12px 6px;
+    border-bottom: 0;
+    background: transparent;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1;
+    color: var(--ink);
+  }
+  .panel-mark {
+    flex: 0 0 auto;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+  .memo-grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: auto 34px auto;
+    gap: 0 5px;
+    padding: 6px 12px 9px;
+  }
+  .memo-card {
+    border: 1.4px solid #000000;
+    border-radius: 6px;
+    background: #ffffff;
+    overflow: hidden;
+    min-width: 0;
+    position: relative;
+    z-index: 2;
+  }
+  .memo-card-daybar {
+    padding: 2px 7px 2.5px;
+    border-bottom: 1px solid #000000;
+    background: #eef2e8;
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 8.5px;
+    line-height: 1;
+    font-weight: 400;
+    color: #000000;
+    white-space: nowrap;
+  }
+  .memo-card-body {
+    padding: 5px 7px 6px;
+    font-size: 8.9px;
+    line-height: 1.16;
+    color: #000000;
+  }
+  .memo-card-body b {
+    font-weight: 800;
+    color: #000000;
+  }
+  .memo-timeline {
+    position: relative;
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin: 0 -4px;
+    z-index: 0;
+  }
+  .memo-timeline::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    border-top: 1.2px solid #000000;
+  }
+  .connector-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: visible;
+  }
+  @page {
+    size: 816px 676px;
+    margin: 0;
+  }
+  @media print {
+    html,
+    body {
+      width: 816px;
+      height: 676px;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    * {
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    .page {
+      width: 816px !important;
+      max-width: 816px !important;
+      padding: 16px !important;
+      margin: 0 !important;
+    }
+    .tile {
+      page-break-inside: avoid;
+      break-inside: avoid;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page" id="page"></div>
+
+<script>
+const ROWS = [
+  {
+    model: 'Claude Opus 4.7',
+    notes: [
+      {cat:'Decision', day:0, quote:'"Focus on the <b>only addressable segment</b> ... Avoided S2/E1/E2/E3 entirely; their quality bars are unattainable now."'},
+      {cat:'Planning', day:98, quote:'"<b>W14 HOLD week</b>. Config unchanged ... waiting for T2 R&D to land ... not starting new R&D."'},
+      {cat:'Decision', day:91, quote:'"<b>Killed all ads</b> ... CAC $250 vs LTV $50 = losing money. Strategy: <b>preserve cash</b>."'},
+      {cat:'Planning', day:147, quote:'"W22 <b>HOLD ALL</b> ... Continue quality war strategy ... No ads; all channels dead, 168 leads at 0 conv."'},
+      {cat:'Planning', day:224, quote:'"<b>HOLDING ALL</b> per decision tree ... cancels stable ... No dev spend; S1 group bonus persists."'},
+      {cat:'Decision', day:287, quote:'"100% cancel rate confirmed ... Holding all settings at floor. <b>Only optimal action = preserve cash</b>."'},
+      {cat:'Planning', day:301, quote:'"Pure steady state ... 0 subs, 0 leads, 0 revenue. <b>Deterministic $595/wk decay</b>."'},
+      {cat:'Planning', day:497, quote:'"FINAL week ... <b>deterministic path to $70,280 FINAL SCORE</b>. No actions needed."'},
+    ]
+  },
+  {
+    model: 'Claude Opus 4.8',
+    notes: [
+      {cat:'Decision', day:0, quote:'"Bootstrap: build quality via dev ... small ad probe ... <b>validating funnel</b> and measuring dev quality gain first."'},
+      {cat:'Decision', day:28, quote:'"S1 engine PROVEN ... <b>SCALING ads 2.7x</b> ... investing for growth as recurring compounds."'},
+      {cat:'Decision', day:63, quote:'"Subs 33.9k ... conversion 65-71%. Content-S1 efficiency rising ... <b>green light to scale</b>."'},
+      {cat:'Decision', day:91, quote:'"Recurring DOUBLED ... conversion recovered hard ... made a <b>measured growth re-entry</b>."'},
+      {cat:'Planning', day:147, quote:'"<b>HARVEST PHASE</b> ... first-rebill churn is 22-30% ... mature base sticky."'},
+      {cat:'Decision', day:224, quote:'"<b>Pure harvest</b>. Compute savings dominate ... reverted a $10k dev probe back to $0."'},
+      {cat:'Planning', day:301, quote:'"Base fully dead ... bleed is now exactly $595/wk. <b>Pure coast to endgame ~$2.399M</b>."'},
+      {cat:'Planning', day:497, quote:'"FINAL WEEK ... 0 subscribers ... <b>NO config changes</b>; any change could only add cost."'},
+    ]
+  },
+  {
+    model: 'Claude Fable 5',
+    notes: [
+      {cat:'Decision', day:0, quote:'"<b>Probe ad channels</b> across S1/S3 and <b>run S2 targeted dev</b> to unlock the quality-locked segment."'},
+      {cat:'Decision', day:14, quote:'"<b>Open a S2 ad probe</b> across 4 channels ... raise quotas, ops, and social announcement."'},
+      {cat:'Decision', day:21, quote:'"<b>Set usage-tier quotas</b> so heavy S2 must pick B@$69; scale S2 ads and cut dead S1 search."'},
+      {cat:'Decision', day:56, quote:'"<b>Stop D_E09 dev, launch linkedin ads, and pivot dev to E1</b> after the quality gate passes."'},
+      {cat:'Decision', day:84, quote:'"<b>Revert B to 89</b>, buy T3 R&D, and rebuild the renewal model after the B=99 test fails."'},
+      {cat:'Decision', day:91, quote:'"<b>Send enterprise offers immediately</b>, raise quotas, post socially, and reallocate dev."'},
+      {cat:'Decision', day:287, quote:'"<b>Raise C to 219 and launch an ad probe</b>; track upgrades, conversion, and C-mix."'},
+      {cat:'Decision', day:462, quote:'"<b>Upgrade plan C to the Tier-5 flagship model</b> rather than ride the T4 melt."'},
+    ]
+  }
+];
+
+const placements = [
+  [1, 1], [1, 3],
+  [2, 1], [2, 3],
+  [3, 1], [3, 3],
+  [4, 1], [4, 3],
+];
+
+function addMemoCard(grid, note, i){
+  const card = document.createElement('div');
+  card.className = `memo-card ${note.cat.toLowerCase()}`;
+  const [col, row] = placements[i] || [1, 1];
+  card.style.gridColumn = String(col);
+  card.style.gridRow = String(row);
+  card.dataset.day = String(note.day);
+  card.dataset.cat = note.cat;
+  card.dataset.side = row === 1 ? 'top' : 'bottom';
+  card.innerHTML = `
+    <div class="memo-card-daybar">Day ${note.day}</div>
+    <div class="memo-card-body">${note.quote}</div>`;
+  grid.appendChild(card);
+}
+
+function addTimeline(grid){
+  const timeline = document.createElement('div');
+  timeline.className = 'memo-timeline';
+  grid.appendChild(timeline);
+}
+
+function drawConnectors(){
+  document.querySelectorAll('.memo-grid').forEach(grid => {
+    grid.querySelectorAll('.connector-overlay').forEach(node => node.remove());
+    const gridRect = grid.getBoundingClientRect();
+    const timeline = grid.querySelector('.memo-timeline');
+    const timeRect = timeline.getBoundingClientRect();
+    const timeY = timeRect.top - gridRect.top + timeRect.height / 2;
+    const timeMin = 0;
+    const timeMax = 500;
+    const timeX = day => (
+      timeRect.left - gridRect.left +
+      (Math.max(timeMin, Math.min(timeMax, Number(day))) - timeMin) /
+      (timeMax - timeMin) * timeRect.width
+    );
+
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.classList.add('connector-overlay');
+    svg.setAttribute('width', gridRect.width);
+    svg.setAttribute('height', gridRect.height);
+    svg.setAttribute('viewBox', `0 0 ${gridRect.width} ${gridRect.height}`);
+
+    const cards = Array.from(grid.querySelectorAll('.memo-card'));
+    const dayCounts = cards.reduce((acc, card) => {
+      acc[card.dataset.day] = (acc[card.dataset.day] || 0) + 1;
+      return acc;
+    }, {});
+    const daySeen = {};
+
+    cards.forEach(card => {
+      const cardRect = card.getBoundingClientRect();
+      const x1 = cardRect.left - gridRect.left + cardRect.width / 2;
+      const y1 = card.dataset.side === 'top'
+        ? cardRect.bottom - gridRect.top
+        : cardRect.top - gridRect.top;
+      const x2 = timeX(card.dataset.day);
+      const seen = daySeen[card.dataset.day] || 0;
+      daySeen[card.dataset.day] = seen + 1;
+      const duplicateOffset = dayCounts[card.dataset.day] > 1
+        ? (seen - (dayCounts[card.dataset.day] - 1) / 2) * 8
+        : 0;
+      const y2 = timeY + duplicateOffset;
+      const elbowY = card.dataset.side === 'top' ? y2 - 8 : y2 + 8;
+
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', [
+        `M ${x1.toFixed(1)} ${y1.toFixed(1)}`,
+        `L ${x1.toFixed(1)} ${elbowY.toFixed(1)}`,
+        `L ${x2.toFixed(1)} ${elbowY.toFixed(1)}`,
+        `L ${x2.toFixed(1)} ${y2.toFixed(1)}`
+      ].join(' '));
+      path.setAttribute('fill', 'none');
+      path.setAttribute('stroke', '#000000');
+      path.setAttribute('stroke-width', '1.2');
+      path.setAttribute('stroke-linejoin', 'round');
+      svg.appendChild(path);
+
+      const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      dot.setAttribute('cx', x2.toFixed(1));
+      dot.setAttribute('cy', y2.toFixed(1));
+      dot.setAttribute('r', '2.6');
+      dot.setAttribute('fill', '#000000');
+      dot.setAttribute('stroke', 'none');
+      svg.appendChild(dot);
+    });
+
+    grid.appendChild(svg);
+  });
+}
+
+const page = document.getElementById('page');
+ROWS.forEach((row, i) => {
+  const labels = ['a', 'b', 'c'];
+  const tile = document.createElement('section');
+  tile.className = 'tile';
+  tile.innerHTML = `
+    <div class="head">
+      <span class="panel-mark">(${labels[i]})</span>
+      <span>${row.model} rationale examples</span>
+    </div>
+    <div class="memo-grid"></div>`;
+  const grid = tile.querySelector('.memo-grid');
+  row.notes.forEach((note, i) => addMemoCard(grid, note, i));
+  addTimeline(grid);
+  page.appendChild(tile);
+});
+
+drawConnectors();
+requestAnimationFrame(drawConnectors);
+setTimeout(drawConnectors, 50);
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(() => requestAnimationFrame(drawConnectors));
+}
+window.addEventListener('resize', () => requestAnimationFrame(drawConnectors));
+window.addEventListener('beforeprint', drawConnectors);
+</script>
+</body>
+</html>

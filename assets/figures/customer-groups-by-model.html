@@ -136,13 +136,10 @@ const GROUP_META = [
   {id:'S1',    label:'Individual 1', color:'#0072B2'},
   {id:'S2',    label:'Individual 2', color:'#D55E00'},
   {id:'S3',    label:'Individual 3', color:'#009E73'},
-  {id:'E3',    label:'Enterprise 1', color:'#CC79A7'},
   {id:'D_S03', label:'Discoverable Individual 1', color:'#56B4E9'},
   {id:'D_S04', label:'Discoverable Individual 2', color:'#E69F00'},
-  {id:'D_S05', label:'Discoverable Individual 3', color:'#7F3F98'},
-  {id:'D_S06', label:'Discoverable Individual 4', color:'#8A8F98'},
-  {id:'D_S07', label:'Discoverable Individual 5', color:'#C23B22'},
-  {id:'D_S10', label:'Discoverable Individual 6', color:'#2F4B7C'},
+  {id:'D_S07', label:'Discoverable Individual 3', color:'#7F3F98'},
+  {id:'D_S10', label:'Discoverable Individual 4', color:'#8A8F98'},
 ];
 const GROUP_ORDER = GROUP_META.map(g => g.id);
 const GROUP_COLORS = GROUP_META.reduce((acc, g) => {
@@ -157,8 +154,8 @@ const PAD_L = 58, PAD_R = 10, PAD_T = 34, PAD_B = 42;
 const INNER_W = PANEL_W - PAD_L - PAD_R;
 const INNER_H = H - PAD_T - PAD_B;
 const X_MAX = 500;
-const Y_MAX = 550000;
-const Y_TICKS = [0, 100000, 200000, 300000, 400000, 500000];
+const Y_MAX = 300000;
+const Y_TICKS = [0, 50000, 100000, 150000, 200000, 250000, 300000];
 const X_TICKS = [0, 100, 200, 300, 400, 500];
 
 function parseCsv(text) {
@@ -393,7 +390,7 @@ function draw(rows) {
   tooltip.hidden = true;
   const svg = el('svg', {viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
   drawLegend(svg);
-  ['Claude Opus 4.8', 'GPT-5.5'].forEach((model, i) => {
+  ['Claude Opus 4.8', 'Claude Fable 5'].forEach((model, i) => {
     drawPanel(svg, normalizePanel(rows, model), i, tooltip);
   });
 }
@@ -405,7 +402,7 @@ function drawError(message) {
   t.textContent = message;
 }
 
-fetch('best_run_customer_groups_by_model.csv')
+fetch('best_run_customer_groups_by_model.csv?v=6')
   .then(r => {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.text();
