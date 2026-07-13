@@ -2,6 +2,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
   "Claude Fable 5": "#111827",
+  "GPT-5.6 Sol": "#0072b2",
   "Claude Opus 4.8": "#d55e00",
   "Qwen 3.7 Max": "#8a63d2",
   "Gemini 3.5 Flash": "#2f6df6",

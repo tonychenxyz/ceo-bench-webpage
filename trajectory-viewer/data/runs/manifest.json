@@ -64,6 +64,69 @@
       ]
     },
     {
+      "model": "gpt-5.6-sol",
+      "model_display": "GPT-5.6 Sol",
+      "runs": [
+        {
+          "run_id": "63f6b1fb",
+          "label": "gpt-5.6-sol-rep1 (63f6b1fb)",
+          "total_days": 500,
+          "current_day": 190,
+          "bankrupt": true,
+          "status": "bankrupt",
+          "dnf": false,
+          "survival_days": 190,
+          "cash": -15865,
+          "subscribers": 274996,
+          "founder_dividends": 0,
+          "mrr": 12185522,
+          "agent_turns": 739,
+          "action_count": 1372,
+          "days_count": 29,
+          "model_display": "GPT-5.6 Sol",
+          "final_cash": -15865
+        },
+        {
+          "run_id": "d1834c32",
+          "label": "gpt-5.6-sol-rep2 (d1834c32)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 11313982.45,
+          "subscribers": 0,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1706,
+          "action_count": 3115,
+          "days_count": 70,
+          "model_display": "GPT-5.6 Sol",
+          "final_cash": 11313982.45
+        },
+        {
+          "run_id": "786948e9",
+          "label": "gpt-5.6-sol-rep3 (786948e9)",
+          "total_days": 500,
+          "current_day": 192,
+          "bankrupt": true,
+          "status": "bankrupt",
+          "dnf": false,
+          "survival_days": 192,
+          "cash": -658.91,
+          "subscribers": 10152,
+          "founder_dividends": 0,
+          "mrr": 180495,
+          "agent_turns": 734,
+          "action_count": 1617,
+          "days_count": 29,
+          "model_display": "GPT-5.6 Sol",
+          "final_cash": -658.91
+        }
+      ]
+    },
+    {
       "model": "claude-opus-4-8",
       "model_display": "Claude Opus 4.8",
       "runs": [

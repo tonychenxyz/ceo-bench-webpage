@@ -111,7 +111,7 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to maintain profit for entire runs. All other models either end below the starting cash or bankrupt.</li>
+          <li>Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.6 Sol finishes with $11.31M in its best run, while two of its three runs bankrupt.</li>
         </ul>
       </div>
 
@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Fable 5 and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,7 +577,7 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=16" title="Cash trajectories per model" data-width="740" data-height="623" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=17" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -605,6 +605,15 @@
                 <td>461.7 &plusmn; 54.2</td>
                 <td>9.86</td>
                 <td>$265.43</td>
+              </tr>
+              <tr>
+                <th scope="row">GPT-5.6 Sol</th>
+                <td>2/3</td>
+                <td>$11,313,982</td>
+                <td>500</td>
+                <td>294.0 &plusmn; 145.7</td>
+                <td>25.96</td>
+                <td>$153.47</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
@@ -755,7 +764,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results. GPT-5.6 Sol cost is estimated from recorded usage at standard API rates on July 13, 2026: $5/MTok uncached input, $0.50/MTok cached input, $6.25/MTok cache writes, and $30/MTok output.</figcaption>
       </figure>
     </section>
 
@@ -866,14 +875,14 @@
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 3: Models take very different strategies even among high-performing runs.</strong> Claude Opus 4.8 and Claude Fable 5 both finish above the starting cash on their best new runs, but they take different paths. Claude Opus 4.8 builds a larger early customer base and then drops to zero customers mid-simulation, while Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 into the final week.</p>
+        <p><strong class="example-label">Example 3: Models take very different strategies even among high-performing runs.</strong> Claude Opus 4.8, Claude Fable 5, and GPT-5.6 Sol all finish above the starting cash on their best runs, but they take different paths. Claude Opus 4.8 peaks near 271,000 customers before dropping to zero around day 295. GPT-5.6 Sol scales even earlier, peaking near 246,000 customers around day 72, then gradually winds the customer base down to zero by day 420 while preserving cash. Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 into the final week.</p>
       </article>
 
       <div class="figure-block">
         <div class="frame-wrap" data-label="Customer groups over time">
-          <iframe src="assets/figures/customer-groups-by-model.html?v=6" title="Customer groups over time" data-width="816" data-height="320" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/customer-groups-by-model.html?v=7" title="Customer groups over time" data-width="816" data-height="320" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Number of customers by customer group over time for the best runs of Claude Opus 4.8 and Claude Fable 5. While Claude Opus 4.8 obtains more customers initially and drops to zero customers mid-simulation, Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 through the end of the simulation. The two agents also focus on different customer groups and attain high final cash balance via distinct strategy styles. Discoverable customer groups are initially hidden to the agent and can only be discovered through paid market research.</div>
+        <div class="fig-caption">Number of customers by customer group over time for the best runs of Claude Opus 4.8, Claude Fable 5, and GPT-5.6 Sol. Claude Opus 4.8 builds a large early customer base and drops to zero around day 295. GPT-5.6 Sol scales Individual Group 1 fastest, peaks near 246,000 customers around day 72, and gradually reaches zero customers by day 420. Claude Fable 5 sustains a smaller customer base centered on Individual Group 2 through the end of the simulation. The three agents attain high final cash balances through distinct strategy styles. Discoverable customer groups are initially hidden to the agent and can only be discovered through paid market research.</div>
       </div>
 
       <article class="prose">
@@ -1041,7 +1050,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=11"></script>
-  <script src="script.js?v=24"></script>
+  <script src="assets/runs-data.js?v=12"></script>
+  <script src="script.js?v=25"></script>
 </body>
 </html>

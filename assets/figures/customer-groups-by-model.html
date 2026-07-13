@@ -148,9 +148,10 @@ const GROUP_COLORS = GROUP_META.reduce((acc, g) => {
 }, {});
 
 const W = 816, H = 320;
-const LEGEND_W = 172;
-const PANEL_W = (W - LEGEND_W) / 2;
-const PAD_L = 58, PAD_R = 10, PAD_T = 34, PAD_B = 42;
+const LEGEND_W = 150;
+const PANEL_COUNT = 3;
+const PANEL_W = (W - LEGEND_W) / PANEL_COUNT;
+const PAD_L = 44, PAD_R = 6, PAD_T = 34, PAD_B = 42;
 const INNER_W = PANEL_W - PAD_L - PAD_R;
 const INNER_H = H - PAD_T - PAD_B;
 const X_MAX = 500;
@@ -222,7 +223,7 @@ function normalizePanel(rows, model) {
 }
 
 function drawLegend(svg) {
-  const x = W - LEGEND_W + 12;
+  const x = W - LEGEND_W + 8;
   const title1 = el('text', {x, y:37, class:'legend-title'}, svg);
   title1.textContent = 'Customer';
   const title2 = el('text', {x, y:51, class:'legend-title'}, svg);
@@ -390,7 +391,7 @@ function draw(rows) {
   tooltip.hidden = true;
   const svg = el('svg', {viewBox:'0 0 ' + W + ' ' + H, width:W, height:H, preserveAspectRatio:'xMinYMin meet'}, mount);
   drawLegend(svg);
-  ['Claude Opus 4.8', 'Claude Fable 5'].forEach((model, i) => {
+  ['Claude Opus 4.8', 'Claude Fable 5', 'GPT-5.6 Sol'].forEach((model, i) => {
     drawPanel(svg, normalizePanel(rows, model), i, tooltip);
   });
 }
@@ -402,7 +403,7 @@ function drawError(message) {
   t.textContent = message;
 }
 
-fetch('best_run_customer_groups_by_model.csv?v=6')
+fetch('best_run_customer_groups_by_model.csv?v=7')
   .then(r => {
     if (!r.ok) throw new Error('HTTP ' + r.status);
     return r.text();
