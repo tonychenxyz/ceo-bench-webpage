@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, and Claude Sonnet 4.6 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, Claude Sonnet 4.6, and Grok 4.5 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,7 +577,7 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=17" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=18" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -667,7 +667,7 @@
                 <td>500</td>
                 <td>286.3 &plusmn; 153.3</td>
                 <td>19.35</td>
-                <td>$0.01</td>
+                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
@@ -704,6 +704,15 @@
                 <td>401.0 &plusmn; 98.3</td>
                 <td>30.41</td>
                 <td>$153.80</td>
+              </tr>
+              <tr>
+                <th scope="row">Grok 4.5</th>
+                <td>2/3</td>
+                <td>$15,909</td>
+                <td>500</td>
+                <td>289.0 &plusmn; 154.0</td>
+                <td>21.01</td>
+                <td>$20.91</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
@@ -764,7 +773,7 @@
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results. GPT-5.6 Sol cost is estimated from recorded usage at standard API rates on July 13, 2026: $5/MTok uncached input, $0.50/MTok cached input, $6.25/MTok cache writes, and $30/MTok output.</figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results. GPT-5.6 Sol cost is estimated from recorded usage at standard API rates on July 13, 2026: $5/MTok uncached input, $0.50/MTok cached input, $6.25/MTok cache writes, and $30/MTok output. Grok 4.5 cost is calculated from provider-reported usage at standard xAI rates on July 14, 2026: $2/MTok uncached input, $0.50/MTok cached input, and $6/MTok output.</figcaption>
       </figure>
     </section>
 
@@ -886,14 +895,14 @@
       </div>
 
       <article class="prose">
-        <p><strong class="example-label">Example 4: Stronger models use fine-grained targeted development more heavily.</strong> Proper usage of customer-group-specific targeted product development tools, based on understanding each customer group, can create advantages such as slower competitor catch-up. For example, Claude Fable 5 allocates 88% of development dollars to targeted improvements, Claude Opus 4.8 allocates 51%, and Qwen 3.7 Max allocates 25%. This reflects how strongly each agent leans on granular customer-group-specific levers instead of relying mainly on broad product development.</p>
+        <p><strong class="example-label">Example 4: Stronger models use fine-grained targeted development more heavily.</strong> Proper usage of customer-group-specific targeted product development tools, based on understanding each customer group, can create advantages such as slower competitor catch-up. Claude Fable 5 allocates 88% of development dollars to targeted improvements, Claude Opus 4.8 allocates 51%, Qwen 3.7 Max allocates 25%, GLM 5.1 allocates 19%, and Grok 4.20 allocates 11%. This reflects how strongly each agent leans on granular customer-group-specific levers instead of relying mainly on broad product development.</p>
       </article>
 
       <div class="figure-block targeted-dev-block">
         <div class="frame-wrap compact" data-label="Targeted development spending breakdown">
-          <iframe src="assets/figures/targeted-dev-spend-pie-row.html?v=3" title="Targeted development spending breakdown" data-width="408" data-height="162" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/targeted-dev-spend-pie-row.html?v=4" title="Targeted development spending breakdown" data-width="408" data-height="162" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Dollar-weighted split between targeted and non-targeted development spending for the latest Claude Fable 5, Claude Opus 4.8, and Qwen 3.7 Max trajectories.</div>
+        <div class="fig-caption">Dollar-weighted split between targeted and non-targeted development spending for the latest Claude Fable 5, Claude Opus 4.8, Qwen 3.7 Max, GLM 5.1, and Grok 4.20 trajectories.</div>
       </div>
 
       <article class="prose">
@@ -937,21 +946,21 @@
 
       <div class="trajectory-card-row" aria-label="Highlighted model trajectories">
         <div class="trajectory-model-card">
-          <h3>GPT-5.5</h3>
+          <h3>GPT-5.6 Sol</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=8f92185d" class="trajectory-run-item">
-              <span class="trajectory-run-id">8f92185d</span>
-              <span class="trajectory-run-meta">survived 504d · 2,919 actions · 0 subs</span>
-              <span class="trajectory-run-cash">$32.9K</span>
+            <a href="trajectory-viewer/run.html?run=d1834c32" class="trajectory-run-item">
+              <span class="trajectory-run-id">d1834c32</span>
+              <span class="trajectory-run-meta">survived 500d · 3,115 actions · 0 subs</span>
+              <span class="trajectory-run-cash">$11.31M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=16d10bb6" class="trajectory-run-item">
-              <span class="trajectory-run-id">16d10bb6</span>
-              <span class="trajectory-run-meta">survived 266d · 1,954 actions · 0 subs</span>
+            <a href="trajectory-viewer/run.html?run=63f6b1fb" class="trajectory-run-item">
+              <span class="trajectory-run-id">63f6b1fb</span>
+              <span class="trajectory-run-meta">survived 190d · 1,372 actions · 274,996 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=9fa64d2e" class="trajectory-run-item">
-              <span class="trajectory-run-id">9fa64d2e</span>
-              <span class="trajectory-run-meta">survived 436d · 3,134 actions · 27,128 subs</span>
+            <a href="trajectory-viewer/run.html?run=786948e9" class="trajectory-run-item">
+              <span class="trajectory-run-id">786948e9</span>
+              <span class="trajectory-run-meta">survived 192d · 1,617 actions · 10,152 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
           </div>
@@ -1050,7 +1059,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=12"></script>
-  <script src="script.js?v=25"></script>
+  <script src="assets/runs-data.js?v=13"></script>
+  <script src="script.js?v=26"></script>
 </body>
 </html>

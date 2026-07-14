@@ -13,6 +13,7 @@ const MODEL_COLORS = {
   "Kimi K2.6": "#b15c00",
   "Claude Sonnet 4.6": "#00875a",
   "GPT-5.5": "#e69f00",
+  "Grok 4.5": "#0097a7",
   "GLM 5.1": "#b8326b",
   "DeepSeek V4 Pro": "#0a2540",
   "Gemini 3 Flash": "#697386",

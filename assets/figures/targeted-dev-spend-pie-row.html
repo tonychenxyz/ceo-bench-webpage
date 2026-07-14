@@ -120,14 +120,30 @@ const DATA = [
     totalDollars: 186900,
     totalLabel: 'total',
   },
+  {
+    group: 'GLM 5.1',
+    note: 'n = 3',
+    targetedPct: 0.19,
+    nonTargetedPct: 0.81,
+    totalDollars: 129115,
+    totalLabel: 'total',
+  },
+  {
+    group: 'Grok 4.20',
+    note: 'n = 3',
+    targetedPct: 0.11204099060631938,
+    nonTargetedPct: 0.8879590093936806,
+    totalDollars: 585500,
+    totalLabel: 'total',
+  },
 ];
 
 const SVG_NS = 'http://www.w3.org/2000/svg';
 const W = 408;
 const H = 162;
 const PANEL_W = W / DATA.length;
-const PIE_R = 31;
-const PIE_Y = 67;
+const PIE_R = 23;
+const PIE_Y = 68;
 const TARGETED = '#86adff';
 const NON_TARGETED = '#bcc8d6';
 
@@ -239,12 +255,12 @@ function drawPanel(svg, d, i) {
 
 function drawLegend(svg) {
   const y = 133;
-  const targetedX = 63;
+  const targetedX = 48;
   el('rect', {x: targetedX, y: y - 8, width: 10, height: 10, rx: 1.5, fill: TARGETED, stroke: '#0a2540', 'stroke-width': 0.55}, svg);
   const targeted = el('text', {x: targetedX + 15, y, class: 'legend'}, svg);
   targeted.textContent = 'Targeted dev spend';
 
-  const nonTargetedX = 224;
+  const nonTargetedX = 216;
   el('rect', {x: nonTargetedX, y: y - 8, width: 10, height: 10, rx: 1.5, fill: NON_TARGETED, stroke: '#0a2540', 'stroke-width': 0.55}, svg);
   const nonTargeted = el('text', {x: nonTargetedX + 15, y, class: 'legend'}, svg);
   nonTargeted.textContent = 'Non-targeted dev spend';
