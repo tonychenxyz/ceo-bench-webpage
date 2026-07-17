@@ -466,8 +466,24 @@ function drawCashPlot(runs, mount) {
 function fitFrame(frame) {
   const wrap = frame.closest(".frame-wrap");
   const baseW = Number(frame.dataset.width);
-  const baseH = Number(frame.dataset.height);
+  let baseH = Number(frame.dataset.height);
   if (!wrap || !baseW || !baseH) return;
+
+  if (frame.dataset.autoHeight === "true") {
+    try {
+      const frameDocument = frame.contentDocument;
+      const contentRoot = frameDocument && frameDocument.querySelector(".page");
+      const contentBottom = contentRoot ? contentRoot.getBoundingClientRect().bottom : 0;
+      const contentHeight = Math.max(
+        contentBottom,
+        frameDocument && frameDocument.body ? frameDocument.body.scrollHeight : 0,
+        frameDocument && frameDocument.documentElement ? frameDocument.documentElement.scrollHeight : 0
+      );
+      baseH = Math.max(baseH, Math.ceil(contentHeight));
+    } catch (_) {
+      // Keep the declared height if the frame document cannot be measured.
+    }
+  }
 
   const available = wrap.clientWidth;
   if (available <= 0) return;
@@ -571,5 +587,15 @@ document.querySelectorAll("details").forEach(details => {
   });
 });
 document.querySelectorAll(".frame-wrap iframe").forEach(frame => {
-  frame.addEventListener("load", () => fitFrame(frame));
+  frame.addEventListener("load", () => {
+    fitFrame(frame);
+    if (frame.dataset.autoHeight !== "true") return;
+
+    try {
+      const fonts = frame.contentDocument && frame.contentDocument.fonts;
+      if (fonts && fonts.ready) fonts.ready.then(() => fitFrame(frame));
+    } catch (_) {
+      // The initial measurement remains a safe fallback.
+    }
+  });
 });
