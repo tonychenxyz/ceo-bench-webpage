@@ -17,6 +17,7 @@ const MODEL_COLORS = {
   "GLM 5.1": "#b8326b",
   "DeepSeek V4 Pro": "#0a2540",
   "Gemini 3 Flash": "#697386",
+  "Kimi K3": "#3f8f8f",
   "Grok 4.20": "#6b3fc8",
   "Rule-Based Baseline": "#6b6b6b"
 };

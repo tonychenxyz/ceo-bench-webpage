@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, Claude Sonnet 4.6, and Grok 4.5 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, Claude Sonnet 4.6, and Grok 4.5 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, Kimi K3, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,7 +577,7 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=18" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=19" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -593,7 +593,6 @@
                 <th scope="col">Max survival days</th>
                 <th scope="col">Mean survival days</th>
                 <th scope="col">Turns/week</th>
-                <th scope="col">Best run API cost</th>
               </tr>
             </thead>
             <tbody>
@@ -604,7 +603,6 @@
                 <td>500</td>
                 <td>461.7 &plusmn; 54.2</td>
                 <td>9.86</td>
-                <td>$265.43</td>
               </tr>
               <tr>
                 <th scope="row">GPT-5.6 Sol</th>
@@ -613,7 +611,6 @@
                 <td>500</td>
                 <td>294.0 &plusmn; 145.7</td>
                 <td>25.96</td>
-                <td>$153.47</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
@@ -622,7 +619,6 @@
                 <td>500</td>
                 <td>378.0 &plusmn; 172.5</td>
                 <td>16.64</td>
-                <td>$348.49</td>
               </tr>
               <tr>
                 <th scope="row">Qwen 3.7 Max</th>
@@ -631,7 +627,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>7.82</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Gemini 3.5 Flash</th>
@@ -640,7 +635,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>58.37</td>
-                <td>$67.09</td>
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.7</th>
@@ -649,7 +643,6 @@
                 <td>500</td>
                 <td>414.3 &plusmn; 121.2</td>
                 <td>14.33</td>
-                <td>$92.32</td>
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 5</th>
@@ -658,7 +651,6 @@
                 <td>500</td>
                 <td>470.7 &plusmn; 41.5</td>
                 <td>20.50</td>
-                <td>$68.25</td>
               </tr>
               <tr>
                 <th scope="row">Claude Haiku 4.5</th>
@@ -667,7 +659,6 @@
                 <td>500</td>
                 <td>286.3 &plusmn; 153.3</td>
                 <td>19.35</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
@@ -676,7 +667,6 @@
                 <td>500</td>
                 <td>376.7 &plusmn; 105.6</td>
                 <td>25.24</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Kimi K2.6</th>
@@ -685,7 +675,6 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>16.64</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 4.6</th>
@@ -694,7 +683,6 @@
                 <td>500</td>
                 <td>419.3 &plusmn; 114.1</td>
                 <td>14.37</td>
-                <td>$73.28</td>
               </tr>
               <tr>
                 <th scope="row">GPT-5.5</th>
@@ -703,7 +691,6 @@
                 <td>500</td>
                 <td>401.0 &plusmn; 98.3</td>
                 <td>30.41</td>
-                <td>$153.80</td>
               </tr>
               <tr>
                 <th scope="row">Grok 4.5</th>
@@ -712,7 +699,6 @@
                 <td>500</td>
                 <td>289.0 &plusmn; 154.0</td>
                 <td>21.01</td>
-                <td>$20.91</td>
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
@@ -721,7 +707,6 @@
                 <td>319</td>
                 <td>155.7 &plusmn; 130.0</td>
                 <td>98.66</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">DeepSeek V4 Pro</th>
@@ -730,7 +715,6 @@
                 <td>160</td>
                 <td>136.3 &plusmn; 23.7</td>
                 <td>21.85</td>
-                <td>--</td>
               </tr>
               <tr>
                 <th scope="row">Gemini 3 Flash</th>
@@ -739,7 +723,14 @@
                 <td>150</td>
                 <td>137.0 &plusmn; 10.2</td>
                 <td>15.81</td>
-                <td>$1.19</td>
+              </tr>
+              <tr>
+                <th scope="row">Kimi K3</th>
+                <td>3/3</td>
+                <td>$0</td>
+                <td>107</td>
+                <td>50.7 &plusmn; 43.5</td>
+                <td>68.94</td>
               </tr>
               <tr>
                 <th scope="row">Grok 4.20</th>
@@ -748,7 +739,6 @@
                 <td>59</td>
                 <td>36.0 &plusmn; 18.4</td>
                 <td>13.49</td>
-                <td>$3.64</td>
               </tr>
 
 
@@ -756,7 +746,6 @@
                 <th scope="row">Rule-based baseline</th>
                 <td></td>
                 <td>$15,756,408</td>
-                <td></td>
                 <td></td>
                 <td></td>
                 <td></td>
@@ -768,12 +757,11 @@
                 <td></td>
                 <td></td>
                 <td></td>
-                <td></td>
               </tr>
             </tbody>
           </table>
         </div>
-        <figcaption class="fig-caption">Additional details of benchmark results. GPT-5.6 Sol cost is estimated from recorded usage at standard API rates on July 13, 2026: $5/MTok uncached input, $0.50/MTok cached input, $6.25/MTok cache writes, and $30/MTok output. Grok 4.5 cost is calculated from provider-reported usage at standard xAI rates on July 14, 2026: $2/MTok uncached input, $0.50/MTok cached input, and $6/MTok output.</figcaption>
+        <figcaption class="fig-caption">Additional details of benchmark results.</figcaption>
       </figure>
     </section>
 
@@ -1059,7 +1047,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=13"></script>
+  <script src="assets/runs-data.js?v=14"></script>
   <script src="script.js?v=27"></script>
 </body>
 </html>
