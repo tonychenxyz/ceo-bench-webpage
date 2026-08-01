@@ -111,7 +111,7 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.6 Sol finishes with $11.31M in its best run, while two of its three runs bankrupt.</li>
+          <li>Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, while one run bankrupts on day 158.</li>
         </ul>
       </div>
 
@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> GPT-5.6 Sol finishes with $11.31M in its best run, second only to Claude Fable 5, but its other two runs bankrupt around day 190. Claude Fable 5, GPT-5.6 Sol, and Claude Opus 4.8 are the only evaluated models whose best runs finish above the $1M starting balance. GPT-5.5 reaches $6.58M mid-run but is unable to sustain profitability across complete runs. Claude Sonnet 5, Claude Opus 4.7, Qwen 3.7 Max, Gemini 3.5 Flash, Claude Haiku 4.5, GLM 5.2, Kimi K2.6, Claude Sonnet 4.6, and Grok 4.5 end with positive cash but below the starting balance, while GLM 5.1, DeepSeek V4 Pro, Gemini 3 Flash, Kimi K3, and Grok 4.20 bankrupt on all runs. All evaluated models perform below the rule-based baseline at $15.8M.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, exceeding the rule-based baseline at $15.8M in its best run. Its third run bankrupts on day 158, showing substantial variation under the same seed. Claude Fable 5 reaches $12.63M in its best run, while GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. GPT-5.5 reaches $6.58M mid-run but does not sustain that result through a complete run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,7 +577,7 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=19" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=20" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -596,6 +596,14 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">Kimi K3</th>
+                <td>1/3</td>
+                <td>$22,148,357</td>
+                <td>500</td>
+                <td>386.0 &plusmn; 161.2</td>
+                <td>14.81</td>
+              </tr>
               <tr>
                 <th scope="row">Claude Fable 5</th>
                 <td>1/3</td>
@@ -723,14 +731,6 @@
                 <td>150</td>
                 <td>137.0 &plusmn; 10.2</td>
                 <td>15.81</td>
-              </tr>
-              <tr>
-                <th scope="row">Kimi K3</th>
-                <td>3/3</td>
-                <td>$0</td>
-                <td>107</td>
-                <td>50.7 &plusmn; 43.5</td>
-                <td>68.94</td>
               </tr>
               <tr>
                 <th scope="row">Grok 4.20</th>
@@ -1047,7 +1047,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=14"></script>
+  <script src="assets/runs-data.js?v=15"></script>
   <script src="script.js?v=27"></script>
 </body>
 </html>

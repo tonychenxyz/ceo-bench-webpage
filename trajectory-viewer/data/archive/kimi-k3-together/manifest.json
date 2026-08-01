@@ -1,0 +1,33 @@
+{
+  "model": "kimi-k3-together",
+  "model_display": "Kimi K3 Together",
+  "displayed": false,
+  "archived_on": "2026-08-01",
+  "source_provider": "TogetherAI",
+  "runs": [
+    {
+      "run_id": "e497175d",
+      "label": "kimi_k3_together_max_seed42_500d_rep1 (e497175d)",
+      "status": "bankrupt",
+      "survival_days": 1,
+      "final_cash": 0.0,
+      "file": "e497175d.json"
+    },
+    {
+      "run_id": "247e5f9e",
+      "label": "kimi_k3_together_max_seed42_500d_rep2 (247e5f9e)",
+      "status": "bankrupt",
+      "survival_days": 107,
+      "final_cash": 0.0,
+      "file": "247e5f9e.json"
+    },
+    {
+      "run_id": "4d8fbc8e",
+      "label": "kimi_k3_together_max_seed42_500d_rep3 (4d8fbc8e)",
+      "status": "bankrupt",
+      "survival_days": 44,
+      "final_cash": 0.0,
+      "file": "4d8fbc8e.json"
+    }
+  ]
+}

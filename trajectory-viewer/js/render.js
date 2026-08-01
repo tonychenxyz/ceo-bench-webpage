@@ -5,7 +5,43 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 13;
+const DATA_VERSION = 15;
+
+function normalizeCashSeriesForDisplay(series, run) {
+  const byDay = new Map();
+  for (const point of series || []) {
+    const day = Number(point.day);
+    const cash = Number(point.cash);
+    if (Number.isFinite(day) && Number.isFinite(cash) && day >= 0) {
+      byDay.set(day, cash);
+    }
+  }
+  byDay.set(0, 1000000);
+  let points = [...byDay.entries()]
+    .sort((a, b) => a[0] - b[0])
+    .map(([day, cash]) => ({ day, cash }));
+
+  const zeroIndex = points.findIndex((point, index) => index > 0 && point.cash <= 0);
+  if (zeroIndex >= 0) {
+    points = points.slice(0, zeroIndex + 1);
+    points[points.length - 1].cash = 0;
+    return points;
+  }
+
+  if (run.bankrupt) {
+    const terminalDay = Math.min(Number(run.current_day || run.survival_days || 0), 500);
+    points = points.filter((point) => point.day <= terminalDay);
+    if (points[points.length - 1].day === terminalDay) points[points.length - 1].cash = 0;
+    else points.push({ day: terminalDay, cash: 0 });
+    return points;
+  }
+
+  points = points.filter((point) => point.day <= 500);
+  if (points[points.length - 1].day < 500) {
+    points.push({ day: 500, cash: points[points.length - 1].cash });
+  }
+  return points;
+}
 
 // ---------- formatters ----------
 function fmtMoney(n) {
@@ -720,6 +756,7 @@ async function init() {
     document.getElementById('run-sub').textContent = 'Failed to load run: ' + e.message;
     return;
   }
+  r.cash_series = normalizeCashSeriesForDisplay(r.cash_series, r);
   STATE.run = r;
   STATE.daysList = r.days_list || [];
 

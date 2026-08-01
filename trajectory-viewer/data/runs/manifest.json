@@ -1,6 +1,90 @@
 {
   "models": [
     {
+      "model": "kimi-k3",
+      "model_display": "Kimi K3",
+      "runs": [
+        {
+          "run_id": "9b8fa6a4",
+          "label": "kimi_k3_modal_max_seed42_500d_20260731_rep1 (9b8fa6a4)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 6314011,
+          "subscribers": 44,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1000,
+          "action_count": 1918,
+          "days_count": 73,
+          "model_display": "Kimi K3",
+          "final_cash": 6314011,
+          "provider": "Modal",
+          "model_id": "moonshotai/Kimi-K3",
+          "reasoning_effort": "max",
+          "seed": 42,
+          "session_id": "834ef2316e2f",
+          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep1",
+          "simulator_llm": "Amazon Bedrock"
+        },
+        {
+          "run_id": "bae92e25",
+          "label": "kimi_k3_modal_max_seed42_500d_20260731_bankrupt (bae92e25)",
+          "total_days": 500,
+          "current_day": 158,
+          "bankrupt": true,
+          "status": "bankrupt",
+          "dnf": false,
+          "survival_days": 158,
+          "cash": 0,
+          "subscribers": 8798,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 322,
+          "action_count": 609,
+          "days_count": 24,
+          "model_display": "Kimi K3",
+          "final_cash": 0,
+          "provider": "Modal",
+          "model_id": "moonshotai/Kimi-K3",
+          "reasoning_effort": "max",
+          "seed": 42,
+          "session_id": "e757e3654576",
+          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep2",
+          "simulator_llm": "Amazon Bedrock"
+        },
+        {
+          "run_id": "b5601d9b",
+          "label": "kimi_k3_modal_max_seed42_500d_20260731_rep2 (b5601d9b)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 22148357,
+          "subscribers": 43664,
+          "founder_dividends": 0,
+          "mrr": 0,
+          "agent_turns": 1155,
+          "action_count": 2213,
+          "days_count": 73,
+          "model_display": "Kimi K3",
+          "final_cash": 22148357,
+          "provider": "Modal",
+          "model_id": "moonshotai/Kimi-K3",
+          "reasoning_effort": "max",
+          "seed": 42,
+          "session_id": "f9b3e7a86b8d",
+          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep2",
+          "simulator_llm": "Amazon Bedrock"
+        }
+      ]
+    },
+    {
       "model": "claude-fable-5",
       "model_display": "Claude Fable 5",
       "runs": [
@@ -51,7 +135,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 385,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 0,
           "founder_dividends": 0,
           "mrr": 0,
@@ -59,7 +143,7 @@
           "action_count": 421,
           "days_count": 56,
           "model_display": "Claude Fable 5",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -76,7 +160,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 190,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 274996,
           "founder_dividends": 0,
           "mrr": 12185522,
@@ -84,7 +168,7 @@
           "action_count": 1372,
           "days_count": 29,
           "model_display": "GPT-5.6 Sol",
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "d1834c32",
@@ -114,7 +198,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 192,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 10152,
           "founder_dividends": 0,
           "mrr": 180495,
@@ -122,7 +206,7 @@
           "action_count": 1617,
           "days_count": 29,
           "model_display": "GPT-5.6 Sol",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -177,7 +261,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 134,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 73605,
           "founder_dividends": 0,
           "mrr": 0,
@@ -185,7 +269,7 @@
           "action_count": 374,
           "days_count": 21,
           "model_display": "Claude Opus 4.8",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -202,7 +286,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 365346.0,
+          "cash": 365346,
           "subscribers": 945,
           "founder_dividends": 0,
           "mrr": 0,
@@ -210,7 +294,7 @@
           "action_count": 989,
           "model_display": "Qwen 3.7 Max",
           "days_count": 72,
-          "final_cash": 365346.0
+          "final_cash": 365346
         },
         {
           "run_id": "20d908a4",
@@ -221,7 +305,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 335134.0,
+          "cash": 335134,
           "subscribers": 2462,
           "founder_dividends": 0,
           "mrr": 0,
@@ -229,7 +313,7 @@
           "action_count": 1151,
           "model_display": "Qwen 3.7 Max",
           "days_count": 72,
-          "final_cash": 335134.0
+          "final_cash": 335134
         },
         {
           "run_id": "b2a565d0",
@@ -240,7 +324,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 196726.0,
+          "cash": 196726,
           "subscribers": 3014,
           "founder_dividends": 0,
           "mrr": 0,
@@ -248,7 +332,7 @@
           "action_count": 1203,
           "model_display": "Qwen 3.7 Max",
           "days_count": 72,
-          "final_cash": 196726.0
+          "final_cash": 196726
         }
       ]
     },
@@ -265,7 +349,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 75126.0,
+          "cash": 75126,
           "subscribers": 4131,
           "founder_dividends": 0,
           "mrr": 0,
@@ -273,7 +357,7 @@
           "action_count": 3825,
           "model_display": "Gemini 3.5 Flash",
           "days_count": 72,
-          "final_cash": 75126.0
+          "final_cash": 75126
         },
         {
           "run_id": "943710ab",
@@ -284,7 +368,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 37234.0,
+          "cash": 37234,
           "subscribers": 1841,
           "founder_dividends": 0,
           "mrr": 0,
@@ -292,7 +376,7 @@
           "action_count": 4141,
           "model_display": "Gemini 3.5 Flash",
           "days_count": 72,
-          "final_cash": 37234.0
+          "final_cash": 37234
         },
         {
           "run_id": "994d00ad",
@@ -303,7 +387,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 438,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 167797,
           "founder_dividends": 0,
           "mrr": 0,
@@ -311,7 +395,7 @@
           "action_count": 4008,
           "model_display": "Gemini 3.5 Flash",
           "days_count": 64,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -366,7 +450,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 243,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1473,
           "founder_dividends": 0,
           "mrr": 0,
@@ -374,7 +458,7 @@
           "action_count": 654,
           "days_count": 36,
           "model_display": "Claude Opus 4.7",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -429,7 +513,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 412,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 0,
           "founder_dividends": 0,
           "mrr": 0,
@@ -437,7 +521,7 @@
           "action_count": 1444,
           "days_count": 60,
           "model_display": "Claude Sonnet 5",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -454,7 +538,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 59625.0,
+          "cash": 59625,
           "subscribers": 1538,
           "founder_dividends": 0,
           "mrr": 0,
@@ -462,7 +546,7 @@
           "action_count": 859,
           "model_display": "Claude Haiku 4.5",
           "days_count": 72,
-          "final_cash": 59625.0
+          "final_cash": 59625
         },
         {
           "run_id": "84df360d",
@@ -473,7 +557,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 148,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 2729,
           "founder_dividends": 0,
           "mrr": 5544.5,
@@ -481,7 +565,7 @@
           "action_count": 529,
           "model_display": "Claude Haiku 4.5",
           "days_count": 23,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "e0d5dcb6",
@@ -492,15 +576,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 211,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 7345,
           "founder_dividends": 0,
-          "mrr": 15714.0,
+          "mrr": 15714,
           "agent_turns": 643,
           "action_count": 650,
           "model_display": "Claude Haiku 4.5",
           "days_count": 32,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -517,7 +601,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 54327.0,
+          "cash": 54327,
           "subscribers": 1716,
           "founder_dividends": 0,
           "mrr": 0,
@@ -525,7 +609,7 @@
           "action_count": 1212,
           "model_display": "GLM-5.2",
           "days_count": 72,
-          "final_cash": 54327.0
+          "final_cash": 54327
         },
         {
           "run_id": "809a7547",
@@ -536,15 +620,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 242,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 2365,
           "founder_dividends": 0,
-          "mrr": 50.0,
+          "mrr": 50,
           "agent_turns": 1106,
           "action_count": 1059,
           "model_display": "GLM-5.2",
           "days_count": 36,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "27bb1cbc",
@@ -555,7 +639,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 388,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 5447,
           "founder_dividends": 0,
           "mrr": 0,
@@ -563,7 +647,7 @@
           "action_count": 1432,
           "model_display": "GLM-5.2",
           "days_count": 57,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -580,7 +664,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 43598.0,
+          "cash": 43598,
           "subscribers": 9216,
           "founder_dividends": 0,
           "mrr": 0,
@@ -588,7 +672,7 @@
           "action_count": 1013,
           "model_display": "Kimi K2.6",
           "days_count": 72,
-          "final_cash": 43598.0
+          "final_cash": 43598
         },
         {
           "run_id": "83b4fecf",
@@ -599,7 +683,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 41615.0,
+          "cash": 41615,
           "subscribers": 844,
           "founder_dividends": 0,
           "mrr": 0,
@@ -607,7 +691,7 @@
           "action_count": 1229,
           "model_display": "Kimi K2.6",
           "days_count": 72,
-          "final_cash": 41615.0
+          "final_cash": 41615
         },
         {
           "run_id": "7e753caf",
@@ -618,7 +702,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 17110.0,
+          "cash": 17110,
           "subscribers": 1413,
           "founder_dividends": 0,
           "mrr": 0,
@@ -626,7 +710,7 @@
           "action_count": 1279,
           "model_display": "Kimi K2.6",
           "days_count": 72,
-          "final_cash": 17110.0
+          "final_cash": 17110
         }
       ]
     },
@@ -643,7 +727,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 38166.0,
+          "cash": 38166,
           "subscribers": 5486,
           "founder_dividends": 0,
           "mrr": 0,
@@ -651,7 +735,7 @@
           "action_count": 950,
           "model_display": "Claude Sonnet 4.6",
           "days_count": 72,
-          "final_cash": 38166.0
+          "final_cash": 38166
         },
         {
           "run_id": "9c8dd0d5",
@@ -662,7 +746,7 @@
           "status": "complete",
           "dnf": false,
           "survival_days": 497,
-          "cash": 16324.0,
+          "cash": 16324,
           "subscribers": 8484,
           "founder_dividends": 0,
           "mrr": 0,
@@ -670,7 +754,7 @@
           "action_count": 1029,
           "model_display": "Claude Sonnet 4.6",
           "days_count": 72,
-          "final_cash": 16324.0
+          "final_cash": 16324
         },
         {
           "run_id": "9f383152",
@@ -681,15 +765,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 258,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 16767,
           "founder_dividends": 0,
-          "mrr": 1788.0,
+          "mrr": 1788,
           "agent_turns": 572,
           "action_count": 578,
           "model_display": "Claude Sonnet 4.6",
           "days_count": 38,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -725,7 +809,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 266,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 0,
           "founder_dividends": 0,
           "mrr": 0,
@@ -733,7 +817,7 @@
           "action_count": 1954,
           "model_display": "GPT-5.5",
           "days_count": 40,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "9fa64d2e",
@@ -744,7 +828,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 436,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 27128,
           "founder_dividends": 0,
           "mrr": 0,
@@ -752,7 +836,7 @@
           "action_count": 3134,
           "days_count": 64,
           "model_display": "GPT-5.5",
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -769,7 +853,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 319,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 3862,
           "founder_dividends": 0,
           "mrr": 0,
@@ -777,7 +861,7 @@
           "action_count": 1802,
           "model_display": "GLM-5.1",
           "days_count": 47,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "f5d25ac4",
@@ -788,15 +872,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 147,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1267,
           "founder_dividends": 0,
-          "mrr": 678.0,
+          "mrr": 678,
           "agent_turns": 833,
           "action_count": 842,
           "model_display": "GLM-5.1",
           "days_count": 22,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "c8a526c1",
@@ -807,7 +891,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 1,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1,
           "founder_dividends": 0,
           "mrr": 0,
@@ -815,7 +899,7 @@
           "action_count": 32,
           "model_display": "GLM-5.1",
           "days_count": 2,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -832,15 +916,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 104,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 5442,
           "founder_dividends": 0,
-          "mrr": 99912.0,
+          "mrr": 99912,
           "agent_turns": 323,
           "action_count": 326,
           "model_display": "DeepSeek V4 Pro",
           "days_count": 16,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "e3e087c5",
@@ -851,15 +935,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 145,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 5796,
           "founder_dividends": 0,
-          "mrr": 23029.0,
+          "mrr": 23029,
           "agent_turns": 449,
           "action_count": 451,
           "model_display": "DeepSeek V4 Pro",
           "days_count": 22,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "6d80cf7a",
@@ -870,15 +954,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 160,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 7182,
           "founder_dividends": 0,
-          "mrr": 44077.0,
+          "mrr": 44077,
           "agent_turns": 506,
           "action_count": 509,
           "model_display": "DeepSeek V4 Pro",
           "days_count": 24,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -895,15 +979,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 150,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1169,
           "founder_dividends": 0,
-          "mrr": 3334.0,
+          "mrr": 3334,
           "agent_turns": 322,
           "action_count": 326,
           "model_display": "Gemini 3 Flash",
           "days_count": 23,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "0b562a01",
@@ -914,15 +998,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 136,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1321,
           "founder_dividends": 0,
-          "mrr": 829.0,
+          "mrr": 829,
           "agent_turns": 339,
           "action_count": 343,
           "model_display": "Gemini 3 Flash",
           "days_count": 21,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "7ca27419",
@@ -933,78 +1017,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 125,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 2609,
           "founder_dividends": 0,
-          "mrr": 5520.0,
+          "mrr": 5520,
           "agent_turns": 267,
           "action_count": 270,
           "model_display": "Gemini 3 Flash",
           "days_count": 19,
-          "final_cash": 0.0
-        }
-      ]
-    },
-    {
-      "model": "kimi-k3",
-      "model_display": "Kimi K3",
-      "runs": [
-        {
-          "run_id": "247e5f9e",
-          "label": "kimi_k3_together_max_seed42_500d_rep2 (247e5f9e)",
-          "total_days": 500,
-          "current_day": 107,
-          "bankrupt": true,
-          "status": "bankrupt",
-          "dnf": false,
-          "survival_days": 107,
-          "cash": 0.0,
-          "subscribers": 2731,
-          "founder_dividends": 0,
-          "mrr": 0,
-          "agent_turns": 270,
-          "action_count": 374,
-          "model_display": "Kimi K3",
-          "days_count": 17,
-          "final_cash": 0.0
-        },
-        {
-          "run_id": "4d8fbc8e",
-          "label": "kimi_k3_together_max_seed42_500d_rep3 (4d8fbc8e)",
-          "total_days": 500,
-          "current_day": 44,
-          "bankrupt": true,
-          "status": "bankrupt",
-          "dnf": false,
-          "survival_days": 44,
-          "cash": 0.0,
-          "subscribers": 4491,
-          "founder_dividends": 0,
-          "mrr": 0,
-          "agent_turns": 133,
-          "action_count": 188,
-          "model_display": "Kimi K3",
-          "days_count": 8,
-          "final_cash": 0.0
-        },
-        {
-          "run_id": "e497175d",
-          "label": "kimi_k3_together_max_seed42_500d_rep1 (e497175d)",
-          "total_days": 500,
-          "current_day": 1,
-          "bankrupt": true,
-          "status": "bankrupt",
-          "dnf": false,
-          "survival_days": 1,
-          "cash": 0.0,
-          "subscribers": 192,
-          "founder_dividends": 0,
-          "mrr": 0,
-          "agent_turns": 24,
-          "action_count": 37,
-          "model_display": "Kimi K3",
-          "days_count": 2,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     },
@@ -1021,15 +1042,15 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 35,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 542,
           "founder_dividends": 0,
-          "mrr": 1700.0,
+          "mrr": 1700,
           "agent_turns": 67,
           "action_count": 84,
           "model_display": "Grok 4.20",
           "days_count": 6,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "1a24cf53",
@@ -1040,7 +1061,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 14,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 8652,
           "founder_dividends": 0,
           "mrr": 16074.29,
@@ -1048,7 +1069,7 @@
           "action_count": 36,
           "model_display": "Grok 4.20",
           "days_count": 3,
-          "final_cash": 0.0
+          "final_cash": 0
         },
         {
           "run_id": "52a07bac",
@@ -1059,7 +1080,7 @@
           "status": "bankrupt",
           "dnf": false,
           "survival_days": 59,
-          "cash": 0.0,
+          "cash": 0,
           "subscribers": 1601,
           "founder_dividends": 0,
           "mrr": 7180.18,
@@ -1067,7 +1088,7 @@
           "action_count": 133,
           "model_display": "Grok 4.20",
           "days_count": 10,
-          "final_cash": 0.0
+          "final_cash": 0
         }
       ]
     }
