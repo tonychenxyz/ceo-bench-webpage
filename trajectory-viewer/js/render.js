@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 15;
+const DATA_VERSION = 16;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();

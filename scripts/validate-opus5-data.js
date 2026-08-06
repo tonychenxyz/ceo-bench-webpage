@@ -10,6 +10,8 @@ const MODEL_DISPLAY = 'Claude Opus 5';
 const FINAL_CASH = 39339850.35;
 const DISPLAY_CASH = 39339850;
 const SUBSCRIBERS = 1905;
+const ACTION_COUNT = 217;
+const WORKSPACE_WRITE_COUNT = 37;
 
 function check(condition, message) {
   if (!condition) throw new Error(message);
@@ -67,9 +69,25 @@ check(manifestRun.run_id === RUN_ID, 'viewer manifest run ID mismatch');
 check(Number(manifestRun.cash) === DISPLAY_CASH, 'viewer manifest cash mismatch');
 check(Number(manifestRun.subscribers) === SUBSCRIBERS, 'viewer manifest subscribers mismatch');
 check(Number(manifestRun.agent_turns) === 466, 'viewer manifest agent turns mismatch');
-check(Number(manifestRun.action_count) === 262, 'viewer manifest action count mismatch');
+check(Number(manifestRun.action_count) === ACTION_COUNT,
+  'viewer manifest action count mismatch');
 
-const detail = readJson(`trajectory-viewer/data/runs/${RUN_ID}.json`);
+const detailRelativePath = `trajectory-viewer/data/runs/${RUN_ID}.json`;
+const detailSource = fs.readFileSync(path.join(ROOT, detailRelativePath), 'utf8');
+const forbiddenCredentialPatterns = [
+  ['AWS access key', /(?:AKIA|ASIA)[A-Z0-9]{16}/],
+  ['Anthropic token', /sk-ant-[A-Za-z0-9_-]{20,}/],
+  ['OpenAI token', /sk-(?:proj-)?[A-Za-z0-9_-]{30,}/],
+  ['Modal credential', /(?:wk|ws)-[A-Za-z0-9]{12,}/],
+  ['GitHub token', /gh[pousr]_[A-Za-z0-9]{20,}/],
+  ['Slack token', /xox[baprs]-[A-Za-z0-9-]{20,}/],
+  ['bearer token', /Bearer\s+[A-Za-z0-9._-]{30,}/i],
+  ['private key', /-----BEGIN (?:RSA |OPENSSH |EC )?PRIVATE KEY-----/],
+];
+for (const [label, pattern] of forbiddenCredentialPatterns) {
+  check(!pattern.test(detailSource), `detail contains a publishable ${label}`);
+}
+const detail = JSON.parse(detailSource);
 check(detail.run_id === RUN_ID && detail.model === MODEL_KEY, 'detail identity mismatch');
 check(detail.model_display === MODEL_DISPLAY, 'detail model display mismatch');
 check(detail.current_day === 500 && detail.total_days === 500, 'detail horizon mismatch');
@@ -108,12 +126,73 @@ for (const point of detail.sub_series) {
   check(groupSeats === Number(seats.individual) + Number(seats.enterprise_seats),
     `day ${day}: group seats do not sum to total seats`);
 }
-check(Array.isArray(detail.days['500'].actions) && detail.days['500'].actions.length === 0,
-  'day 500 must not contain post-horizon actions');
+const actions = detail.days_list.flatMap((day) => detail.days[String(day)].actions);
+check(detail.action_count === ACTION_COUNT && detail.tool_calls_count === ACTION_COUNT,
+  'detail action counts mismatch');
+check(actions.length === ACTION_COUNT, 'daily action total mismatch');
+actions.forEach((action, index) => {
+  check(action.turn === index + 1, `action ${index}: turn sequence mismatch`);
+  check(detail.days_list.includes(action.day), `action ${index}: unmapped day ${action.day}`);
+  check(typeof action.result === 'string', `action ${index}: result must be text`);
+});
+const toolCounts = actions.reduce((counts, action) => {
+  counts[action.tool] = (counts[action.tool] || 0) + 1;
+  return counts;
+}, {});
+check(toolCounts.bash === 174 && toolCounts.read_file === 6,
+  'Claude Code Bash/Read counts mismatch');
+check(toolCounts.write_file === WORKSPACE_WRITE_COUNT,
+  'workspace Write count mismatch');
+
+const workspaceWrites = actions.filter((action) => action.tool === 'write_file');
+workspaceWrites.forEach((action, index) => {
+  const filePath = action.arguments && action.arguments.file_path;
+  check(typeof filePath === 'string' && filePath.length > 0,
+    `workspace write ${index}: missing file path`);
+  check(!filePath.startsWith('/') && !filePath.includes('/data/workspace/'),
+    `workspace write ${index}: path must be workspace-relative`);
+  check(typeof action.arguments.content === 'string',
+    `workspace write ${index}: missing file content`);
+});
+const workspaceDays = new Set(workspaceWrites.map((action) => action.day));
+check(workspaceDays.size === 29, 'workspace writes must span 29 simulation days');
+check(detail.days['0'].actions.filter((action) => action.tool === 'write_file').length === 5,
+  'day 0 must contain five workspace writes');
+const environmentAction = actions.find((action) => action.turn === 22);
+check(environmentAction && environmentAction.result.includes('AWS_ACCESS_KEY_ID=<redacted>'),
+  'day-0 AWS access-key output must be redacted');
+check(environmentAction.result.includes('AWS_SECRET_ACCESS_KEY=<redacted>'),
+  'day-0 AWS secret-key output must be redacted');
+check(detail.days['378'].actions.some((action) =>
+  action.tool === 'write_file' && action.arguments.file_path === 's2.py'),
+  'day 378 workspace write is missing');
+check(Array.isArray(detail.days['500'].actions) && detail.days['500'].actions.length === 2,
+  'day 500 must contain the two terminal Claude Code checks');
 
 const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
 check(index.includes('<th scope="row">Claude Opus 5</th>'), 'leaderboard row missing');
 check(index.includes('<td>$39,339,850</td>'), 'leaderboard cash missing');
-check(index.includes(`trajectory-viewer/run.html?run=${RUN_ID}`), 'trajectory card link missing');
+check(index.includes(`trajectory-viewer/run.html?run=${RUN_ID}&amp;v=16`),
+  'versioned trajectory card link missing');
+const homepageRunLinks = [...index.matchAll(/trajectory-viewer\/run\.html\?run=[^"']+/g)]
+  .map((match) => match[0]);
+check(homepageRunLinks.length > 0 && homepageRunLinks.every((link) => link.endsWith('&amp;v=16')),
+  'every homepage trajectory link must use cache version 16');
+check(index.includes('survived 500d · 217 actions · 1,905 subs'),
+  'trajectory card action count mismatch');
 
-console.log(`Validated Claude Opus 5 trajectory ${RUN_ID} through day 500.`);
+const viewer = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/js/render.js'), 'utf8');
+check(viewer.includes('Day ${day} Workspace file edits'),
+  'trajectory viewer workspace-edit panel is missing');
+check(viewer.includes('const DATA_VERSION = 16;'),
+  'trajectory renderer cache version mismatch');
+const viewerIndex = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/index.html'), 'utf8');
+check(viewerIndex.includes('manifest.json?v=16'),
+  'trajectory manifest cache version mismatch');
+check(viewerIndex.includes('run.html?run=${r.run_id}&v=16'),
+  'trajectory-index run link cache version mismatch');
+const viewerRunPage = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/run.html'), 'utf8');
+check(viewerRunPage.includes('render.js?v=16'),
+  'trajectory run-page cache version mismatch');
+
+console.log(`Validated Claude Opus 5 trajectory ${RUN_ID} with ${WORKSPACE_WRITE_COUNT} workspace writes.`);
