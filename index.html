@@ -111,7 +111,7 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, while one run bankrupts on day 158.</li>
+          <li>Claude Opus 5 records the highest best-run cash at $39.34M in its one evaluated run, completing the full 500-day simulation.</li>
         </ul>
       </div>
 
@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, exceeding the rule-based baseline at $15.8M in its best run. Its third run bankrupts on day 158, showing substantial variation under the same seed. Claude Fable 5 reaches $12.63M in its best run, while GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. GPT-5.5 reaches $6.58M mid-run but does not sustain that result through a complete run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Claude Opus 5 records the highest best-run cash at $39.34M in its one evaluated run and completes the full 500-day horizon. Kimi K3 reaches $22.15M in its best run and completes two of three runs, while the rule-based baseline reaches $15.8M. Claude Fable 5 reaches $12.63M, and GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -596,6 +596,14 @@
               </tr>
             </thead>
             <tbody>
+              <tr>
+                <th scope="row">Claude Opus 5</th>
+                <td>0/1</td>
+                <td>$39,339,850</td>
+                <td>500</td>
+                <td>500.0 &plusmn; 0.0</td>
+                <td>6.52</td>
+              </tr>
               <tr>
                 <th scope="row">Kimi K3</th>
                 <td>1/3</td>
@@ -933,6 +941,17 @@
       </article>
 
       <div class="trajectory-card-row" aria-label="Highlighted model trajectories">
+        <div class="trajectory-model-card">
+          <h3>Claude Opus 5</h3>
+          <div class="trajectory-runs">
+            <a href="trajectory-viewer/run.html?run=5a26f818" class="trajectory-run-item">
+              <span class="trajectory-run-id">5a26f818</span>
+              <span class="trajectory-run-meta">survived 500d · 262 actions · 1,905 subs</span>
+              <span class="trajectory-run-cash">$39.34M</span>
+            </a>
+          </div>
+        </div>
+
         <div class="trajectory-model-card">
           <h3>GPT-5.6 Sol</h3>
           <div class="trajectory-runs">

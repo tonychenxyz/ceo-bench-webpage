@@ -1,6 +1,39 @@
 {
   "models": [
     {
+      "model": "claude-opus-5",
+      "model_display": "Claude Opus 5",
+      "runs": [
+        {
+          "run_id": "5a26f818",
+          "label": "claude_opus5_max_seed42_500d_20260805 (5a26f818)",
+          "total_days": 500,
+          "current_day": 500,
+          "bankrupt": false,
+          "status": "complete",
+          "dnf": false,
+          "survival_days": 500,
+          "cash": 39339850,
+          "subscribers": 1905,
+          "founder_dividends": 0,
+          "mrr": 131445.0,
+          "agent_turns": 466,
+          "action_count": 262,
+          "days_count": 73,
+          "model_display": "Claude Opus 5",
+          "final_cash": 39339850,
+          "provider": "Anthropic",
+          "model_id": "claude-opus-5",
+          "reasoning_effort": "max",
+          "harness": "Claude Code",
+          "seed": 42,
+          "session_id": "ab4c7c0396bc",
+          "volume_name": "ceobench-opus5-plain-20260805-175929",
+          "simulator_llm": "Amazon Bedrock"
+        }
+      ]
+    },
+    {
       "model": "kimi-k3",
       "model_display": "Kimi K3",
       "runs": [
