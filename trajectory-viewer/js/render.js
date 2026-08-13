@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 15;
+const DATA_VERSION = 18;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -765,7 +765,9 @@ async function init() {
   subParts.push(`<b>${r.label || ''}</b>`);
   subParts.push(`run <code>${runId}</code>`);
   const isDnf = r.status === 'dnf' || r.dnf;
-  const survival = (r.survival_days !== undefined && r.survival_days !== null) ? r.survival_days : (r.bankrupt ? (r.current_day || 0) : 500);
+  const survival = r.bankrupt
+    ? ((r.survival_days !== undefined && r.survival_days !== null) ? r.survival_days : (r.current_day || 0))
+    : 500;
   if (isDnf) {
     subParts.push(`<span style="background:#6b7280;color:#fff;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:800;letter-spacing:.08em;padding:2px 6px;border-radius:3px;">DNF</span>`);
     subParts.push(`stopped at <b>${survival}d</b>`);

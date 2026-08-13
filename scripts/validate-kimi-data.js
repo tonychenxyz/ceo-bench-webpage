@@ -63,7 +63,8 @@ function assertPlot(points, label) {
     check(firstZero === points.length - 1, `${label}: points continue after bankruptcy`);
     check(Number(points[firstZero][1]) === 0, `${label}: bankruptcy must display exactly $0`);
   } else {
-    check(Number(points[points.length - 1][0]) === 500, `${label}: successful series must end at day 500`);
+    check(Number(points[points.length - 1][0]) === 500,
+      `${label}: successful series must end at day 500`);
   }
 }
 

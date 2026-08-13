@@ -54,7 +54,7 @@ function fmtMoney(n) {
 
 (async () => {
   try {
-    const m = await (await fetch('data/runs/manifest.json?v=15')).json();
+    const m = await (await fetch('data/runs/manifest.json?v=18')).json();
     const meta = document.getElementById('meta');
     if (meta) {
       meta.textContent = `${m.models.length} models · ${m.models.reduce((s, x) => s + x.runs.length, 0)} runs`;
@@ -74,7 +74,7 @@ function fmtMoney(n) {
         const a = document.createElement('a');
         const isDnf = r.status === 'dnf' || r.dnf;
         a.className = 'run-item' + (r.bankrupt ? ' bankrupt' : '') + (isDnf ? ' dnf' : '');
-        a.href = `run.html?run=${r.run_id}`;
+        a.href = `run.html?run=${r.run_id}&v=18`;
         const subs = (r.subscribers || 0).toLocaleString();
         const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
         const right = isDnf

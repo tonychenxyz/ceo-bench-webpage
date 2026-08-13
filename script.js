@@ -5,6 +5,7 @@ const MODEL_COLORS = {
   "GPT-5.6 Sol": "#0072b2",
   "Claude Opus 4.8": "#d55e00",
   "Qwen 3.7 Max": "#8a63d2",
+  "Grok 4.6": "#a16207",
   "Gemini 3.5 Flash": "#2f6df6",
   "Claude Opus 4.7": "#cc79a7",
   "Claude Sonnet 5": "#009e73",

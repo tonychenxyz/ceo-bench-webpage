@@ -111,7 +111,7 @@
         <ul>
           <li>Today, agents execute individual tasks. Tomorrow, agents steer organizations toward long-term goals.</li>
           <li>We introduce CEO-Bench to measure this <strong>steering intelligence</strong>. In CEO-Bench, agents operate a simulated AI startup for 500 days.</li>
-          <li>Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, while one run bankrupts on day 158.</li>
+          <li>Kimi K3 records the highest published best-run cash at $22.15M and completes two of three 500-day simulations.</li>
         </ul>
       </div>
 
@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Kimi K3 records the highest best-run cash at $22.15M and completes two of three runs, exceeding the rule-based baseline at $15.8M in its best run. Its third run bankrupts on day 158, showing substantial variation under the same seed. Claude Fable 5 reaches $12.63M in its best run, while GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. GPT-5.5 reaches $6.58M mid-run but does not sustain that result through a complete run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
+        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Kimi K3 records the highest published best-run cash at $22.15M and completes two of three runs, while the rule-based baseline reaches $15.8M. Claude Fable 5 reaches $12.63M, and GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,7 +577,7 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=20" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=22" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
@@ -635,6 +635,14 @@
                 <td>500</td>
                 <td>500.0 &plusmn; 0.0</td>
                 <td>7.82</td>
+              </tr>
+              <tr>
+                <th scope="row">Grok 4.6</th>
+                <td>1/3</td>
+                <td>$246,419</td>
+                <td>500</td>
+                <td>427.7 &plusmn; 102.3</td>
+                <td>22.92</td>
               </tr>
               <tr>
                 <th scope="row">Gemini 3.5 Flash</th>
@@ -936,17 +944,17 @@
         <div class="trajectory-model-card">
           <h3>GPT-5.6 Sol</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=d1834c32" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=d1834c32&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">d1834c32</span>
               <span class="trajectory-run-meta">survived 500d · 3,115 actions · 0 subs</span>
               <span class="trajectory-run-cash">$11.31M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=63f6b1fb" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=63f6b1fb&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">63f6b1fb</span>
               <span class="trajectory-run-meta">survived 190d · 1,372 actions · 274,996 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=786948e9" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=786948e9&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">786948e9</span>
               <span class="trajectory-run-meta">survived 192d · 1,617 actions · 10,152 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
@@ -957,17 +965,17 @@
         <div class="trajectory-model-card">
           <h3>Claude Opus 4.8</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=e2cbe2de" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=e2cbe2de&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">e2cbe2de</span>
               <span class="trajectory-run-meta">survived 504d · 1,511 actions · 0 subs</span>
               <span class="trajectory-run-cash">$2.40M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=aad782be" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=aad782be&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">aad782be</span>
               <span class="trajectory-run-meta">survived 504d · 714 actions · 0 subs</span>
               <span class="trajectory-run-cash">$605.6K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=3f8f3efd" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=3f8f3efd&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">3f8f3efd</span>
               <span class="trajectory-run-meta">survived 134d · 374 actions · 73,605 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
@@ -978,17 +986,17 @@
         <div class="trajectory-model-card">
           <h3>Claude Fable 5</h3>
           <div class="trajectory-runs">
-            <a href="trajectory-viewer/run.html?run=2c0aeba9" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=2c0aeba9&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">2c0aeba9</span>
               <span class="trajectory-run-meta">survived 504d · 818 actions · 6,129 subs</span>
               <span class="trajectory-run-cash">$12.67M</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=3def3647" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=3def3647&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">3def3647</span>
               <span class="trajectory-run-meta">survived 504d · 787 actions · 0 subs</span>
               <span class="trajectory-run-cash">$277.4K</span>
             </a>
-            <a href="trajectory-viewer/run.html?run=4f03ddc9" class="trajectory-run-item">
+            <a href="trajectory-viewer/run.html?run=4f03ddc9&amp;v=18" class="trajectory-run-item">
               <span class="trajectory-run-id">4f03ddc9</span>
               <span class="trajectory-run-meta">survived 385d · 421 actions · 0 subs</span>
               <span class="trajectory-run-cash trajectory-run-status">BANKRUPTED</span>
@@ -1047,7 +1055,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=15"></script>
-  <script src="script.js?v=27"></script>
+  <script src="assets/runs-data.js?v=17"></script>
+  <script src="script.js?v=29"></script>
 </body>
 </html>
