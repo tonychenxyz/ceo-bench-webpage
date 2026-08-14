@@ -184,11 +184,23 @@ check(mainScript.includes('"Grok 4.6": "#a16207"'), 'master Grok color is missin
 const render = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/js/render.js'), 'utf8');
 const viewerIndex = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/index.html'), 'utf8');
 const viewerRun = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/run.html'), 'utf8');
-check(render.includes('const DATA_VERSION = 18;'), 'viewer data cache version is wrong');
+check(render.includes('const DATA_VERSION = 19;'), 'viewer data cache version is wrong');
+check(render.includes('if (r.hidden)') && render.includes("window.location.replace('index.html')"),
+  'viewer does not suppress hidden trajectories');
 check(viewerIndex.includes('manifest.json?v=18') && viewerIndex.includes('run.html?run=${r.run_id}&v=18'),
   'viewer index cache version is wrong');
-check(viewerRun.includes('render.js?v=18'), 'viewer run page cache version is wrong');
-check(!fs.existsSync(path.join(ROOT, 'trajectory-viewer/data/runs/5a26f818.json')),
-  'Opus 5 detail file still exists');
+check(viewerRun.includes('render.js?v=19'), 'viewer run page cache version is wrong');
+const hiddenOpusPath = 'trajectory-viewer/data/runs/5a26f818.json';
+check(fs.existsSync(path.join(ROOT, hiddenOpusPath)), 'hidden Opus 5 detail file is missing');
+const hiddenOpus = readJson(hiddenOpusPath);
+check(hiddenOpus.hidden === true, 'Opus 5 detail is not marked hidden');
+check(hiddenOpus.run_id === '5a26f818' && hiddenOpus.model === 'claude-opus-5',
+  'hidden Opus 5 identity is wrong');
+check(hiddenOpus.harness === 'Claude Code' && hiddenOpus.reasoning_effort === 'max',
+  'hidden Opus 5 runtime settings are wrong');
+check(hiddenOpus.current_day === 500 && hiddenOpus.bankrupt === false
+  && equalMoney(hiddenOpus.raw_final_cash, 39339850.35)
+  && equalMoney(hiddenOpus.ledger_final_cash, 39339850.35),
+  'hidden Opus 5 terminal state is wrong');
 
-console.log(`Validated ${master.length} main series, ${Object.values(grid).flat().length} grid runs, all leaderboard survival fields, and 3 Grok details.`);
+console.log(`Validated ${master.length} main series, ${Object.values(grid).flat().length} grid runs, all leaderboard survival fields, 3 Grok details, and 1 hidden Opus detail.`);

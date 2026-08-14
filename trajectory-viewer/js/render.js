@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 18;
+const DATA_VERSION = 19;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -754,6 +754,10 @@ async function init() {
     r = await (await fetch(`data/runs/${runId}.json?v=${DATA_VERSION}`)).json();
   } catch (e) {
     document.getElementById('run-sub').textContent = 'Failed to load run: ' + e.message;
+    return;
+  }
+  if (r.hidden) {
+    window.location.replace('index.html');
     return;
   }
   r.cash_series = normalizeCashSeriesForDisplay(r.cash_series, r);
