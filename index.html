@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=34">
+  <link rel="stylesheet" href="styles.css?v=35">
   <script>
     window.MathJax = {
       tex: {
@@ -568,7 +568,8 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Most state-of-the-art models struggle to complete the simulation without bankruptcy.</strong> Kimi K3 records the highest published best-run cash at $22.15M and completes two of three runs, while the rule-based baseline reaches $15.8M. Claude Fable 5 reaches $12.63M, and GPT-5.6 Sol reaches $11.31M but bankrupts in two of three runs. Claude Opus 4.8 also finishes above the $1M starting balance in its best run. The remaining evaluated models finish below the starting balance in their best complete run or bankrupt in every run.</p>
+        <p><strong>Results now include three recent runs each for Claude Fable 5.1, GPT-6 Sol, Claude Opus 5.5, and GPT-6 Astra.</strong> These runs use Claude Code or Codex CLI at xhigh effort on Modal, with AWS Bedrock Haiku for simulator judge calls. Earlier results use the original benchmark harness. Harness and benchmark-release differences are recorded with each trajectory; these are not controlled model-only comparisons.</p>
+        <p>Cash is scored from the ledger through day 500. One Fable 5.1 run stopped at the 22-hour deadline on day 455 and was later resumed with additional time. Its continuation is included in the graphs and clearly labeled below; its original deadline outcome is preserved. The best Fable run completed within the original limit.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,17 +578,19 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=22" title="Cash trajectories per model" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=23" title="Cash trajectories per model" data-auto-height="true" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
-        <div class="fig-caption">Cash balance over time for all runs of each model.</div>
+        <div class="fig-caption">Cash balance over time for all runs of each model. New panels identify Claude Code / Codex CLI and xhigh effort. Dashed continuation marks the Fable run resumed at day 455.</div>
       </div>
 
-      <figure class="results-table-block">
+      <section id="native-runs" class="native-runs"><h3>Recent coding-agent runs · all trajectories</h3><p>Three runs per model, seed 42. Click a run to inspect the commands, outputs, available agent text, and source provenance. Curves use daily ledger totals where available, otherwise committed cash snapshots; connecting lines are not additional observations. Unavailable turn and customer metrics are shown as —.</p><div class="table-scroll"><table class="results-table"><thead><tr><th>Model / run</th><th>Harness / effort</th><th>Day-500 cash</th><th>Outcome / lifecycle</th></tr></thead><tbody><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-db295aed8bd6">Claude Fable 5.1 · run 1</a></th><td>Claude Code · xhigh</td><td>$389,685,564.45</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-00af2b447bfc">Claude Fable 5.1 · run 2</a></th><td>Claude Code · xhigh</td><td>$1,743,558,616.28</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-fac1c37cb96f">Claude Fable 5.1 · run 3</a></th><td>Claude Code · xhigh</td><td>$1,038,126,858.24</td><td>Extended time · resumed at day 455; original deadline cash $917,408,327.35</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-80fbf4bdb641">GPT-6 Sol · run 1</a></th><td>Codex CLI · xhigh</td><td>$144,010,103.37</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-5c316339369a">GPT-6 Sol · run 2</a></th><td>Codex CLI · xhigh</td><td>$70,319,422.73</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-be64f4730513">GPT-6 Sol · run 3</a></th><td>Codex CLI · xhigh</td><td>$67,708,540.27</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-a7e6a117717a">Claude Opus 5.5 · run 1</a></th><td>Claude Code · xhigh</td><td>$114,261,692.61</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-4304677dc66e">Claude Opus 5.5 · run 2</a></th><td>Claude Code · xhigh</td><td>$75,531,622.18</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-b22df4ee1913">Claude Opus 5.5 · run 3</a></th><td>Claude Code · xhigh</td><td>$62,530,790.80</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-d56ba4d5436c">GPT-6 Astra · run 1</a></th><td>Codex CLI · xhigh</td><td>$18,457,293.91</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-11c9979e066e">GPT-6 Astra · run 2</a></th><td>Codex CLI · xhigh</td><td>$79,244,641.66</td><td>Completed · no restart found</td></tr><tr><th scope="row"><a href="trajectory-viewer/run.html?run=native-5e7724be6473">GPT-6 Astra · run 3</a></th><td>Codex CLI · xhigh</td><td>$30,830,528.26</td><td>Completed · no restart found</td></tr></tbody></table></div></section>
+<figure class="results-table-block">
         <div class="table-scroll">
           <table class="results-table">
             <thead>
               <tr>
                 <th scope="col">Model</th>
+                <th scope="col">Harness / effort</th>
                 <th scope="col">Bankruptcy</th>
                 <th scope="col">Best-run cash</th>
                 <th scope="col">Max survival days</th>
@@ -596,8 +599,14 @@
               </tr>
             </thead>
             <tbody>
+<tr><th scope="row">Claude Fable 5.1</th><td>Claude Code · xhigh</td><td>0/3</td><td>$1,743,558,616.28</td><td>500</td><td>485.0 ± 21.2 (original limit)</td><td>—</td></tr>
+<tr><th scope="row">GPT-6 Sol</th><td>Codex CLI · xhigh</td><td>0/3</td><td>$144,010,103.37</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Claude Opus 5.5</th><td>Claude Code · xhigh</td><td>0/3</td><td>$114,261,692.61</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">GPT-6 Astra</th><td>Codex CLI · xhigh</td><td>0/3</td><td>$79,244,641.66</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+
               <tr>
                 <th scope="row">Kimi K3</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$22,148,357</td>
                 <td>500</td>
@@ -606,6 +615,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Fable 5</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$12,630,078</td>
                 <td>500</td>
@@ -614,6 +624,7 @@
               </tr>
               <tr>
                 <th scope="row">GPT-5.6 Sol</th>
+                <td>Original benchmark harness</td>
                 <td>2/3</td>
                 <td>$11,313,982</td>
                 <td>500</td>
@@ -622,6 +633,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.8</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$2,399,209</td>
                 <td>500</td>
@@ -630,6 +642,7 @@
               </tr>
               <tr>
                 <th scope="row">Qwen 3.7 Max</th>
+                <td>Original benchmark harness</td>
                 <td>0/3</td>
                 <td>$365,346</td>
                 <td>500</td>
@@ -638,6 +651,7 @@
               </tr>
               <tr>
                 <th scope="row">Grok 4.6</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$246,419</td>
                 <td>500</td>
@@ -646,6 +660,7 @@
               </tr>
               <tr>
                 <th scope="row">Gemini 3.5 Flash</th>
+                <td>Original benchmark harness</td>
                 <td>0/3</td>
                 <td>$75,126</td>
                 <td>500</td>
@@ -654,6 +669,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Opus 4.7</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$70,620</td>
                 <td>500</td>
@@ -662,6 +678,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 5</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$64,459</td>
                 <td>500</td>
@@ -670,6 +687,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Haiku 4.5</th>
+                <td>Original benchmark harness</td>
                 <td>2/3</td>
                 <td>$59,625</td>
                 <td>500</td>
@@ -678,6 +696,7 @@
               </tr>
               <tr>
                 <th scope="row">GLM 5.2</th>
+                <td>Original benchmark harness</td>
                 <td>2/3</td>
                 <td>$54,327</td>
                 <td>500</td>
@@ -686,6 +705,7 @@
               </tr>
               <tr>
                 <th scope="row">Kimi K2.6</th>
+                <td>Original benchmark harness</td>
                 <td>0/3</td>
                 <td>$43,598</td>
                 <td>500</td>
@@ -694,6 +714,7 @@
               </tr>
               <tr>
                 <th scope="row">Claude Sonnet 4.6</th>
+                <td>Original benchmark harness</td>
                 <td>1/3</td>
                 <td>$38,166</td>
                 <td>500</td>
@@ -702,6 +723,7 @@
               </tr>
               <tr>
                 <th scope="row">GPT-5.5</th>
+                <td>Original benchmark harness</td>
                 <td>2/3</td>
                 <td>$33,260</td>
                 <td>500</td>
@@ -710,6 +732,7 @@
               </tr>
               <tr>
                 <th scope="row">Grok 4.5</th>
+                <td>Original benchmark harness</td>
                 <td>2/3</td>
                 <td>$15,909</td>
                 <td>500</td>
@@ -718,6 +741,7 @@
               </tr>
               <tr>
                 <th scope="row">GLM 5.1</th>
+                <td>Original benchmark harness</td>
                 <td>3/3</td>
                 <td>$0</td>
                 <td>319</td>
@@ -726,6 +750,7 @@
               </tr>
               <tr>
                 <th scope="row">DeepSeek V4 Pro</th>
+                <td>Original benchmark harness</td>
                 <td>3/3</td>
                 <td>$0</td>
                 <td>160</td>
@@ -734,6 +759,7 @@
               </tr>
               <tr>
                 <th scope="row">Gemini 3 Flash</th>
+                <td>Original benchmark harness</td>
                 <td>3/3</td>
                 <td>$0</td>
                 <td>150</td>
@@ -742,6 +768,7 @@
               </tr>
               <tr>
                 <th scope="row">Grok 4.20</th>
+                <td>Original benchmark harness</td>
                 <td>3/3</td>
                 <td>$0</td>
                 <td>59</td>
@@ -752,6 +779,7 @@
 
               <tr class="reference-row baseline-row">
                 <th scope="row">Rule-based baseline</th>
+                <td>Original benchmark harness</td>
                 <td></td>
                 <td>$15,756,408</td>
                 <td></td>
@@ -760,6 +788,7 @@
               </tr>
               <tr class="reference-row estimate-row">
                 <th scope="row">Estimated final cash upper bound</th>
+                <td>Original benchmark harness</td>
                 <td></td>
                 <td>$2,200,000,000</td>
                 <td></td>
@@ -1055,7 +1084,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=17"></script>
-  <script src="script.js?v=29"></script>
+  <script src="assets/runs-data.js?v=24"></script>
+  <script src="script.js?v=30"></script>
 </body>
 </html>

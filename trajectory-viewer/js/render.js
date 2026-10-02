@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 19;
+const DATA_VERSION = 24;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -419,7 +419,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
   const turn = (action.turn !== undefined && action.turn !== null) ? action.turn : idx;
   const dataIdx = String(key);
   const toggleArg = JSON.stringify(dataIdx);
-  let ts = '';
+  let ts = action.source_line ? `JSONL ${action.source_segment || 1}:${action.source_line}` : '';
   if (action.timestamp) {
     let d = null;
     if (typeof action.timestamp === 'string') {
@@ -431,7 +431,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
   }
 
   let headClass = '';
-  let label = tool;
+  let label = tool === '_message' ? 'agent message' : tool === '_continuation' ? 'resumed at day 455' : tool;
   let subtitle = '';
   let bodyHtml = '';
 
@@ -532,7 +532,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
     const txt = (args && args.text) || result || '';
     bodyHtml = `<div style="font-size:12px;line-height:1.5;color:#425466;">${escHTML(suppressLong(String(txt), 60))}</div>`;
   } else {
-    label = tool;
+    label = tool === '_message' ? 'agent message' : tool === '_continuation' ? 'resumed at day 455' : tool;
     subtitle = JSON.stringify(args).slice(0, 120);
     if (result) bodyHtml = `<div class="stdout">${escHTML(suppressLong(String(result), 60))}</div>`;
   }
@@ -697,10 +697,11 @@ function renderDay(idx) {
   // Day-specific cash/subs
   let cash = 0;
   for (const p of STATE.run.cash_series) { if (p.day <= day) cash = p.cash; else break; }
-  let subs = 0;
+  let subs = STATE.run.sub_series.length ? 0 : null;
   for (const p of STATE.run.sub_series) { if (p.day <= day) subs = p.subscribers; else break; }
+  if (STATE.run.terminal_cash != null && day >= STATE.run.current_day) cash = STATE.run.terminal_cash;
   document.getElementById('day-cash').textContent = fmtMoney(cash);
-  document.getElementById('day-subs').textContent = fmtInt(subs);
+  document.getElementById('day-subs').textContent = subs == null ? '—' : fmtInt(subs);
   document.getElementById('day-actions').textContent = (dayData && dayData.actions ? dayData.actions.length : 0);
 
   // Charts
@@ -766,7 +767,8 @@ async function init() {
 
   document.getElementById('model-name').textContent = r.model_display || r.model;
   const subParts = [];
-  subParts.push(`<b>${r.label || ''}</b>`);
+  subParts.push(`<b>${escHTML(r.label || '')}</b>`);
+  if (r.harness) subParts.push(`<b>${escHTML(r.harness)} · ${escHTML(r.reasoning_effort)}</b>`);
   subParts.push(`run <code>${runId}</code>`);
   const isDnf = r.status === 'dnf' || r.dnf;
   const survival = r.bankrupt
@@ -783,9 +785,18 @@ async function init() {
     subParts.push(`final cash <b>${fmtMoney(r.cash)}</b>`);
   }
   subParts.push(`${r.action_count} actions over ${r.days_list.length} entries`);
-  subParts.push(`subs <b>${fmtInt(r.subscribers)}</b>`);
+  subParts.push(`subs <b>${r.subscribers == null ? '—' : fmtInt(r.subscribers)}</b>`);
   if (r.founder_dividends) subParts.push(`dividends <b>${fmtMoney(r.founder_dividends)}</b>`);
   document.getElementById('run-sub').innerHTML = subParts.join(' · ');
+  if (r.harness) {
+    const note = document.createElement('div'); note.className = 'run-provenance';
+    const text = [r.extended_time ? 'EXTENDED-TIME CONTINUATION: original evaluation stopped at day 455 ($917,408,327.35) at its 22-hour deadline.' : 'Standard 22-hour evaluation.', r.restart_note, r.curve_source, r.trajectory_note, r.artifact_note || '', `Release: ${r.public_revision}. Harness: ${r.harness}, xhigh, Modal; judge: AWS Bedrock Haiku.`];
+    for (const t of text.filter(Boolean)) { const el = document.createElement('p'); el.textContent = t; note.appendChild(el); }
+    const download = document.createElement('a'); download.href = `data/transcripts/${runId}.jsonl`; download.textContent = 'Download normalized harness trajectory (JSONL)'; download.download = ''; note.appendChild(download);
+    const sources = document.createElement('details'); const title = document.createElement('summary'); title.textContent = 'Source JSONL checksums and coverage'; sources.appendChild(title);
+    const pre = document.createElement('pre'); pre.textContent = JSON.stringify(r.sources, null, 2); sources.appendChild(pre); note.appendChild(sources);
+    document.querySelector('.run-header').after(note);
+  }
 
   // Day select
   const sel = document.getElementById('day-select');
