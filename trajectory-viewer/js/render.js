@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 24;
+const DATA_VERSION = 25;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -762,14 +762,15 @@ async function init() {
     return;
   }
   r.cash_series = normalizeCashSeriesForDisplay(r.cash_series, r);
+  for (const d of Object.values(r.days || {})) d.actions = (d.actions || []).filter(a => a.tool !== '_continuation');
   STATE.run = r;
   STATE.daysList = r.days_list || [];
 
   document.getElementById('model-name').textContent = r.model_display || r.model;
   const subParts = [];
-  subParts.push(`<b>${escHTML(r.label || '')}</b>`);
-  if (r.harness) subParts.push(`<b>${escHTML(r.harness)} · ${escHTML(r.reasoning_effort)}</b>`);
-  subParts.push(`run <code>${runId}</code>`);
+
+  subParts.push(`<b>${escHTML(r.harness || 'Benchmark harness')}${r.reasoning_effort ? ' · '+escHTML(r.reasoning_effort) : ''}</b>`);
+
   const isDnf = r.status === 'dnf' || r.dnf;
   const survival = r.bankrupt
     ? ((r.survival_days !== undefined && r.survival_days !== null) ? r.survival_days : (r.current_day || 0))
@@ -788,16 +789,6 @@ async function init() {
   subParts.push(`subs <b>${r.subscribers == null ? '—' : fmtInt(r.subscribers)}</b>`);
   if (r.founder_dividends) subParts.push(`dividends <b>${fmtMoney(r.founder_dividends)}</b>`);
   document.getElementById('run-sub').innerHTML = subParts.join(' · ');
-  if (r.harness) {
-    const note = document.createElement('div'); note.className = 'run-provenance';
-    const text = [r.extended_time ? 'EXTENDED-TIME CONTINUATION: original evaluation stopped at day 455 ($917,408,327.35) at its 22-hour deadline.' : 'Standard 22-hour evaluation.', r.restart_note, r.curve_source, r.trajectory_note, r.artifact_note || '', `Release: ${r.public_revision}. Harness: ${r.harness}, xhigh, Modal; judge: AWS Bedrock Haiku.`];
-    for (const t of text.filter(Boolean)) { const el = document.createElement('p'); el.textContent = t; note.appendChild(el); }
-    const download = document.createElement('a'); download.href = `data/transcripts/${runId}.jsonl`; download.textContent = 'Download normalized harness trajectory (JSONL)'; download.download = ''; note.appendChild(download);
-    const sources = document.createElement('details'); const title = document.createElement('summary'); title.textContent = 'Source JSONL checksums and coverage'; sources.appendChild(title);
-    const pre = document.createElement('pre'); pre.textContent = JSON.stringify(r.sources, null, 2); sources.appendChild(pre); note.appendChild(sources);
-    document.querySelector('.run-header').after(note);
-  }
-
   // Day select
   const sel = document.getElementById('day-select');
   const weekByDay = new Map();

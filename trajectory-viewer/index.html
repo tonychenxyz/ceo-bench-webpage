@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=24">
+<link rel="stylesheet" href="css/style.css?v=25">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-YP52NXRRJH"></script>
 <script>
@@ -55,7 +55,7 @@ function fmtMoney(n) {
 
 (async () => {
   try {
-    const m = await (await fetch('data/runs/manifest.json?v=24')).json();
+    const m = await (await fetch('data/runs/manifest.json?v=25')).json();
     const meta = document.getElementById('meta');
     if (meta) {
       meta.textContent = `${m.models.length} models · ${m.models.reduce((s, x) => s + x.runs.length, 0)} runs`;
@@ -67,26 +67,26 @@ function fmtMoney(n) {
       card.className = 'model-card';
       const head = document.createElement('div');
       head.className = 'mhead';
-      head.textContent = mod.model_display + (mod.harness ? ` · ${mod.harness} · ${mod.reasoning_effort}` : ' · original harness');
+      head.textContent = mod.model_display + (mod.harness ? ` · ${mod.harness} · ${mod.reasoning_effort}` : ' · benchmark harness');
       card.appendChild(head);
       const runs = document.createElement('div');
       runs.className = 'runs';
-      for (const r of mod.runs) {
+      for (const [runIndex, r] of mod.runs.entries()) {
         const a = document.createElement('a');
         const isDnf = r.status === 'dnf' || r.dnf;
         a.className = 'run-item' + (r.bankrupt ? ' bankrupt' : '') + (isDnf ? ' dnf' : '');
-        a.href = `run.html?run=${r.run_id}&v=24`;
+        a.href = `run.html?run=${r.run_id}&v=25`;
         const subs = r.subscribers == null ? '—' : r.subscribers.toLocaleString();
         const survival = r.survival_days ?? (r.bankrupt ? (r.current_day || 0) : 500);
         const right = isDnf
           ? `<span class="rcash dnf-pill">DNF</span>`
           : r.bankrupt
           ? `<span class="rcash bankrupt-pill">BANKRUPTED</span>`
-          : `<span class="rcash ${(r.cash || 0) >= 0 ? '' : 'neg'}">${fmtMoney(r.cash)}</span>`;
+          : `<span class="rcash ${(r.cash || 0) >= 0 ? '' : 'neg'}">${fmtMoney(r.display_cash ?? r.cash)}</span>`;
         const survivalLabel = isDnf ? 'stopped' : 'survived';
         a.innerHTML = `
-          <span class="rid">${r.run_id}</span>
-          <span class="rmeta">${r.extended_time ? 'Extended time · resumed d455 · ' : ''}${survivalLabel} ${survival}d · ${r.action_count} actions · ${subs} subs</span>
+          <span class="rid">Run ${runIndex + 1}</span>
+          <span class="rmeta">${survivalLabel} ${survival}d · ${r.action_count} actions · ${subs} subs</span>
           ${right}
         `;
         runs.appendChild(a);

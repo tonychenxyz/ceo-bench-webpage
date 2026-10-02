@@ -158,7 +158,7 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js?v=24"></script>
+<script src="runs-by-model.js?v=25"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
@@ -196,32 +196,7 @@ const PALETTE = {
 const RUN_DASH = ['', '', ''];
 
 // Match the leaderboard table order, excluding non-run summary rows.
-const MODEL_ORDER = [
-  "Claude Fable 5.1 \u00b7 Claude Code \u00b7 xhigh",
-  "GPT-6 Sol \u00b7 Codex CLI \u00b7 xhigh",
-  "Claude Opus 5.5 \u00b7 Claude Code \u00b7 xhigh",
-  "GPT-6 Astra \u00b7 Codex CLI \u00b7 xhigh",
-
-  'Kimi K3',
-  'Claude Fable 5',
-  'GPT-5.6 Sol',
-  'Claude Opus 4.8',
-  'Qwen 3.7 Max',
-  'Grok 4.6',
-  'Gemini 3.5 Flash',
-  'Claude Opus 4.7',
-  'Claude Sonnet 5',
-  'Claude Haiku 4.5',
-  'GLM 5.2',
-  'Kimi K2.6',
-  'Claude Sonnet 4.6',
-  'GPT-5.5',
-  'Grok 4.5',
-  'GLM 5.1',
-  'DeepSeek V4 Pro',
-  'Gemini 3 Flash',
-  'Grok 4.20',
-];
+const MODEL_ORDER = ["Claude Fable 5.1", "GPT-6 Sol", "Claude Opus 5.5", "GPT-6 Astra", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Qwen 3.7 Max", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20"];
 
 // ---- Per-tile layout ----------------------------------------------------
 // Tile inner SVG dims tuned for ~263px column on 816px page.
@@ -329,18 +304,6 @@ MODEL_ORDER.forEach(modelName => {
     <div class="body"></div>
   `;
   grid.appendChild(tile);
-  if (runs.some(r => r.run_id.startsWith('native-'))) {
-    const links = document.createElement('div');
-    links.style.cssText = 'font-size:10px;padding-left:42px;line-height:1.5';
-    runs.forEach((r, i) => {
-      const a = document.createElement('a');
-      a.href = '../../trajectory-viewer/run.html?run=' + r.run_id; a.target = '_top';
-      a.textContent = `Run ${i+1}${r.extended_time ? ' (resumed d455)' : ''} `;
-      links.appendChild(a);
-    });
-    tile.appendChild(links);
-  }
-
   const body = tile.querySelector('.body');
   const svg = el('svg', {
     viewBox: `0 0 ${W} ${H}`,
@@ -413,15 +376,10 @@ MODEL_ORDER.forEach(modelName => {
     };
   });
 
-  // Keep the extended-time segment visually separate from its original deadline outcome.
+  // One continuous curve per game.
   series.forEach(s => {
-    const cutoff = s.run.continuation_day;
-    const segments = cutoff ? [s.pts.filter(p => p[0] <= cutoff), s.pts.filter(p => p[0] >= cutoff)] : [s.pts];
-    segments.forEach((points, i) => {
-      const d = points.map((p, j) => `${j ? 'L' : 'M'}${xS(p[0]).toFixed(1)} ${yS(p[1]).toFixed(1)}`).join(' ');
-      el('path', {d, fill:'none', stroke:color, 'stroke-width':1.6, 'stroke-dasharray':i ? '4 3' : '', 'stroke-linejoin':'round', opacity:.95}, svg);
-    });
-    if (cutoff) el('line', {x1:xS(cutoff), x2:xS(cutoff), y1:PAD_T, y2:PAD_T+innerH, stroke:'#9b4b00', 'stroke-dasharray':'2 2'}, svg);
+    const d = s.pts.map((p, i) => `${i ? 'L' : 'M'}${xS(p[0]).toFixed(1)} ${yS(p[1]).toFixed(1)}`).join(' ');
+    el('path', {d, fill:'none', stroke:color, 'stroke-width':1.6, 'stroke-linejoin':'round', opacity:.95}, svg);
   });
 
   // Skull markers
@@ -479,7 +437,7 @@ MODEL_ORDER.forEach(modelName => {
         }, hoverDots);
       }
       return {
-        label: `Run ${s.idx + 1}${runs[s.idx].extended_time ? ' · extended' : ''}`,
+        label: `Run ${s.idx + 1}`,
         value: reading.value,
         bankrupt: reading.bankrupt,
         bankruptDay: s.bankruptDay,

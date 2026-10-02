@@ -44,6 +44,13 @@ function formatCash(value) {
   return `${sign}$${abs.toFixed(0)}`;
 }
 
+function formatAxisCash(value) {
+  if (value >= 1e9) return `$${value / 1e9}B`;
+  if (value >= 1e6) return `$${value / 1e6}M`;
+  if (value >= 1e3) return `$${value / 1e3}k`;
+  return `$${value}`;
+}
+
 function appendModelName(node, name) {
   node.textContent = name;
 }
@@ -77,8 +84,6 @@ function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
   const rankedRuns = runs.slice().sort((a, b) => {
-    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
-    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });
@@ -130,7 +135,7 @@ function drawCashPlot(runs, mount) {
     fill: "#000000"
   };
 
-  const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
+  const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000]
     .filter(tick => tick <= yCeil);
 
   yTicks.forEach(tick => {
@@ -150,7 +155,7 @@ function drawCashPlot(runs, mount) {
       "text-anchor": "end",
       ...tickStyle
     }, svg);
-    label.textContent = formatCash(tick);
+    label.textContent = formatAxisCash(tick);
   });
 
   [0, 100, 200, 300, 400, 500].forEach(tick => {
@@ -512,8 +517,6 @@ function fitAllFrames() {
 
 function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
-    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
-    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });

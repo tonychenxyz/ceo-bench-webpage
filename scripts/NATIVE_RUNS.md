@@ -36,9 +36,9 @@ $917,408,327.35. Its original outcome remains `infrastructure_failed`.
 The user authorized a separate extended-time continuation in a new container.
 The same saved game and conversation resumed at day 455 without observed rollback
 or a replacement game. Day-500 cash is $1,038,126,858.24. The website joins this
-continuation to the original trajectory, counts it as one game, marks its graph
-segment dashed, and displays its original outcome. Aggregate mean survival uses
-original-limit days (500, 500, 455), not three uninterrupted completions.
+continuation to the original trajectory, counts it as one game, renders one continuous
+curve, and retains the original outcome in the source data. Aggregate survival uses the completed trajectories. Cash statistics use all three
+final day-500 scores, with bankrupt runs counted as zero.
 The best Fable result came from another run that completed within the original limit.
 
 No simulator restart was found in the other eleven run records. Astra's same-game
@@ -46,7 +46,7 @@ No simulator restart was found in the other eleven run records. Astra's same-gam
 evidence finding, not a claim of exhaustive process instrumentation.
 
 The first Fable run's complete agent trace was recovered, but its full workspace
-archive was incomplete. That limitation is displayed on its trajectory page.
+archive was incomplete. That limitation remains in its source metadata.
 
 ## Validation
 
@@ -54,3 +54,7 @@ Run `node scripts/validate-native-runs.js`, `node scripts/validate-kimi-data.js`
 and `node scripts/validate-grok46-data.js`. Browser validation also covers desktop
 and mobile layouts, all twelve detail pages, day-500 scores, chart links, and the
 continuation boundary. Production is not updated by this feature branch.
+
+The public presentation uses model-only plot labels, one leaderboard with effort
+and cash mean ± population standard deviation, and concise trajectory pages.
+Source metadata and downloadable artifacts remain unchanged by display choices.

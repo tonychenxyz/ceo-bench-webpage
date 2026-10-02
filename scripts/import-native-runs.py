@@ -144,8 +144,8 @@ def main(source):
     for model,pretty in MODELS.items():
         rr=[r for r in results if r['model']==model];assert len(rr)==3
         manifest['models'].insert(0,dict(model=model,model_display=pretty,harness=rr[0]['harness'],reasoning_effort='xhigh',runs=[{k:v for k,v in r.items() if k not in ['days','cash_series','sub_series','seat_series','seat_series_by_group','group_discovery','weeks_index']} for r in rr]))
-        winner=max(rr,key=lambda r:r['cash']);best.append(dict(model=model,pretty=pretty+' · '+winner['harness']+' · xhigh',bankrupt=0,max_day=500,final_cash=winner['cash'],points=[[p['day'],p['cash']] for p in winner['cash_series']]))
-        grouped[pretty+' · '+rr[0]['harness']+' · xhigh']=[dict(run_id=r['run_id'],label=r['label']+(' · resumed day 455 (extended time)' if r['extended_time'] else ''),status=r['status'],extended_time=r['extended_time'],continuation_day=r.get('continuation_day'),points=[[p['day'],p['cash']] for p in r['cash_series']]) for r in rr]
+        winner=max(rr,key=lambda r:r['cash']);best.append(dict(model=model,pretty=pretty,bankrupt=0,max_day=500,final_cash=winner['cash'],points=[[p['day'],p['cash']] for p in winner['cash_series']]))
+        grouped[pretty]=[dict(run_id=r['run_id'],label=r['label']+(' · resumed day 455 (extended time)' if r['extended_time'] else ''),status=r['status'],extended_time=r['extended_time'],continuation_day=r.get('continuation_day'),points=[[p['day'],p['cash']] for p in r['cash_series']]) for r in rr]
     (P/'trajectory-viewer/data/runs/manifest.json').write_text(json.dumps(manifest,indent=2)+'\n');dump(P/'assets/runs.json',best)
     (P/'assets/runs-data.js').write_text('window.CEOBENCH_RUNS = '+json.dumps(best,separators=(',',':'))+';\n')
     (P/'assets/figures/runs-by-model.js').write_text('const RUNS_BY_MODEL = '+json.dumps(grouped,separators=(',',':'))+';\n')
