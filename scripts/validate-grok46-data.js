@@ -186,12 +186,12 @@ check(mainScript.includes('"Grok 4.6": "#a16207"'), 'master Grok color is missin
 const render = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/js/render.js'), 'utf8');
 const viewerIndex = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/index.html'), 'utf8');
 const viewerRun = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/run.html'), 'utf8');
-check(render.includes('const DATA_VERSION = 26;'), 'viewer data cache version is wrong');
+check(render.includes('const DATA_VERSION = 27;'), 'viewer data cache version is wrong');
 check(render.includes('if (r.hidden)') && render.includes("window.location.replace('index.html')"),
   'viewer does not suppress hidden trajectories');
 check(viewerIndex.includes('manifest.json?v=25') && viewerIndex.includes('run.html?run=${r.run_id}&v=25'),
   'viewer index cache version is wrong');
-check(viewerRun.includes('render.js?v=26'), 'viewer run page cache version is wrong');
+check(viewerRun.includes('render.js?v=27'), 'viewer run page cache version is wrong');
 const hiddenOpusPath = 'trajectory-viewer/data/runs/5a26f818.json';
 check(fs.existsSync(path.join(ROOT, hiddenOpusPath)), 'hidden Opus 5 detail file is missing');
 const hiddenOpus = readJson(hiddenOpusPath);

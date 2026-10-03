@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 26;
+const DATA_VERSION = 27;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -394,7 +394,7 @@ function buildSubsChart(container, seatSeriesByGroup, currentDay) {
 
 function getCustomerGroupSeries(run) {
   if (Array.isArray(run.customer_series_by_group) && run.customer_series_by_group.length > 0) {
-    return { series: run.customer_series_by_group, label: 'CUSTOMERS' };
+    return { series: run.customer_series_by_group, label: run.customer_group_label || 'CUSTOMERS' };
   }
   if (Array.isArray(run.seat_series_by_group_detailed) && run.seat_series_by_group_detailed.length > 0) {
     return { series: run.seat_series_by_group_detailed, label: 'SEATS' };
