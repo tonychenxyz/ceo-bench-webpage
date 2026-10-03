@@ -1,6 +1,10 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
+"Claude Fable 5.1": "#702da5",
+"GPT-6 Sol": "#176f45",
+"Claude Opus 5.5": "#c44500",
+"GPT-6 Astra": "#0959b0",
   "Claude Fable 5": "#111827",
   "GPT-5.6 Sol": "#0072b2",
   "Claude Opus 4.8": "#d55e00",
@@ -40,6 +44,13 @@ function formatCash(value) {
   return `${sign}$${abs.toFixed(0)}`;
 }
 
+function formatAxisCash(value) {
+  if (value >= 1e9) return `$${value / 1e9}B`;
+  if (value >= 1e6) return `$${value / 1e6}M`;
+  if (value >= 1e3) return `$${value / 1e3}k`;
+  return `$${value}`;
+}
+
 function appendModelName(node, name) {
   node.textContent = name;
 }
@@ -73,8 +84,6 @@ function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
   const rankedRuns = runs.slice().sort((a, b) => {
-    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
-    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });
@@ -86,7 +95,7 @@ function drawCashPlot(runs, mount) {
   }
 
   const W = 960;
-  const H = 610;
+  const H = 740;
   const pad = { left: 78, right: 214, top: 54, bottom: 62 };
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
@@ -126,7 +135,7 @@ function drawCashPlot(runs, mount) {
     fill: "#000000"
   };
 
-  const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000]
+  const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000]
     .filter(tick => tick <= yCeil);
 
   yTicks.forEach(tick => {
@@ -146,7 +155,7 @@ function drawCashPlot(runs, mount) {
       "text-anchor": "end",
       ...tickStyle
     }, svg);
-    label.textContent = formatCash(tick);
+    label.textContent = formatAxisCash(tick);
   });
 
   [0, 100, 200, 300, 400, 500].forEach(tick => {
@@ -277,7 +286,7 @@ function drawCashPlot(runs, mount) {
       y: y(last[1])
     };
   });
-  const minLabelGap = 22;
+  const minLabelGap = 27;
   let cursorY = pad.top + 12;
   labelRows.forEach(row => {
     row.y = Math.max(row.targetY, cursorY);
@@ -316,7 +325,11 @@ function drawCashPlot(runs, mount) {
       "paint-order": "stroke fill",
       "pointer-events": "none"
     }, labelsGroup);
-    appendModelName(label, run.pretty);
+    if (run.pretty.includes(' · ')) {
+      const [name, ...details] = run.pretty.split(' · ');
+      label.textContent = name;
+      svgEl('tspan', {x:plotRight+36, dy:12, 'font-size':8, 'font-weight':400}, label).textContent = details.join(' · ');
+    } else appendModelName(label, run.pretty);
     svgEl("text", {
       x: W - 8,
       y: row.y + 4,
@@ -504,8 +517,6 @@ function fitAllFrames() {
 
 function orderRuns(runs) {
   return runs.slice().sort((a, b) => {
-    const survivalDelta = (Number(b.max_day) || 0) - (Number(a.max_day) || 0);
-    if (survivalDelta) return survivalDelta;
     const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
     return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
   });

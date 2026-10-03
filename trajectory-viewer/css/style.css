@@ -523,3 +523,6 @@ svg text { font-family: 'Inter', sans-serif; }
   z-index: 100;
   white-space: nowrap;
 }
+
+.run-provenance {margin:16px 0;padding:16px;border:1px solid #cbd5e1;background:#f8fafc;font-size:13px;line-height:1.5;overflow-wrap:anywhere;}
+.run-provenance pre {white-space:pre-wrap;}

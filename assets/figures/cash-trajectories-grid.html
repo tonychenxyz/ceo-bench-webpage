@@ -61,7 +61,7 @@
     font-size: 11.5px;
     line-height: 1.1;
     color: var(--ink);
-    white-space: nowrap;
+    white-space: normal;
   }
   .tile .head .name {
     display: block;
@@ -158,7 +158,7 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js?v=17"></script>
+<script src="runs-by-model.js?v=25"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
@@ -168,6 +168,10 @@ function modelNameHtml(name) {
 
 // Same Okabe–Ito palette as the master plot, used for the model color.
 const PALETTE = {
+"Claude Fable 5.1": {c:"#702da5"},
+"GPT-6 Sol": {c:"#176f45"},
+"Claude Opus 5.5": {c:"#c44500"},
+"GPT-6 Astra": {c:"#0959b0"},
   'Claude Fable 5':    {c:'#111827'},
   'GPT-5.6 Sol':       {c:'#0072b2'},
   'Claude Opus 4.8':   {c:'#d55e00'},
@@ -192,27 +196,7 @@ const PALETTE = {
 const RUN_DASH = ['', '', ''];
 
 // Match the leaderboard table order, excluding non-run summary rows.
-const MODEL_ORDER = [
-  'Kimi K3',
-  'Claude Fable 5',
-  'GPT-5.6 Sol',
-  'Claude Opus 4.8',
-  'Qwen 3.7 Max',
-  'Grok 4.6',
-  'Gemini 3.5 Flash',
-  'Claude Opus 4.7',
-  'Claude Sonnet 5',
-  'Claude Haiku 4.5',
-  'GLM 5.2',
-  'Kimi K2.6',
-  'Claude Sonnet 4.6',
-  'GPT-5.5',
-  'Grok 4.5',
-  'GLM 5.1',
-  'DeepSeek V4 Pro',
-  'Gemini 3 Flash',
-  'Grok 4.20',
-];
+const MODEL_ORDER = ["Claude Fable 5.1", "GPT-6 Sol", "Claude Opus 5.5", "GPT-6 Astra", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Qwen 3.7 Max", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20"];
 
 // ---- Per-tile layout ----------------------------------------------------
 // Tile inner SVG dims tuned for ~263px column on 816px page.
@@ -225,7 +209,7 @@ const xMin = 0, xMax = 500;
 const xS = v => PAD_L + (Math.min(Math.max(v, xMin), xMax) - xMin) / (xMax - xMin) * innerW;
 
 const yMinLog = Math.log10(100);
-const yMaxLog = Math.log10(1e8);
+const yMaxLog = Math.log10(1e10);
 const yS = v => {
   if (v <= 0) return PAD_T + innerH;
   const lv = Math.log10(Math.max(v, 100));
@@ -320,7 +304,6 @@ MODEL_ORDER.forEach(modelName => {
     <div class="body"></div>
   `;
   grid.appendChild(tile);
-
   const body = tile.querySelector('.body');
   const svg = el('svg', {
     viewBox: `0 0 ${W} ${H}`,
@@ -332,12 +315,12 @@ MODEL_ORDER.forEach(modelName => {
   body.appendChild(svg);
 
   // ---- Gridlines (decade majors only) ------------------------------------
-  const decades = [100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8];
+  const decades = [100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10];
   decades.forEach(v => {
     const y = yS(v);
     el('line', { x1: PAD_L, x2: W - PAD_R, y1: y, y2: y,
       stroke: '#d6dde6', 'stroke-width': 0.6, 'stroke-dasharray': '2 3' }, svg);
-    const lbl = ({100:'$100', 1e3:'$1k', 1e4:'$10k', 1e5:'$100k', 1e6:'$1M', 1e7:'$10M', 1e8:'$100M'})[v];
+    const lbl = ({100:'$100', 1e3:'$1k', 1e4:'$10k', 1e5:'$100k', 1e6:'$1M', 1e7:'$10M', 1e8:'$100M', 1e9:'$1B', 1e10:'$10B'})[v];
     const t = el('text', { x: PAD_L - 4, y: y + 3, class: 'yt', 'text-anchor':'end' }, svg);
     t.textContent = lbl;
   });
@@ -393,19 +376,10 @@ MODEL_ORDER.forEach(modelName => {
     };
   });
 
-  // Draw lines
+  // One continuous curve per game.
   series.forEach(s => {
-    let d = '';
-    s.pts.forEach((p, i) => {
-      const x = xS(p[0]), y = yS(p[1]);
-      d += (i===0 ? 'M' : 'L') + x.toFixed(1) + ' ' + y.toFixed(1) + ' ';
-    });
-    el('path', {
-      d, fill:'none', stroke: color, 'stroke-width': 1.6,
-      'stroke-dasharray': s.dash,
-      'stroke-linejoin':'round', 'stroke-linecap':'round',
-      opacity: 0.95
-    }, svg);
+    const d = s.pts.map((p, i) => `${i ? 'L' : 'M'}${xS(p[0]).toFixed(1)} ${yS(p[1]).toFixed(1)}`).join(' ');
+    el('path', {d, fill:'none', stroke:color, 'stroke-width':1.6, 'stroke-linejoin':'round', opacity:.95}, svg);
   });
 
   // Skull markers

@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 19;
+const DATA_VERSION = 27;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -394,7 +394,7 @@ function buildSubsChart(container, seatSeriesByGroup, currentDay) {
 
 function getCustomerGroupSeries(run) {
   if (Array.isArray(run.customer_series_by_group) && run.customer_series_by_group.length > 0) {
-    return { series: run.customer_series_by_group, label: 'CUSTOMERS' };
+    return { series: run.customer_series_by_group, label: run.customer_group_label || 'CUSTOMERS' };
   }
   if (Array.isArray(run.seat_series_by_group_detailed) && run.seat_series_by_group_detailed.length > 0) {
     return { series: run.seat_series_by_group_detailed, label: 'SEATS' };
@@ -419,7 +419,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
   const turn = (action.turn !== undefined && action.turn !== null) ? action.turn : idx;
   const dataIdx = String(key);
   const toggleArg = JSON.stringify(dataIdx);
-  let ts = '';
+  let ts = action.source_line ? `JSONL ${action.source_segment || 1}:${action.source_line}` : '';
   if (action.timestamp) {
     let d = null;
     if (typeof action.timestamp === 'string') {
@@ -431,7 +431,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
   }
 
   let headClass = '';
-  let label = tool;
+  let label = tool === '_message' ? 'agent message' : tool === '_continuation' ? 'resumed at day 455' : tool;
   let subtitle = '';
   let bodyHtml = '';
 
@@ -532,7 +532,7 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
     const txt = (args && args.text) || result || '';
     bodyHtml = `<div style="font-size:12px;line-height:1.5;color:#425466;">${escHTML(suppressLong(String(txt), 60))}</div>`;
   } else {
-    label = tool;
+    label = tool === '_message' ? 'agent message' : tool === '_continuation' ? 'resumed at day 455' : tool;
     subtitle = JSON.stringify(args).slice(0, 120);
     if (result) bodyHtml = `<div class="stdout">${escHTML(suppressLong(String(result), 60))}</div>`;
   }
@@ -563,8 +563,8 @@ function isWorkspaceEditAction(action) {
     || tool === 'apply_patch';
 }
 
-function renderWorkspaceEditPanel(day, actions) {
-  const edits = (actions || []).filter(isWorkspaceEditAction);
+function renderWorkspaceEditPanel(day, actions, recordedEdits) {
+  const edits = recordedEdits || (actions || []).filter(isWorkspaceEditAction);
   if (edits.length === 0) return '';
   const body = edits.map((action, i) => renderAction(action, i, `ws-${i}`, i + 1)).join('');
   return `
@@ -697,10 +697,11 @@ function renderDay(idx) {
   // Day-specific cash/subs
   let cash = 0;
   for (const p of STATE.run.cash_series) { if (p.day <= day) cash = p.cash; else break; }
-  let subs = 0;
+  let subs = STATE.run.sub_series.length ? 0 : null;
   for (const p of STATE.run.sub_series) { if (p.day <= day) subs = p.subscribers; else break; }
+  if (STATE.run.terminal_cash != null && day >= STATE.run.current_day) cash = STATE.run.terminal_cash;
   document.getElementById('day-cash').textContent = fmtMoney(cash);
-  document.getElementById('day-subs').textContent = fmtInt(subs);
+  document.getElementById('day-subs').textContent = subs == null ? '—' : fmtInt(subs);
   document.getElementById('day-actions').textContent = (dayData && dayData.actions ? dayData.actions.length : 0);
 
   // Charts
@@ -723,7 +724,7 @@ function renderDay(idx) {
     html += renderWeekTile(weekRow);
   }
   if (dayData && dayData.actions) {
-    html += renderWorkspaceEditPanel(day, dayData.actions);
+    html += renderWorkspaceEditPanel(day, dayData.actions, dayData.workspace_edits);
   }
   if (dayData && dayData.actions && dayData.actions.length > 0) {
     for (let i = 0; i < dayData.actions.length; i++) {
@@ -761,13 +762,15 @@ async function init() {
     return;
   }
   r.cash_series = normalizeCashSeriesForDisplay(r.cash_series, r);
+  for (const d of Object.values(r.days || {})) d.actions = (d.actions || []).filter(a => a.tool !== '_continuation');
   STATE.run = r;
   STATE.daysList = r.days_list || [];
 
   document.getElementById('model-name').textContent = r.model_display || r.model;
   const subParts = [];
-  subParts.push(`<b>${r.label || ''}</b>`);
-  subParts.push(`run <code>${runId}</code>`);
+
+  subParts.push(`<b>${escHTML(r.harness || 'Benchmark harness')}${r.reasoning_effort ? ' · '+escHTML(r.reasoning_effort) : ''}</b>`);
+
   const isDnf = r.status === 'dnf' || r.dnf;
   const survival = r.bankrupt
     ? ((r.survival_days !== undefined && r.survival_days !== null) ? r.survival_days : (r.current_day || 0))
@@ -783,10 +786,9 @@ async function init() {
     subParts.push(`final cash <b>${fmtMoney(r.cash)}</b>`);
   }
   subParts.push(`${r.action_count} actions over ${r.days_list.length} entries`);
-  subParts.push(`subs <b>${fmtInt(r.subscribers)}</b>`);
+  subParts.push(`subs <b>${r.subscribers == null ? '—' : fmtInt(r.subscribers)}</b>`);
   if (r.founder_dividends) subParts.push(`dividends <b>${fmtMoney(r.founder_dividends)}</b>`);
   document.getElementById('run-sub').innerHTML = subParts.join(' · ');
-
   // Day select
   const sel = document.getElementById('day-select');
   const weekByDay = new Map();

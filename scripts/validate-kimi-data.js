@@ -255,9 +255,9 @@ const renderer = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/js/render.js
 check(renderer.includes('normalizeCashSeriesForDisplay'), 'viewer renderer is missing shared cash normalization');
 
 const index = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
-check(index.includes('<td>1/3</td>') && index.includes('<td>$22,148,357</td>'),
+check(index.includes('<td>1/3</td>') && index.includes('<td>$22,148,357.00</td>'),
   'leaderboard is missing updated Kimi metrics');
-check(index.includes('386.0 &plusmn; 161.2') && index.includes('<td>14.81</td>'),
+check((index.includes('386.0 &plusmn; 161.2') || index.includes('386.0 ± 161.2')) && index.includes('<td>14.81</td>'),
   'leaderboard is missing recomputed Kimi survival or turns/week');
 check(!index.includes('Kimi K3, and Grok 4.20 bankrupt on all runs'),
   'index still claims Kimi always bankrupts');
