@@ -1,10 +1,10 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
-"Claude Fable 5.1 \u00b7 Claude Code \u00b7 xhigh": "#702da5",
-"GPT-6 Sol \u00b7 Codex CLI \u00b7 xhigh": "#176f45",
-"Claude Opus 5.5 \u00b7 Claude Code \u00b7 xhigh": "#c44500",
-"GPT-6 Astra \u00b7 Codex CLI \u00b7 xhigh": "#0959b0",
+"Claude Fable 5.1": "#702da5",
+"GPT-6 Sol": "#176f45",
+"Claude Opus 5.5": "#c44500",
+"GPT-6 Astra": "#0959b0",
   "Claude Fable 5": "#111827",
   "GPT-5.6 Sol": "#0072b2",
   "Claude Opus 4.8": "#d55e00",

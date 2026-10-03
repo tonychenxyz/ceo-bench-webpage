@@ -5,7 +5,7 @@ const STATE = {
   currentDayIdx: 0,
   daysList: [],
 };
-const DATA_VERSION = 25;
+const DATA_VERSION = 26;
 
 function normalizeCashSeriesForDisplay(series, run) {
   const byDay = new Map();
@@ -563,8 +563,8 @@ function isWorkspaceEditAction(action) {
     || tool === 'apply_patch';
 }
 
-function renderWorkspaceEditPanel(day, actions) {
-  const edits = (actions || []).filter(isWorkspaceEditAction);
+function renderWorkspaceEditPanel(day, actions, recordedEdits) {
+  const edits = recordedEdits || (actions || []).filter(isWorkspaceEditAction);
   if (edits.length === 0) return '';
   const body = edits.map((action, i) => renderAction(action, i, `ws-${i}`, i + 1)).join('');
   return `
@@ -724,7 +724,7 @@ function renderDay(idx) {
     html += renderWeekTile(weekRow);
   }
   if (dayData && dayData.actions) {
-    html += renderWorkspaceEditPanel(day, dayData.actions);
+    html += renderWorkspaceEditPanel(day, dayData.actions, dayData.workspace_edits);
   }
   if (dayData && dayData.actions && dayData.actions.length > 0) {
     for (let i = 0; i < dayData.actions.length; i++) {

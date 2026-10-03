@@ -150,7 +150,7 @@ const rows = tableRows(homepage);
 const masterByDisplay = new Map(master.map((run) => [run.pretty, run]));
 for (const [model, runs] of Object.entries(grid)) {
   if (runs.every(r => r.run_id.startsWith('native-'))) continue; // Covered by validate-native-runs.js.
-  const row = rows.get(model)?.slice(1); // Skip the effort column.
+  const row = rows.get(model);
   check(row, `${model}: leaderboard row is missing`);
   const survival = runs.map((run) => Number(run.points.at(-1)[0]));
   const bankruptcies = runs.filter((run) => run.status === 'bankrupt').length;
@@ -166,14 +166,14 @@ for (const [model, runs] of Object.entries(grid)) {
   check(Number(row[3]) === Math.max(...survival), `${model}: table max survival is wrong`);
   check(row[4] === `${mean.toFixed(1)} ± ${std.toFixed(1)}`, `${model}: table mean survival is wrong`);
 }
-check(!homepage.includes('Turns/week'), 'results table must not include turns/week');
+check(!homepage.includes('>Effort</th>'), 'results table must not include effort');
 for (const runId of RUN_IDS) {
   check(!homepage.includes(`trajectory-viewer/run.html?run=${runId}`),
     `${runId}: Grok must not appear in Watch the Models at Work`);
 }
-check(homepage.includes('assets/runs-data.js?v=25') && homepage.includes('script.js?v=32'),
+check(homepage.includes('assets/runs-data.js?v=25') && homepage.includes('script.js?v=33'),
   'homepage plot cache versions are wrong');
-check(homepage.includes('cash-trajectories-grid.html?v=24'), 'homepage grid cache version is wrong');
+check(homepage.includes('cash-trajectories-grid.html?v=26'), 'homepage grid cache version is wrong');
 
 const gridHtml = fs.readFileSync(path.join(ROOT, 'assets/figures/cash-trajectories-grid.html'), 'utf8');
 check(!(/Claude Opus 5(?![.\d])/.test(gridHtml)), 'Opus 5 remains in grid order/palette');
@@ -186,12 +186,12 @@ check(mainScript.includes('"Grok 4.6": "#a16207"'), 'master Grok color is missin
 const render = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/js/render.js'), 'utf8');
 const viewerIndex = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/index.html'), 'utf8');
 const viewerRun = fs.readFileSync(path.join(ROOT, 'trajectory-viewer/run.html'), 'utf8');
-check(render.includes('const DATA_VERSION = 25;'), 'viewer data cache version is wrong');
+check(render.includes('const DATA_VERSION = 26;'), 'viewer data cache version is wrong');
 check(render.includes('if (r.hidden)') && render.includes("window.location.replace('index.html')"),
   'viewer does not suppress hidden trajectories');
 check(viewerIndex.includes('manifest.json?v=25') && viewerIndex.includes('run.html?run=${r.run_id}&v=25'),
   'viewer index cache version is wrong');
-check(viewerRun.includes('render.js?v=25'), 'viewer run page cache version is wrong');
+check(viewerRun.includes('render.js?v=26'), 'viewer run page cache version is wrong');
 const hiddenOpusPath = 'trajectory-viewer/data/runs/5a26f818.json';
 check(fs.existsSync(path.join(ROOT, hiddenOpusPath)), 'hidden Opus 5 detail file is missing');
 const hiddenOpus = readJson(hiddenOpusPath);
