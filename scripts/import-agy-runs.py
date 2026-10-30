@@ -8,7 +8,7 @@ P=pathlib.Path(__file__).resolve().parents[1]
 def load(name,file):
     spec=importlib.util.spec_from_file_location(name,P/'scripts'/file);mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
 native=load('exporter','import-native-runs.py');details=load('details','enrich-native-details.py');groups=load('groups','import-subscriber-groups.py')
-MODEL,PRETTY,HARNESS,EFFORT='gemini-4-argon-high','Gemini 4 Argon (High)','Antigravity CLI','high'
+MODEL,PRETTY,HARNESS,EFFORT='gemini-4-argon-high','Gemini 4 Argon','Antigravity CLI','high'
 # (batch, run, continuation batch/run or None). Run 3 resumed the same game and agy conversation after a 429 quota error.
 RUNS=[('20261028-argon-agy','argon-high-tony',None),('20261029-argon-agy-two','argon-high-tony-2',None),('20261029-argon-agy-two','argon-high-tony-3',('20261029-argon-run3-resume','argon-high-tony-3-resumed'))]
 SKIP=('days','cash_series','sub_series','seat_series','seat_series_by_group','group_discovery','weeks_index','customer_series_by_group','subscriber_group_sources')
@@ -139,9 +139,25 @@ def json_groups(run,expected):
     groups_=sorted({g for c in snapshots.values() for g in c})
     return [{'day':day,'group_id':g,'count':counts.get(g,0)} for day,counts in sorted(snapshots.items()) for g in groups_],sources
 
-def subscribers(run):
-    """Recorded dashboards and query snapshots only (no operator subscription export exists for these runs)."""
-    expected=groups.dashboards(run);series,sources=groups.trace_groups(run)
+def subscribers(run,exports=None):
+    """Operator subscription-lifetime export when available (every dashboard day must match), else recorded snapshots."""
+    expected=groups.dashboards(run)
+    export=exports/(run['session_id']+'.json') if exports else None
+    if export and export.exists():
+        data=json.loads(export.read_text());series=data['customer_series_by_group']
+        assert 'subscriptions joined' in data['source']
+        totals=collections.Counter()
+        for point in series:totals[point['day']]+=point['count']
+        bad=[[d,totals.get(d),e['individual']] for d,e in expected.items() if d<=data['last_day'] and totals.get(d)!=e['individual']]
+        assert not bad,(run['session_id'],bad[:12])
+        run['customer_series_by_group']=series;run['customer_group_label']='SUBSCRIBERS';run['subscriber_group_source']=data['source']
+        run['subscriber_group_validation']={'dashboard_days_matched':sorted(d for d in expected if d<=data['last_day'])}
+        run.pop('subscriber_group_sources',None)
+        merged={day:total for day,total in totals.items()};merged.update({day:e['individual'] for day,e in expected.items()})
+        run['sub_series']=[{'day':day,'subscribers':total} for day,total in sorted(merged.items())]
+        run['subscribers']=run['sub_series'][-1]['subscribers'];run['seat_series']=[{'day':day,**c} for day,c in sorted(expected.items())]
+        return
+    series,sources=groups.trace_groups(run)
     if len({p['day'] for p in series})<=1:series,sources=json_groups(run,expected)
     totals=collections.Counter()
     for point in series:totals[point['day']]+=point['count']
@@ -157,7 +173,7 @@ def subscribers(run):
     run['subscribers']=run['sub_series'][-1]['subscribers'] if run['sub_series'] else None
     run['seat_series']=[{'day':day,**counts} for day,counts in sorted(expected.items())]
 
-def main(source):
+def main(source,exports=None):
     results=[]
     for batch,name,cont in RUNS:
         folder=source/batch/'results'/name;spec=native.read(folder/'spec.json');result=native.read(folder/'result.json');original=None;ext=None
@@ -198,7 +214,7 @@ def main(source):
         r=dict(run_id=rid,model=MODEL,model_display=PRETTY,label=f'{name} · {batch}',harness=HARNESS,reasoning_effort=EFFORT,provider='Modal',seed=42,session_id=sid,public_revision=spec['commit'],total_days=500,current_day=last,survival_days=last if bankrupt else 500,status='bankrupt' if bankrupt else 'complete',bankrupt=bankrupt,dnf=False,cash=cash,final_cash=cash,terminal_cash=result['simulation']['cash'],subscribers=None,mrr=None,founder_dividends=0,agent_turns=None,action_count=tools,tool_calls_count=tools,cash_series=[dict(day=d,cash=c) for d,c in points.items()],sub_series=[],seat_series=[],seat_series_by_group=[],group_discovery=[],days=days,days_list=sorted(map(int,days)),weeks_index=[],curve_source=curve_source,sources=sources,simulator_llm='AWS Bedrock Haiku',restart_note='No simulator restart found in reviewed run records.',trajectory_note='Commands, outputs and available agent text exported from Antigravity CLI stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. Tool outputs are as streamed (capped at 10 KB); file write/edit contents and model reasoning are not in the stream and are not reconstructed.',extended_time=bool(ext))
         if bankrupt:r.update(raw_final_cash=result['simulation']['cash'],ledger_final_cash=score)
         if ext:r.update(restart_note=f'Simulator restarted once to resume the same saved game at day {resume_day} in a new container.',original_outcome=dict(status=original['state'],day=resume_day,cash=original['simulation']['cash'],reason='google_api_429_quota'),continuation_day=resume_day)
-        enrich(r);subscribers(r)
+        enrich(r);subscribers(r,exports)
         r=scrub(r);acts=scrub(acts)
         native.dump(P/'trajectory-viewer/data/runs'/f'{rid}.json',r)
         dest=P/'trajectory-viewer/data/transcripts'/f'{rid}.jsonl';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(''.join(json.dumps(a,ensure_ascii=False)+'\n' for a in acts))
@@ -216,15 +232,17 @@ def main(source):
     best=[r for r in native.read(P/'assets/runs.json') if r['model']!=MODEL]+[dict(model=MODEL,pretty=PRETTY,bankrupt=0,max_day=500,final_cash=winner['cash'],points=[[p['day'],p['cash']] for p in winner['cash_series']])]
     native.dump(P/'assets/runs.json',best);(P/'assets/runs-data.js').write_text('window.CEOBENCH_RUNS = '+json.dumps(best,separators=(',',':'))+';\n')
     js=(P/'assets/figures/runs-by-model.js').read_text();grouped=json.loads(js[js.index('{'):js.rindex('}')+1])
+    grouped={k:v for k,v in grouped.items() if not k.startswith('Gemini 4 Argon')}
     grouped[PRETTY]=[dict(run_id=r['run_id'],label=r['label']+(f' · resumed day {r["continuation_day"]} (after API quota error)' if r['extended_time'] else ''),status=r['status'],extended_time=r['extended_time'],continuation_day=r.get('continuation_day'),points=[[p['day'],p['cash']] for p in r['cash_series']]) for r in results]
     (P/'assets/figures/runs-by-model.js').write_text('const RUNS_BY_MODEL = '+json.dumps(grouped,separators=(',',':'))+';\n')
     summary=[r for r in native.read(P/'assets/native-run-summary.json') if r['model']!=MODEL]+[{k:v for k,v in r.items() if k not in SKIP} for r in results]
     native.dump(P/'assets/native-run-summary.json',summary)
-    stats=[s for s in native.read(P/'assets/model-statistics.json') if s['model']!=PRETTY]
+    stats=[s for s in native.read(P/'assets/model-statistics.json') if not s['model'].startswith('Gemini 4 Argon')]
     row=dict(model=PRETTY,best=max(cash),mean=mean,std=std,effort=EFFORT,bankruptcy=f'{sum(r["bankrupt"] for r in results)}/{len(results)}',max_survival=max(survival),mean_survival=ms,std_survival=ss,turns='—')
     stats.insert(next((i for i,s in enumerate(stats) if s['best']<row['best']),len(stats)),row)
     (P/'assets/model-statistics.json').write_text(json.dumps(stats,indent=2)+'\n')
     for r in results:print(r['run_id'],r['status'],r['survival_days'],f"{r['cash']:.2f}",r['action_count'],'tool calls',len(r['days_list']),'days',sum(1 for d in r['days'].values() if d.get('rationale')),'rationales',sum(len(d.get('workspace_edits',[])) for d in r['days'].values()),'edits',len(r['customer_series_by_group']),'group points')
     print(f'{PRETTY}: best ${max(cash):,.2f}; mean ${mean:,.2f} ± ${std:,.2f}; survival {ms:.1f} ± {ss:.1f}')
 if __name__=='__main__':
-    ap=argparse.ArgumentParser();ap.add_argument('--source',type=pathlib.Path,required=True);main(ap.parse_args().source)
+    ap=argparse.ArgumentParser();ap.add_argument('--source',type=pathlib.Path,required=True);ap.add_argument('--subscription-exports',type=pathlib.Path)
+    a=ap.parse_args();main(a.source,a.subscription_exports)

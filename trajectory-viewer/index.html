@@ -55,7 +55,7 @@ function fmtMoney(n) {
 
 (async () => {
   try {
-    const m = await (await fetch('data/runs/manifest.json?v=25')).json();
+    const m = await (await fetch('data/runs/manifest.json?v=26')).json();
     const meta = document.getElementById('meta');
     if (meta) {
       meta.textContent = `${m.models.length} models · ${m.models.reduce((s, x) => s + x.runs.length, 0)} runs`;

@@ -158,7 +158,7 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js?v=25"></script>
+<script src="runs-by-model.js?v=26"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
@@ -169,6 +169,7 @@ function modelNameHtml(name) {
 // Same Okabe–Ito palette as the master plot, used for the model color.
 const PALETTE = {
 "Claude Fable 5.1": {c:"#702da5"},
+"Gemini 4 Argon": {c:"#c5221f"},
 "GPT-6 Sol": {c:"#176f45"},
 "Claude Opus 5.5": {c:"#c44500"},
 "GPT-6 Astra": {c:"#0959b0"},
@@ -196,7 +197,7 @@ const PALETTE = {
 const RUN_DASH = ['', '', ''];
 
 // Match the leaderboard table order, excluding non-run summary rows.
-const MODEL_ORDER = ["Claude Fable 5.1", "GPT-6 Sol", "Claude Opus 5.5", "GPT-6 Astra", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Qwen 3.7 Max", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20"];
+const MODEL_ORDER = ["Claude Fable 5.1", "Gemini 4 Argon", "GPT-6 Sol", "Claude Opus 5.5", "GPT-6 Astra", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Qwen 3.7 Max", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20"];
 
 // ---- Per-tile layout ----------------------------------------------------
 // Tile inner SVG dims tuned for ~263px column on 816px page.

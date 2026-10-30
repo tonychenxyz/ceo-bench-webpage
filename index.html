@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=36">
+  <link rel="stylesheet" href="styles.css?v=37">
   <script>
     window.MathJax = {
       tex: {
@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Claude Fable 5.1 achieves the highest best-run cash, followed by GPT-6 Sol, Claude Opus 5.5, and GPT-6 Astra.</strong> The plots show cash balances over time; the table summarizes best-run cash and mean ± standard deviation across runs.</p>
+        <p><strong>Claude Fable 5.1 achieves the highest best-run cash, followed by Gemini 4 Argon, GPT-6 Sol, Claude Opus 5.5, and GPT-6 Astra.</strong> The plots show cash balances over time; the table summarizes best-run cash and mean ± standard deviation across runs.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,12 +577,13 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=26" title="Cash trajectories per model" data-auto-height="true" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=27" title="Cash trajectories per model" data-auto-height="true" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
 <figure class="results-table-block"><div class="table-scroll"><table class="results-table"><thead><tr><th scope="col">Model</th><th scope="col">Bankruptcy</th><th scope="col">Best-run cash</th><th scope="col">Mean ± std. cash</th><th scope="col">Max survival days</th><th scope="col">Mean survival days</th><th scope="col">Turns/week</th></tr></thead><tbody>
 <tr><th scope="row">Claude Fable 5.1</th><td>0/3</td><td>$1,743,558,616.28</td><td>$1,057,123,679.65 ± $552,879,564.66</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Gemini 4 Argon</th><td>2/3</td><td>$470,450,610.07</td><td>$156,816,870.02 ± $221,772,544.40</td><td>500</td><td>267.3 ± 167.1</td><td>—</td></tr>
 <tr><th scope="row">GPT-6 Sol</th><td>0/3</td><td>$144,010,103.37</td><td>$94,012,688.79 ± $35,369,575.21</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
 <tr><th scope="row">Claude Opus 5.5</th><td>0/3</td><td>$114,261,692.61</td><td>$84,108,035.20 ± $21,972,523.69</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
 <tr><th scope="row">GPT-6 Astra</th><td>0/3</td><td>$79,244,641.66</td><td>$42,844,154.61 ± $26,230,018.75</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
@@ -829,7 +830,7 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=25"></script>
-  <script src="script.js?v=33"></script>
+  <script src="assets/runs-data.js?v=26"></script>
+  <script src="script.js?v=34"></script>
 </body>
 </html>

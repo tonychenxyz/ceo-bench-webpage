@@ -12,7 +12,7 @@
     "turns": "\u2014"
   },
   {
-    "model": "Gemini 4 Argon (High)",
+    "model": "Gemini 4 Argon",
     "best": 470450610.0687,
     "mean": 156816870.02290002,
     "std": 221772544.395284,

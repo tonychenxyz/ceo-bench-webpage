@@ -2,6 +2,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
 "Claude Fable 5.1": "#702da5",
+"Gemini 4 Argon": "#c5221f",
 "GPT-6 Sol": "#176f45",
 "Claude Opus 5.5": "#c44500",
 "GPT-6 Astra": "#0959b0",
@@ -552,6 +553,39 @@ function baselineRun(points) {
   };
 }
 
+const TOP_MODEL_CHOICES = [5, 10, Infinity];
+
+// Minimal top-N selector; the rule-based baseline always stays visible as a reference.
+function mountTopModelsControl(orderedRuns, mount) {
+  const isBaseline = run => run.model === "rule-based-baseline";
+  const models = orderedRuns.filter(run => !isBaseline(run));
+  const control = document.createElement("div");
+  control.className = "top-models-control";
+  control.setAttribute("role", "group");
+  control.setAttribute("aria-label", "Models shown");
+  const label = document.createElement("span");
+  label.className = "top-models-label";
+  label.textContent = "Show";
+  control.appendChild(label);
+  const draw = limit => {
+    const shown = models.slice(0, limit);
+    drawCashPlot(orderedRuns.filter(run => isBaseline(run) || shown.includes(run)), mount);
+    control.querySelectorAll("button").forEach(button => {
+      button.setAttribute("aria-pressed", String(Number(button.dataset.limit) === limit));
+    });
+  };
+  TOP_MODEL_CHOICES.filter(n => n === Infinity || n < models.length).forEach(limit => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.limit = String(limit);
+    button.textContent = limit === Infinity ? "All" : `Top ${limit}`;
+    button.addEventListener("click", () => draw(limit));
+    control.appendChild(button);
+  });
+  mount.parentNode.insertBefore(control, mount);
+  draw(Infinity);
+}
+
 async function loadBaselineRun() {
   const response = await fetch("assets/rule_based_baseline_day_vs_cash.csv");
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -576,7 +610,7 @@ if (cashPlotMounts.length) {
   loadCashRuns()
     .then(runs => {
       const orderedRuns = orderRuns(runs);
-      cashPlotMounts.forEach(mount => drawCashPlot(orderedRuns, mount));
+      cashPlotMounts.forEach(mount => mountTopModelsControl(orderedRuns, mount));
     })
     .catch(error => {
       cashPlotMounts.forEach(mount => {
