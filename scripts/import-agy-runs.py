@@ -21,6 +21,21 @@ def clean(x):
         return x.replace('\r\n','\n').replace('/scratch/gpfs/ZHUANGL/hc5019','/workspace')
     return x
 
+def db_arguments(folder,conversation):
+    """Full write_file/edit_file arguments from agy's saved conversation DB (tool-call JSON only; outputs are not readable)."""
+    import sqlite3
+    found={}
+    for db in sorted(folder.glob(f'logs/agy-internal-*-{conversation}.db')):
+        con=sqlite3.connect(f'file:{db}?mode=ro',uri=True)
+        for idx,payload in con.execute('select idx,step_payload from steps where step_type=132'):
+            m=re.search(rb'call_\d+[^\w]{1,6}(write_file|edit_file)[^{]{0,6}\{',payload or b'')
+            if not m:continue
+            try:obj,_=json.JSONDecoder().raw_decode(payload[m.end()-1:].decode('utf-8','replace'))
+            except ValueError:continue
+            found[idx]=(m.group(1).decode(),obj)
+        con.close()
+    return found
+
 def scrub(x):
     """Replace local run paths everywhere, including fields added after clean()."""
     if isinstance(x,dict):return {k:scrub(v) for k,v in x.items()}
@@ -37,7 +52,7 @@ def arguments(tool,p):
         return a
     return dict(p)
 
-def events(path,start_day=0):
+def events(path,start_day=0,full=None):
     """agy stream-json has no per-step timestamps: days come only from observed dashboard/status outputs."""
     out=[];pending={};texts={};day=start_day;turn=0;responses=set()
     def observe(t):
@@ -59,7 +74,13 @@ def events(path,start_day=0):
                     else:texts[idx]=add('_message',{},u['text_delta'],line)
             elif typ=='tool':
                 info=u.get('tool_info') or {};a=pending.get(idx)
-                if a is None:a=pending[idx]=add(u.get('tool_name') or info.get('name','tool'),arguments(u.get('tool_name'),info.get('parameters',{})),'',line)
+                if a is None:
+                    name=u.get('tool_name') or info.get('name','tool');args=arguments(name,info.get('parameters',{}))
+                    f=(full or {}).get(idx)
+                    if f and f[0]==name and f[1].get('Path')==args.get('path'):
+                        if name=='write_file':args['content']=f[1].get('Content','')
+                        elif name=='edit_file':args.update(old_string=f[1].get('Target',''),new_string=f[1].get('Replacement',''))
+                    a=pending[idx]=add(name,args,'',line)
                 if u.get('state') in ('DONE','ERROR'):
                     value=info.get('output') or ''
                     if info.get('error'):value=(value+'\n' if value else '')+'Error: '+str(info['error'].get('message',''))
@@ -77,7 +98,10 @@ def enrich(run):
     for day,data in sorted(run['days'].items(),key=lambda x:int(x[0])):
         data['workspace_edits']=[]
         for action in data['actions']:
-            if action['tool'] in ('write_file','edit_file'):state.pop(action['arguments'].get('path'),None);continue
+            if action['tool'] in ('write_file','edit_file'):
+                if 'content' in action['arguments'] or 'new_string' in action['arguments']:data['workspace_edits'].extend(details.edits(action,state))
+                else:state.pop(action['arguments'].get('path'),None)
+                continue
             if action['tool']!='run_command':continue
             for e in details.edits(dict(action,tool='Bash'),state):
                 if e['tool']=='Bash':e['tool']='run_command'
@@ -91,9 +115,34 @@ def enrich(run):
     for day,text in rationales.items():run['days'].setdefault(str(day),{'actions':[],'workspace_edits':[]})['rationale']=clean(text)
     run['days_list']=sorted(map(int,run['days']))
 
+def json_groups(run,expected):
+    """Active individual subscriptions per group from recorded JSON `query` outputs (COUNT by group_id with
+    status='subscribed'); a snapshot is kept only if its total equals that day's dashboard individual count."""
+    snapshots={0:{}};sources={}
+    for day,d in sorted(run['days'].items(),key=lambda x:int(x[0])):
+        for action in d['actions']:
+            cmd=action.get('arguments',{}).get('command','')
+            if 'subscriptions' not in cmd or not re.search(r"status\s*=\s*['\"]subscribed['\"]",cmd) or not re.search(r'GROUP BY[^;]*group_id',cmd,re.I):continue
+            text=action.get('result','');start=text.find('{')
+            try:obj,_=json.JSONDecoder().raw_decode(text[start:]) if start>=0 else (None,0)
+            except ValueError:continue
+            rows=obj.get('rows') if isinstance(obj,dict) else None
+            if not rows or 'group_id' not in rows[0]:continue
+            cols=[k for k,v in rows[0].items() if k!='group_id' and isinstance(v,int) and not isinstance(v,bool) and re.fullmatch(r'(?i)(cnt|count|n|subs|subscribers|active\w*|num\w*)',k)]
+            if not cols:continue
+            counts=collections.Counter()
+            for row in rows:
+                g=row.get('group_id')
+                if isinstance(g,str) and g.startswith(('S','D_S')):counts[g]+=row.get(cols[0]) or 0
+            if counts and int(day) in expected and sum(counts.values())==expected[int(day)]['individual']:
+                snapshots[int(day)]=dict(counts);sources[str(day)]={'source_line':action.get('source_line'),'source_segment':action.get('source_segment',1)}
+    groups_=sorted({g for c in snapshots.values() for g in c})
+    return [{'day':day,'group_id':g,'count':counts.get(g,0)} for day,counts in sorted(snapshots.items()) for g in groups_],sources
+
 def subscribers(run):
     """Recorded dashboards and query snapshots only (no operator subscription export exists for these runs)."""
     expected=groups.dashboards(run);series,sources=groups.trace_groups(run)
+    if len({p['day'] for p in series})<=1:series,sources=json_groups(run,expected)
     totals=collections.Counter()
     for point in series:totals[point['day']]+=point['count']
     matches=[day for day,total in totals.items() if day in expected and total==expected[day]['individual']]
@@ -120,7 +169,8 @@ def main(source):
         resume_day=original['simulation']['current_day'] if original else None
         acts=[];sources=[]
         for idx,path in enumerate(paths):
-            part=events(path,resume_day if idx else 0)
+            conversation=next((json.loads(x).get('conversation_id') for x in path.open() if '"init"' in x),None)
+            part=events(path,resume_day if idx else 0,db_arguments(path.parent.parent,conversation) if conversation else None)
             for a in part:a['source_segment']=idx+1
             if idx:acts.append(dict(tool='_continuation',arguments={},result=f'User-authorized continuation after a Google API 429 quota error stopped the agent at day {resume_day} (${original["simulation"]["cash"]:,.2f}). Same saved game and agy conversation; simulator restarted in a new container at the same day and cash. No rollback or replacement game.',day=resume_day,turn=0))
             acts+=part

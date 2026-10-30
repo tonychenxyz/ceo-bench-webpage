@@ -516,9 +516,15 @@
           },
           "continuation_day": 112,
           "customer_group_label": "SUBSCRIBERS",
-          "subscriber_group_source": "No per-group subscription snapshots were recorded in the agent stream; totals come from observed weekly dashboards.",
+          "subscriber_group_source": "Recorded active individual subscription query snapshots; only observed days are included. No interpolation.",
           "subscriber_group_validation": {
-            "dashboard_days_matched": []
+            "dashboard_days_matched": [
+              140,
+              147,
+              154,
+              161,
+              168
+            ]
           },
           "display_cash": 470450610.0687
         },
