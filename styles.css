@@ -473,6 +473,7 @@ d-article .figure-block,
 d-article .chart-panel,
 d-article .image-figure,
 d-article .results-table-block,
+d-article .native-runs,
 d-article .gpt-failure-summary,
 d-article .two-up,
 d-article .if-examples {
@@ -1688,4 +1689,41 @@ d-article .trajectory-card-row {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0;
+}
+
+.native-runs { max-width:var(--max-w); margin:28px auto; min-width:0; }
+.native-runs p {font-size:14px;line-height:1.6;}
+.native-runs .results-table {min-width:780px;}
+.native-runs td:last-child {white-space:normal;min-width:190px;max-width:300px;text-align:left;}
+.results-table td:nth-child(2) {white-space:normal;min-width:115px;text-align:left;}
+
+.top-models-control {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 4px;
+  margin: 0 0 6px;
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--ink-3);
+}
+
+.top-models-label {
+  margin-right: 4px;
+}
+
+.top-models-control button {
+  border: 1px solid #d9d9d9;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-3);
+  font: inherit;
+  padding: 2px 10px;
+  cursor: pointer;
+}
+
+.top-models-control button[aria-pressed="true"] {
+  border-color: var(--ink);
+  background: var(--ink);
+  color: #fff;
 }
