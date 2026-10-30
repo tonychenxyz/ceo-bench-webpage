@@ -120,6 +120,18 @@
     "turns": "7.82"
   },
   {
+    "model": "Gemini 3.8 Flash",
+    "best": 248664.6717,
+    "mean": 148747.50686666666,
+    "std": 95147.10166585469,
+    "effort": "high",
+    "bankruptcy": "0/3",
+    "max_survival": 500,
+    "mean_survival": 500.0,
+    "std_survival": 0.0,
+    "turns": "\u2014"
+  },
+  {
     "model": "Grok 4.6",
     "best": 246418.91,
     "mean": 102302.79666666666,

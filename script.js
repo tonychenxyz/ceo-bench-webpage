@@ -3,6 +3,7 @@ const SVG_NS = "http://www.w3.org/2000/svg";
 const MODEL_COLORS = {
 "Claude Fable 5.1": "#702da5",
 "Gemini 4 Argon": "#c5221f",
+"Gemini 3.8 Flash": "#7cb342",
 "GPT-6 Sol": "#176f45",
 "Claude Opus 5.5": "#c44500",
 "GPT-6 Astra": "#0959b0",
