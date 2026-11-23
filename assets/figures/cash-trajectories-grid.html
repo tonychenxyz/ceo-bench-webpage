@@ -216,13 +216,18 @@ const innerH = H - PAD_T - PAD_B;
 const xMin = 0, xMax = 500;
 const xS = v => PAD_L + (Math.min(Math.max(v, xMin), xMax) - xMin) / (xMax - xMin) * innerW;
 
-const yMinLog = Math.log10(100);
-const yMaxLog = Math.log10(1e10);
-const yS = v => {
-  if (v <= 0) return PAD_T + innerH;
-  const lv = Math.log10(Math.max(v, 100));
-  return PAD_T + innerH - (lv - yMinLog) / (yMaxLog - yMinLog) * innerH;
-};
+// Linear y axis per tile: $0 up to a round value just above that model's highest game.
+function niceStep(raw) {
+  const mag = Math.pow(10, Math.floor(Math.log10(Math.max(raw, 1))));
+  return [1, 2, 2.5, 5, 10].map(m => m * mag).find(v => v >= raw);
+}
+function tickLabel(v) {
+  if (v === 0) return '$0';
+  if (v >= 1e9) return `$${Number((v / 1e9).toFixed(2))}B`;
+  if (v >= 1e6) return `$${Number((v / 1e6).toFixed(1))}M`;
+  if (v >= 1e3) return `$${Number((v / 1e3).toFixed(1))}k`;
+  return `$${v}`;
+}
 
 // ---- Skull marker (emoji text) -----------------------------------------
 function skull(cx, cy, parent) {
@@ -322,16 +327,18 @@ MODEL_ORDER.forEach(modelName => {
   svg.style.width = '100%';
   body.appendChild(svg);
 
-  // ---- Gridlines (decade majors only) ------------------------------------
-  const decades = [100, 1e3, 1e4, 1e5, 1e6, 1e7, 1e8, 1e9, 1e10];
-  decades.forEach(v => {
+  // ---- Linear scale and gridlines for this tile ------------------------
+  const tileMax = Math.max(1, ...runs.flatMap(run => run.points.map(p => p[1])));
+  const step = niceStep(tileMax * 1.04 / 3);
+  const yMax = Math.ceil(tileMax * 1.04 / step) * step;
+  const yS = v => PAD_T + innerH - Math.min(yMax, Math.max(0, v)) / yMax * innerH;
+  for (let v = 0; v <= yMax + step / 2; v += step) {
     const y = yS(v);
     el('line', { x1: PAD_L, x2: W - PAD_R, y1: y, y2: y,
       stroke: '#d6dde6', 'stroke-width': 0.6, 'stroke-dasharray': '2 3' }, svg);
-    const lbl = ({100:'$100', 1e3:'$1k', 1e4:'$10k', 1e5:'$100k', 1e6:'$1M', 1e7:'$10M', 1e8:'$100M', 1e9:'$1B', 1e10:'$10B'})[v];
     const t = el('text', { x: PAD_L - 4, y: y + 3, class: 'yt', 'text-anchor':'end' }, svg);
-    t.textContent = lbl;
-  });
+    t.textContent = tickLabel(v);
+  }
 
   // ---- Axes -----------------------------------------------------------
   const axY = PAD_T + innerH;
@@ -353,8 +360,8 @@ MODEL_ORDER.forEach(modelName => {
   const xLab = el('text', { x: PAD_L + innerW/2, y: H - 3, class:'axt', 'text-anchor':'middle' }, svg);
   xLab.textContent = 'Day';
 
-  // ---- Starting cash reference at $1M ---------------------------------
-  {
+  // ---- Starting cash reference at $1M (only where it is not flat on the axis) ----
+  if (1e6 <= yMax && 1e6 / yMax >= 0.08) {
     const y = yS(1e6);
     el('line', {
       x1: PAD_L, x2: W - PAD_R, y1: y, y2: y,
