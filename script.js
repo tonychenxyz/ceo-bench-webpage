@@ -475,7 +475,7 @@ function baselineRun(points) {
 const TOP_MODEL_CHOICES = [5, 10, 15, 20, Infinity];
 // Scale each tab opens on: the leaders read best on a linear axis; wider views span many decades, so log.
 const DEFAULT_SCALE = limit => (limit <= 15 ? "linear" : "log");
-const DEFAULT_TOP_MODELS = 10;
+const DEFAULT_TOP_MODELS = 15;
 
 // Minimal top-N selector over all entries ranked by mean; the rule-based baseline is ranked like any model.
 function mountTopModelsControl(orderedRuns, mount) {
@@ -521,7 +521,7 @@ function mountTopModelsControl(orderedRuns, mount) {
     control.appendChild(button);
   });
   mount.parentNode.insertBefore(control, mount);
-  // Open on the top 10 models (by mean cash), on its default (linear) scale.
+  // Open on the top 15 models (by mean cash), on its default (linear) scale.
   draw();
 }
 
