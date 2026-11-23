@@ -104,7 +104,22 @@ function modelTrajectories(run) {
   return (byModel[run.pretty] || []).filter(game => Array.isArray(game.points) && game.points.length);
 }
 
-function drawCashPlot(runs, mount) {
+// A round step (1, 2, 2.5 or 5 × 10^n) of at least `raw`.
+function niceStep(raw) {
+  const mag = Math.pow(10, Math.floor(Math.log10(Math.max(raw, 1))));
+  return [1, 2, 2.5, 5, 10].map(m => m * mag).find(v => v >= raw);
+}
+
+function formatLinearTick(value) {
+  if (value === 0) return "$0";
+  if (value >= 1e9) return `$${Number((value / 1e9).toFixed(2))}B`;
+  if (value >= 1e6) return `$${Number((value / 1e6).toFixed(1))}M`;
+  if (value >= 1e3) return `$${Number((value / 1e3).toFixed(1))}k`;
+  return `$${value}`;
+}
+
+function drawCashPlot(runs, mount, scale = "log") {
+  const linear = scale === "linear";
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
   const rankedRuns = runs.slice().sort(compareRuns);
@@ -143,9 +158,13 @@ function drawCashPlot(runs, mount) {
   const yMinLog = Math.min(Math.max(2, Math.log10(minCash) - 0.12), yMaxLog - 2);
   const yFloor = Math.pow(10, yMinLog);
   const yCeil = Math.pow(10, yMaxLog);
+  // Linear option: $0 up to a rounded value just above the highest curve shown.
+  const linStep = niceStep(maxCash * 1.04 / 5);
+  const linMax = Math.ceil(maxCash * 1.04 / linStep) * linStep;
 
   const x = value => pad.left + ((value - xMin) / (xMax - xMin)) * innerW;
   const y = value => {
+    if (linear) return pad.top + innerH - (Math.min(linMax, Math.max(0, value)) / linMax) * innerH;
     if (value <= 0) return pad.top + innerH;
     const safe = Math.min(yCeil, Math.max(yFloor, value));
     return pad.top + innerH - ((Math.log10(safe) - yMinLog) / (yMaxLog - yMinLog)) * innerH;
@@ -165,8 +184,10 @@ function drawCashPlot(runs, mount) {
   const tickStyle = { "font-family": "Inter, sans-serif", "font-size": "12", "font-weight": "400", fill: "#000000" };
   const labelStyle = { "font-family": "Inter, sans-serif", "font-size": "13", "font-weight": "400", fill: "#000000" };
 
-  for (let e = Math.ceil(yMinLog - 1e-9); e <= Math.floor(yMaxLog + 1e-9); e += 1) {
-    const tick = Math.pow(10, e);
+  const yTicks = linear
+    ? Array.from({ length: Math.round(linMax / linStep) + 1 }, (_, i) => i * linStep)
+    : Array.from({ length: Math.floor(yMaxLog + 1e-9) - Math.ceil(yMinLog - 1e-9) + 1 }, (_, i) => Math.pow(10, Math.ceil(yMinLog - 1e-9) + i));
+  for (const tick of yTicks) {
     const yy = y(tick);
     svgEl("line", {
       x1: pad.left, x2: plotRight, y1: yy, y2: yy,
@@ -174,7 +195,7 @@ function drawCashPlot(runs, mount) {
       "stroke-width": "0.9",
       "stroke-dasharray": tick === 1000000 ? "5 4" : "2 5"
     }, svg);
-    svgEl("text", { x: pad.left - 8, y: yy + 4, "text-anchor": "end", ...tickStyle }, svg).textContent = formatAxisCash(tick);
+    svgEl("text", { x: pad.left - 8, y: yy + 4, "text-anchor": "end", ...tickStyle }, svg).textContent = linear ? formatLinearTick(tick) : formatAxisCash(tick);
   }
 
   [0, 100, 200, 300, 400, 500].forEach(tick => {
@@ -187,7 +208,7 @@ function drawCashPlot(runs, mount) {
   svgEl("line", { x1: pad.left, x2: pad.left, y1: pad.top - 3, y2: pad.top + innerH + 2, stroke: "#0a2540", "stroke-width": "1.3" }, svg);
   svgEl("line", { x1: pad.left - 3, x2: plotRight + 2, y1: pad.top + innerH, y2: pad.top + innerH, stroke: "#0a2540", "stroke-width": "1.3" }, svg);
 
-  if (1000000 >= yFloor && 1000000 <= yCeil) {
+  if (!linear && 1000000 >= yFloor && 1000000 <= yCeil) {
     const startY = y(1000000);
     svgEl("line", {
       x1: pad.left, x2: plotRight, y1: startY, y2: startY,
@@ -202,7 +223,7 @@ function drawCashPlot(runs, mount) {
   svgEl("text", { x: pad.left + innerW / 2, y: H - 8, "text-anchor": "middle", ...labelStyle }, svg).textContent = "Day";
   svgEl("text", {
     x: -(pad.top + innerH / 2), y: 17, transform: "rotate(-90)", "text-anchor": "middle", ...labelStyle
-  }, svg).textContent = "Cash on hand (USD, log)";
+  }, svg).textContent = linear ? "Cash on hand (USD)" : "Cash on hand (USD, log)";
 
   const lineGroup = svgEl("g", {}, svg);
   const runElements = new Map();
@@ -465,11 +486,16 @@ function mountTopModelsControl(orderedRuns, mount) {
   label.className = "top-models-label";
   label.textContent = "Show";
   control.appendChild(label);
-  const draw = limit => {
-    const shown = models.slice(0, limit);
-    drawCashPlot(shown, mount);
-    control.querySelectorAll("button").forEach(button => {
+  let currentLimit = models.length > DEFAULT_TOP_MODELS ? DEFAULT_TOP_MODELS : Infinity;
+  let currentScale = "log";
+  const draw = (limit = currentLimit, scale = currentScale) => {
+    currentLimit = limit; currentScale = scale;
+    drawCashPlot(models.slice(0, limit), mount, scale);
+    control.querySelectorAll("button[data-limit]").forEach(button => {
       button.setAttribute("aria-pressed", String(Number(button.dataset.limit) === limit));
+    });
+    control.querySelectorAll("button[data-scale]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.scale === scale));
     });
   };
   TOP_MODEL_CHOICES.filter(n => n === Infinity || n < models.length).forEach(limit => {
@@ -480,9 +506,21 @@ function mountTopModelsControl(orderedRuns, mount) {
     button.addEventListener("click", () => draw(limit));
     control.appendChild(button);
   });
+  const scaleLabel = document.createElement("span");
+  scaleLabel.className = "top-models-label scale-label";
+  scaleLabel.textContent = "Scale";
+  control.appendChild(scaleLabel);
+  [["log", "Log"], ["linear", "Linear"]].forEach(([scale, text]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.dataset.scale = scale;
+    button.textContent = text;
+    button.addEventListener("click", () => draw(currentLimit, scale));
+    control.appendChild(button);
+  });
   mount.parentNode.insertBefore(control, mount);
-  // Open on the top 10 models (by mean cash); "All" stays one click away.
-  draw(models.length > DEFAULT_TOP_MODELS ? DEFAULT_TOP_MODELS : Infinity);
+  // Open on the top 10 models (by mean cash) on a log scale.
+  draw();
 }
 
 async function loadBaselineRun() {

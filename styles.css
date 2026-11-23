@@ -1845,3 +1845,7 @@ d-article .trajectory-card-row {
 .results-table td:nth-child(2) {
   min-width: 0;
 }
+
+.top-models-control .scale-label {
+  margin-left: 12px;
+}
