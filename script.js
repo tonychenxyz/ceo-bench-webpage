@@ -115,154 +115,94 @@ function drawCashPlot(runs, mount) {
     legend.hidden = true;
   }
 
-  const W = 1060;
-  const H = 740;
-  const pad = { left: 78, right: 314, top: 54, bottom: 62 };
-  const meanColumnX = W - 8;
-  const bestColumnX = W - 76;
+  // Plot on the left, ranked list on the right; the list matches the plot height and scrolls on overflow.
+  const layout = document.createElement("div");
+  layout.className = "cash-plot-layout";
+  mount.appendChild(layout);
+  const plotBox = document.createElement("div");
+  plotBox.className = "cash-plot-area";
+  layout.appendChild(plotBox);
+  const listBox = document.createElement("div");
+  listBox.className = "cash-rank-list";
+  layout.appendChild(listBox);
+
+  const W = 760;
+  const H = 600;
+  const pad = { left: 74, right: 18, top: 26, bottom: 58 };
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
   const plotRight = pad.left + innerW;
   const xMin = 0;
   const xMax = 500;
-  const yFloor = 100;
-  const maxCash = Math.max(...rankedRuns.flatMap(run => run.points.map(point => point[1]).filter(v => v > 0)));
-  const yCeil = Math.pow(10, Math.ceil(Math.log10(Math.max(maxCash, 1e7))));
-  const yMinLog = Math.log10(yFloor);
-  const yMaxLog = Math.log10(yCeil);
+
+  // The y range fits the curves shown (with a little headroom; at least two decades, floor $100).
+  const shownValues = rankedRuns.flatMap(run => run.points.map(point => point[1]).filter(v => v > 0));
+  const maxCash = Math.max(...shownValues, 1);
+  const minCash = Math.min(...shownValues, maxCash);
+  const yMaxLog = Math.log10(maxCash) + 0.12;
+  const yMinLog = Math.min(Math.max(2, Math.log10(minCash) - 0.12), yMaxLog - 2);
+  const yFloor = Math.pow(10, yMinLog);
+  const yCeil = Math.pow(10, yMaxLog);
 
   const x = value => pad.left + ((value - xMin) / (xMax - xMin)) * innerW;
   const y = value => {
     if (value <= 0) return pad.top + innerH;
-    const safe = Math.max(yFloor, value);
+    const safe = Math.min(yCeil, Math.max(yFloor, value));
     return pad.top + innerH - ((Math.log10(safe) - yMinLog) / (yMaxLog - yMinLog)) * innerH;
   };
   const invX = value => xMin + ((value - pad.left) / innerW) * (xMax - xMin);
+  const pathFor = points => points
+    .filter(([day]) => day <= xMax)
+    .map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`)
+    .join(" ");
 
   const svg = svgEl("svg", {
     viewBox: `0 0 ${W} ${H}`,
     role: "img",
     "aria-label": "Cash on hand by day for each model's best run"
-  }, mount);
+  }, plotBox);
 
-  const tickStyle = {
-    "font-family": "Inter, sans-serif",
-    "font-size": "12",
-    "font-weight": "400",
-    fill: "#000000"
-  };
-  const labelStyle = {
-    "font-family": "Inter, sans-serif",
-    "font-size": "13",
-    "font-weight": "400",
-    fill: "#000000"
-  };
+  const tickStyle = { "font-family": "Inter, sans-serif", "font-size": "12", "font-weight": "400", fill: "#000000" };
+  const labelStyle = { "font-family": "Inter, sans-serif", "font-size": "13", "font-weight": "400", fill: "#000000" };
 
-  const yTicks = [100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000, 10000000000]
-    .filter(tick => tick <= yCeil);
-
-  yTicks.forEach(tick => {
+  for (let e = Math.ceil(yMinLog - 1e-9); e <= Math.floor(yMaxLog + 1e-9); e += 1) {
+    const tick = Math.pow(10, e);
     const yy = y(tick);
     svgEl("line", {
-      x1: pad.left,
-      x2: plotRight,
-      y1: yy,
-      y2: yy,
+      x1: pad.left, x2: plotRight, y1: yy, y2: yy,
       stroke: tick === 1000000 ? "#b7c2d0" : "#e5eaf0",
       "stroke-width": "0.9",
       "stroke-dasharray": tick === 1000000 ? "5 4" : "2 5"
     }, svg);
-    const label = svgEl("text", {
-      x: pad.left - 8,
-      y: yy + 4,
-      "text-anchor": "end",
-      ...tickStyle
-    }, svg);
-    label.textContent = formatAxisCash(tick);
-  });
+    svgEl("text", { x: pad.left - 8, y: yy + 4, "text-anchor": "end", ...tickStyle }, svg).textContent = formatAxisCash(tick);
+  }
 
   [0, 100, 200, 300, 400, 500].forEach(tick => {
     const xx = x(tick);
-    svgEl("line", {
-      x1: xx,
-      x2: xx,
-      y1: pad.top,
-      y2: pad.top + innerH,
-      stroke: "#f0f3f7",
-      "stroke-width": "0.8"
-    }, svg);
-    svgEl("line", {
-      x1: xx,
-      x2: xx,
-      y1: pad.top + innerH,
-      y2: pad.top + innerH + 5,
-      stroke: "#0a2540",
-      "stroke-width": "1"
-    }, svg);
-    const label = svgEl("text", {
-      x: xx,
-      y: H - 27,
-      "text-anchor": "middle",
-      ...tickStyle
-    }, svg);
-    label.textContent = String(tick);
+    svgEl("line", { x1: xx, x2: xx, y1: pad.top, y2: pad.top + innerH, stroke: "#f0f3f7", "stroke-width": "0.8" }, svg);
+    svgEl("line", { x1: xx, x2: xx, y1: pad.top + innerH, y2: pad.top + innerH + 5, stroke: "#0a2540", "stroke-width": "1" }, svg);
+    svgEl("text", { x: xx, y: H - 27, "text-anchor": "middle", ...tickStyle }, svg).textContent = String(tick);
   });
 
-  svgEl("line", {
-    x1: pad.left,
-    x2: pad.left,
-    y1: pad.top - 3,
-    y2: pad.top + innerH + 2,
-    stroke: "#0a2540",
-    "stroke-width": "1.3"
-  }, svg);
-  svgEl("line", {
-    x1: pad.left - 3,
-    x2: plotRight + 2,
-    y1: pad.top + innerH,
-    y2: pad.top + innerH,
-    stroke: "#0a2540",
-    "stroke-width": "1.3"
-  }, svg);
+  svgEl("line", { x1: pad.left, x2: pad.left, y1: pad.top - 3, y2: pad.top + innerH + 2, stroke: "#0a2540", "stroke-width": "1.3" }, svg);
+  svgEl("line", { x1: pad.left - 3, x2: plotRight + 2, y1: pad.top + innerH, y2: pad.top + innerH, stroke: "#0a2540", "stroke-width": "1.3" }, svg);
 
-  const startY = y(1000000);
-  svgEl("line", {
-    x1: pad.left,
-    x2: plotRight,
-    y1: startY,
-    y2: startY,
-    stroke: "#0a2540",
-    "stroke-width": "1",
-    "stroke-dasharray": "5 4",
-    opacity: "0.55"
-  }, svg);
-  const startingCashLabel = svgEl("text", {
-    x: plotRight - 8,
-    y: startY - 8,
-    "text-anchor": "end",
-    "font-family": "Inter, sans-serif",
-    "font-size": "12",
-    "font-weight": "400",
-    fill: "#000000"
-  }, svg);
-  startingCashLabel.textContent = "$1M starting cash balance";
+  if (1000000 >= yFloor && 1000000 <= yCeil) {
+    const startY = y(1000000);
+    svgEl("line", {
+      x1: pad.left, x2: plotRight, y1: startY, y2: startY,
+      stroke: "#0a2540", "stroke-width": "1", "stroke-dasharray": "5 4", opacity: "0.55"
+    }, svg);
+    svgEl("text", {
+      x: plotRight - 8, y: startY - 8, "text-anchor": "end",
+      "font-family": "Inter, sans-serif", "font-size": "12", "font-weight": "400", fill: "#000000"
+    }, svg).textContent = "$1M starting cash balance";
+  }
 
-  const xLabel = svgEl("text", {
-    x: pad.left + innerW / 2,
-    y: H - 8,
-    "text-anchor": "middle",
-    ...labelStyle
-  }, svg);
-  xLabel.textContent = "Day";
-
-  const yLabel = svgEl("text", {
-    x: -(pad.top + innerH / 2),
-    y: 17,
-    transform: "rotate(-90)",
-    "text-anchor": "middle",
-    ...labelStyle
-  }, svg);
-  yLabel.textContent = "Cash on hand (USD, log)";
+  svgEl("text", { x: pad.left + innerW / 2, y: H - 8, "text-anchor": "middle", ...labelStyle }, svg).textContent = "Day";
+  svgEl("text", {
+    x: -(pad.top + innerH / 2), y: 17, transform: "rotate(-90)", "text-anchor": "middle", ...labelStyle
+  }, svg).textContent = "Cash on hand (USD, log)";
 
   const lineGroup = svgEl("g", {}, svg);
   const runElements = new Map();
@@ -271,11 +211,8 @@ function drawCashPlot(runs, mount) {
     const rank = rankedRuns.indexOf(run);
     const baseStrokeWidth = rank < 3 ? "3" : "2.1";
     const baseOpacity = rank < 3 ? "0.98" : "0.72";
-    const pathData = run.points
-      .map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`)
-      .join(" ");
     const path = svgEl("path", {
-      d: pathData,
+      d: pathFor(run.points),
       fill: "none",
       stroke: color,
       "stroke-width": baseStrokeWidth,
@@ -283,111 +220,20 @@ function drawCashPlot(runs, mount) {
       "stroke-linejoin": "round",
       opacity: baseOpacity
     }, lineGroup);
-
     const last = run.points[run.points.length - 1];
     let dot = null;
     if (!run.bankrupt) {
-      dot = svgEl("circle", {
-        cx: x(last[0]),
-        cy: y(last[1]),
-        r: "4.6",
-        fill: color,
-        stroke: color,
-        "stroke-width": "2"
-      }, lineGroup);
+      dot = svgEl("circle", { cx: x(last[0]), cy: y(last[1]), r: "4.6", fill: color, stroke: color, "stroke-width": "2" }, lineGroup);
     }
     runElements.set(run, { path, dot, color, baseStrokeWidth, baseOpacity });
   });
   // Drawn on hover: the hovered model's games, above the greyed-out curves.
   const focusGroup = svgEl("g", { "aria-hidden": "true" }, svg);
 
-  const labelsGroup = svgEl("g", { "aria-label": "Model labels" }, svg);
-  const labelRows = rankedRuns.map((run, index) => {
-    const last = run.points[run.points.length - 1];
-    return {
-      run,
-      index,
-      targetY: y(last[1]),
-      y: y(last[1])
-    };
-  });
-  // Rows stay below the column headers; spacing shrinks when many models are shown.
-  const firstRowY = 40;
-  const lastRowY = pad.top + innerH - 4;
-  const minLabelGap = Math.min(27, (lastRowY - firstRowY) / Math.max(1, labelRows.length - 1));
-  let cursorY = Math.max(pad.top + 12, firstRowY);
-  labelRows.forEach(row => {
-    row.y = Math.max(row.targetY, cursorY);
-    cursorY = row.y + minLabelGap;
-  });
-  const overflow = cursorY - minLabelGap - (pad.top + innerH - 4);
-  if (overflow > 0) {
-    labelRows[labelRows.length - 1].y -= overflow;
-    for (let i = labelRows.length - 2; i >= 0; i -= 1) {
-      labelRows[i].y = Math.min(labelRows[i].y, labelRows[i + 1].y - minLabelGap);
-    }
-  }
-  const headerStyle = {
-    y: Math.min(pad.top - 14, labelRows.length ? labelRows[0].y - 18 : pad.top - 14),
-    "text-anchor": "end",
-    "font-family": "Inter, sans-serif",
-    "font-size": "11",
-    "font-weight": "600",
-    fill: "#4b5563"
-  };
-  svgEl("text", { x: bestColumnX, ...headerStyle }, labelsGroup).textContent = "Best";
-  svgEl("text", { x: meanColumnX, ...headerStyle }, labelsGroup).textContent = "Mean";
-
-  labelRows.forEach(row => {
-    const { run, index } = row;
-    const color = MODEL_COLORS[run.pretty] || "#0a2540";
-    const last = run.points[run.points.length - 1];
-    svgEl("text", {
-      x: plotRight + 16,
-      y: row.y + 4,
-      "font-family": "Inter, sans-serif",
-      "font-size": "11.5",
-      "font-weight": "400",
-      fill: "#000000"
-    }, labelsGroup).textContent = String(index + 1);
-    const label = svgEl("text", {
-      x: plotRight + 36,
-      y: row.y + 4,
-      "text-anchor": "start",
-      "font-family": "Inter, sans-serif",
-      "font-size": "11.5",
-      "font-weight": "800",
-      fill: color,
-      stroke: "#ffffff",
-      "stroke-width": "3.5",
-      "paint-order": "stroke fill",
-      "pointer-events": "none"
-    }, labelsGroup);
-    if (run.pretty.includes(' · ')) {
-      const [name, ...details] = run.pretty.split(' · ');
-      label.textContent = name;
-      svgEl('tspan', {x:plotRight+36, dy:12, 'font-size':8, 'font-weight':400}, label).textContent = details.join(' · ');
-    } else appendModelName(label, run.pretty);
-    const valueStyle = {
-      y: row.y + 4,
-      "text-anchor": "end",
-      "font-family": "Inter, sans-serif",
-      "font-size": "11.5",
-      "font-weight": "400",
-      fill: "#000000",
-      stroke: "#ffffff",
-      "stroke-width": "3.5",
-      "paint-order": "stroke fill"
-    };
-    svgEl("text", { x: bestColumnX, ...valueStyle }, labelsGroup)
-      .textContent = run.bankrupt ? "Bankrupted" : formatCash(last[1]);
-    svgEl("text", { x: meanColumnX, ...valueStyle, "font-weight": "700" }, labelsGroup)
-      .textContent = formatCash(Math.max(0, rankValue(run)));
-  });
-
   const greyStroke = "#c3c9d2";
   function setCurveHighlight(activeRun) {
     focusGroup.innerHTML = "";
+    listBox.querySelectorAll(".cash-rank-row").forEach(row => row.classList.toggle("active", row.runRef === activeRun));
     const games = activeRun ? modelTrajectories(activeRun) : [];
     runElements.forEach(({ path, dot, color, baseStrokeWidth, baseOpacity }, run) => {
       const isActive = run === activeRun;
@@ -417,42 +263,52 @@ function drawCashPlot(runs, mount) {
       const pts = game.points.filter(([day]) => day <= xMax);
       if (!pts.length) return;
       svgEl("path", {
-        d: pts.map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`).join(" "),
-        fill: "none",
-        stroke: color,
-        "stroke-width": "2.6",
-        "stroke-linecap": "round",
-        "stroke-linejoin": "round",
-        opacity: "0.95"
+        d: pathFor(pts), fill: "none", stroke: color, "stroke-width": "2.6",
+        "stroke-linecap": "round", "stroke-linejoin": "round", opacity: "0.95"
       }, focusGroup);
       const end = pts[pts.length - 1];
-      if (end[1] > 0) {
-        svgEl("circle", { cx: x(end[0]), cy: y(end[1]), r: "4", fill: color, stroke: "#ffffff", "stroke-width": "1.4" }, focusGroup);
-      }
+      if (end[1] > 0) svgEl("circle", { cx: x(end[0]), cy: y(end[1]), r: "4", fill: color, stroke: "#ffffff", "stroke-width": "1.4" }, focusGroup);
     });
   }
 
-  function labelRowAtY(rawY) {
-    let nearest = null;
-    let nearestDistance = Infinity;
-    labelRows.forEach(row => {
-      const distance = Math.abs(rawY - row.y);
-      if (distance < nearestDistance) {
-        nearest = row;
-        nearestDistance = distance;
-      }
+  // Ranked list (by mean): rank, model, best run, mean.
+  const head = document.createElement("div");
+  head.className = "cash-rank-head";
+  head.innerHTML = '<span class="cash-rank-num">#</span><span class="cash-rank-name">Model</span><span class="cash-rank-value">Best</span><span class="cash-rank-value">Mean</span>';
+  const scroll = document.createElement("div");
+  scroll.className = "cash-rank-scroll";
+  scroll.appendChild(head);
+  rankedRuns.forEach((run, index) => {
+    const last = run.points[run.points.length - 1];
+    const row = document.createElement("div");
+    row.className = "cash-rank-row";
+    row.runRef = run;
+    const color = MODEL_COLORS[run.pretty] || "#0a2540";
+    const cells = [
+      ["cash-rank-num", String(index + 1)],
+      ["cash-rank-name", run.pretty],
+      ["cash-rank-value", run.bankrupt ? "Bankrupted" : formatCash(last[1])],
+      ["cash-rank-value cash-rank-mean", formatCash(Math.max(0, rankValue(run)))]
+    ];
+    cells.forEach(([cls, text]) => {
+      const span = document.createElement("span");
+      span.className = cls;
+      span.textContent = text;
+      if (cls === "cash-rank-name") span.style.color = color;
+      row.appendChild(span);
     });
-    return nearestDistance <= 13 ? nearest : null;
-  }
+    row.addEventListener("pointerenter", () => setCurveHighlight(run));
+    row.addEventListener("focus", () => setCurveHighlight(run));
+    row.tabIndex = 0;
+    scroll.appendChild(row);
+  });
+  scroll.addEventListener("pointerleave", () => setCurveHighlight(null));
+  scroll.addEventListener("focusout", () => setCurveHighlight(null));
+  listBox.appendChild(scroll);
 
   const hoverGroup = svgEl("g", { opacity: "0" }, svg);
   const hoverLine = svgEl("line", {
-    y1: pad.top,
-    y2: pad.top + innerH,
-    stroke: "#0a2540",
-    "stroke-width": "1",
-    "stroke-dasharray": "3 3",
-    opacity: "0.75"
+    y1: pad.top, y2: pad.top + innerH, stroke: "#0a2540", "stroke-width": "1", "stroke-dasharray": "3 3", opacity: "0.75"
   }, hoverGroup);
   const hoverDots = svgEl("g", {}, hoverGroup);
 
@@ -469,43 +325,26 @@ function drawCashPlot(runs, mount) {
     const svgRect = svg.getBoundingClientRect();
     const mountRect = mount.getBoundingClientRect();
     const sx = W / svgRect.width;
-    const sy = H / svgRect.height;
     const rawX = (event.clientX - svgRect.left) * sx;
-    const rawY = (event.clientY - svgRect.top) * sy;
-
-    if (rawX > plotRight) {
+    if (rawX < pad.left || rawX > plotRight) {
       clearTooltip();
-      const row = labelRowAtY(rawY);
-      setCurveHighlight(row ? row.run : null);
       return;
     }
-
-    setCurveHighlight(null);
     const day = Math.max(xMin, Math.min(xMax, Math.round(invX(rawX))));
     const xx = x(day);
-
     hoverGroup.setAttribute("opacity", "1");
     hoverLine.setAttribute("x1", xx);
     hoverLine.setAttribute("x2", xx);
     hoverDots.innerHTML = "";
 
-    const values = runs.map(run => ({
+    const values = rankedRuns.map(run => ({
       name: run.pretty,
       color: MODEL_COLORS[run.pretty] || "#0a2540",
       value: valueAtDay(run.points, day)
     })).filter(item => item.value !== null);
-
     values.forEach(item => {
-      svgEl("circle", {
-        cx: xx,
-        cy: y(item.value),
-        r: "3.6",
-        fill: item.color,
-        stroke: "#ffffff",
-        "stroke-width": "1.4"
-      }, hoverDots);
+      svgEl("circle", { cx: xx, cy: y(item.value), r: "3.6", fill: item.color, stroke: "#ffffff", "stroke-width": "1.4" }, hoverDots);
     });
-
     values.sort((a, b) => b.value - a.value);
     tooltip.innerHTML = `
       <div class="tooltip-day">Day ${day}</div>
@@ -526,16 +365,11 @@ function drawCashPlot(runs, mount) {
     const leftLeft = selectedX - tooltip.offsetWidth - selectionGap;
     let left = rightLeft <= maxLeft ? rightLeft : leftLeft;
     let top = 18;
-
-    if (left < edgeGap) {
-      left = rightLeft <= maxLeft ? rightLeft : edgeGap;
-    }
-
+    if (left < edgeGap) left = rightLeft <= maxLeft ? rightLeft : edgeGap;
     if (left < selectedX && selectedX < left + tooltip.offsetWidth) {
       top = svgRect.height + selectionGap;
       left = Math.max(edgeGap, Math.min(selectedX - tooltip.offsetWidth / 2, maxLeft));
     }
-
     tooltip.style.left = `${left}px`;
     tooltip.style.top = `${top}px`;
     tooltip.classList.add("visible");
@@ -543,11 +377,7 @@ function drawCashPlot(runs, mount) {
 
   svg.addEventListener("pointermove", updateTooltip);
   svg.addEventListener("pointerenter", updateTooltip);
-  svg.addEventListener("pointerleave", () => {
-    clearTooltip();
-    setCurveHighlight(null);
-  });
-
+  svg.addEventListener("pointerleave", clearTooltip);
 }
 
 function fitFrame(frame) {

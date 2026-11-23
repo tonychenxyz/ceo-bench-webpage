@@ -1727,3 +1727,96 @@ d-article .trajectory-card-row {
   background: var(--ink);
   color: #fff;
 }
+
+/* Cash chart: plot plus a ranked list that matches the plot height and scrolls on overflow. */
+.cash-plot-layout {
+  display: flex;
+  align-items: stretch;
+  gap: 14px;
+}
+
+.cash-plot-area {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.cash-rank-list {
+  flex: 0 0 330px;
+  position: relative;
+}
+
+.cash-rank-scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  border-top: 1px solid #e5eaf0;
+}
+
+.cash-rank-head,
+.cash-rank-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 70px 70px;
+  align-items: center;
+  column-gap: 6px;
+  padding: 5px 6px;
+}
+
+.cash-rank-head {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: #ffffff;
+  color: #4b5563;
+  font-weight: 600;
+  font-size: 11px;
+  border-bottom: 1px solid #e5eaf0;
+}
+
+.cash-rank-row {
+  cursor: default;
+  border-radius: 4px;
+  outline: none;
+}
+
+.cash-rank-row:hover,
+.cash-rank-row.active,
+.cash-rank-row:focus-visible {
+  background: #f1f4f8;
+}
+
+.cash-rank-num {
+  color: #000000;
+}
+
+.cash-rank-name {
+  font-weight: 800;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cash-rank-value {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.cash-rank-mean {
+  font-weight: 700;
+}
+
+@media (max-width: 760px) {
+  .cash-plot-layout {
+    flex-direction: column;
+  }
+
+  .cash-rank-list {
+    flex: none;
+  }
+
+  .cash-rank-scroll {
+    position: static;
+    max-height: 320px;
+  }
+}
