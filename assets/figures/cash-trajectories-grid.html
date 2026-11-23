@@ -232,8 +232,9 @@ function tickLabel(v) {
 // ---- Skull marker (emoji text) -----------------------------------------
 function skull(cx, cy, parent) {
   const t = el('text', {
-    x: cx, y: cy + 4,
+    x: cx, y: cy,
     'text-anchor':'middle',
+    'dominant-baseline':'central',
     'font-size':'12',
     'font-family':'"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif',
   }, parent);
@@ -402,7 +403,7 @@ MODEL_ORDER.forEach(modelName => {
     if (s.bankruptDay != null) {
       const x = xS(s.bankruptDay);
       const y = yS(0);
-      skull(x, y - 6, svg);
+      skull(x, y, svg);   // centred on the x axis
     }
   });
 

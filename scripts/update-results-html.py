@@ -16,10 +16,9 @@ def money(v):
 def table_rows(stats):
     rows = []
     for s in sorted(stats, key=lambda s: -s['best']):
-        turns = s['turns'] if isinstance(s['turns'], str) else f"{s['turns']:.2f}"
         rows.append(f'<tr><th scope="row">{s["model"]}</th><td>{s["bankruptcy"]}</td><td>{money(s["best"])}</td>'
                     f'<td>{money(s["mean"])} ± {money(s["std"])}</td><td>{s["max_survival"]}</td>'
-                    f'<td>{s["mean_survival"]:.1f} ± {s["std_survival"]:.1f}</td><td>{turns}</td></tr>')
+                    f'<td>{s["mean_survival"]:.1f} ± {s["std_survival"]:.1f}</td></tr>')
     return rows
 
 
