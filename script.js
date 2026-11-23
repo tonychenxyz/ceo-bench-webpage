@@ -454,10 +454,9 @@ function baselineRun(points) {
 const TOP_MODEL_CHOICES = [5, 10, Infinity];
 const DEFAULT_TOP_MODELS = 10;
 
-// Minimal top-N selector; the rule-based baseline always stays visible as a reference.
+// Minimal top-N selector over all entries ranked by mean; the rule-based baseline is ranked like any model.
 function mountTopModelsControl(orderedRuns, mount) {
-  const isBaseline = run => run.model === "rule-based-baseline";
-  const models = orderedRuns.filter(run => !isBaseline(run));
+  const models = orderedRuns;
   const control = document.createElement("div");
   control.className = "top-models-control";
   control.setAttribute("role", "group");
@@ -468,7 +467,7 @@ function mountTopModelsControl(orderedRuns, mount) {
   control.appendChild(label);
   const draw = limit => {
     const shown = models.slice(0, limit);
-    drawCashPlot(orderedRuns.filter(run => isBaseline(run) || shown.includes(run)), mount);
+    drawCashPlot(shown, mount);
     control.querySelectorAll("button").forEach(button => {
       button.setAttribute("aria-pressed", String(Number(button.dataset.limit) === limit));
     });
