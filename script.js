@@ -1,6 +1,12 @@
 const SVG_NS = "http://www.w3.org/2000/svg";
 
 const MODEL_COLORS = {
+"Claude Fable 5.2": "#3b0764",
+"GPT-6.2 Astra": "#3b82f6",
+"GPT-6.1 Sol": "#34a36b",
+"GPT-6.2 Sol": "#0b4f2f",
+"Gemini 4 Neon": "#e11d74",
+"Gemini 4 Carbon": "#7c4a1e",
 "Claude Fable 5.1": "#702da5",
 "Gemini 4 Argon": "#c5221f",
 "Gemini 3.8 Flash": "#7cb342",
@@ -616,6 +622,7 @@ function baselineRun(points) {
 }
 
 const TOP_MODEL_CHOICES = [5, 10, Infinity];
+const DEFAULT_TOP_MODELS = 10;
 
 // Minimal top-N selector; the rule-based baseline always stays visible as a reference.
 function mountTopModelsControl(orderedRuns, mount) {
@@ -645,7 +652,8 @@ function mountTopModelsControl(orderedRuns, mount) {
     control.appendChild(button);
   });
   mount.parentNode.insertBefore(control, mount);
-  draw(Infinity);
+  // Open on the top 10 models (by mean cash); "All" stays one click away.
+  draw(models.length > DEFAULT_TOP_MODELS ? DEFAULT_TOP_MODELS : Infinity);
 }
 
 async function loadBaselineRun() {
