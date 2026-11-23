@@ -769,7 +769,9 @@ async function init() {
   document.getElementById('model-name').textContent = r.model_display || r.model;
   const subParts = [];
 
-  subParts.push(`<b>${escHTML(r.harness || 'Benchmark harness')}${r.reasoning_effort ? ' · '+escHTML(r.reasoning_effort) : ''}</b>`);
+  // Agent harness (Claude Code, Codex CLI, Antigravity CLI) is shown only here, next to the model name; benchmark-harness runs show effort only.
+  const subtitle = [r.harness, r.reasoning_effort].filter(Boolean).map(escHTML).join(' · ');
+  if (subtitle) subParts.push(`<b>${subtitle}</b>`);
 
   const isDnf = r.status === 'dnf' || r.dnf;
   const survival = r.bankrupt

@@ -67,7 +67,7 @@ function fmtMoney(n) {
       card.className = 'model-card';
       const head = document.createElement('div');
       head.className = 'mhead';
-      head.textContent = mod.model_display + (mod.harness ? ` · ${mod.harness} · ${mod.reasoning_effort}` : ' · benchmark harness');
+      head.textContent = mod.model_display + (mod.reasoning_effort ? ` · ${mod.reasoning_effort}` : '');
       card.appendChild(head);
       const runs = document.createElement('div');
       runs.className = 'runs';
