@@ -58,3 +58,22 @@ continuation boundary. Production is not updated by this feature branch.
 The public presentation uses model-only plot labels, one leaderboard with effort
 and cash mean ± population standard deviation, and concise trajectory pages.
 Source metadata and downloadable artifacts remain unchanged by display choices.
+
+## November 2026 update
+
+`import-fleet-runs.py --source <extracted games>` adds the latest three finished or
+bankrupt games of Claude Fable 5.2, Gemini 4 Neon, Gemini 4 Carbon, GPT-6.2 Astra,
+GPT-6.2 Sol and GPT-6.1 Sol, and replaces the games of Claude Fable 5.1, GPT-6 Astra,
+GPT-6 Sol and Gemini 4 Argon everywhere on the site. Each source folder holds plain
+copies of the game's agent logs, native conversation, simulator history and result,
+plus `exports.json` from the game database: cumulative daily ledger cash and active
+individual subscribers per customer group per day. Cash curves end at the exact
+day-500 ledger total (bankrupt games end at $0 on the bankruptcy day). Every
+dashboard day printed by a tool must match the exported subscriber total; dashboards
+inside agent text are ignored. Weekly rationales come from each game's own next-week
+records.
+
+Then run `update-results-html.py` (results table, summary sentence, featured cards,
+grid order) and `scrub-public-data.py` (neutral "Model · Game N" labels; local paths
+and release revisions removed; agent-written text otherwise unchanged). The harness
+name appears only on trajectory pages, next to the model name.

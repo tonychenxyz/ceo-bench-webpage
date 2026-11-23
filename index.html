@@ -568,7 +568,7 @@
         <h2 class="section-label">How Did Models Do?</h2>
       </div>
       <article class="prose">
-        <p><strong>Claude Fable 5.1 achieves the highest best-run cash, followed by Gemini 4 Argon, GPT-6 Sol, Claude Opus 5.5, and GPT-6 Astra.</strong> The plots show cash balances over time; the table summarizes best-run cash and mean ± standard deviation across runs.</p>
+        <p><strong>Gemini 4 Neon achieves the highest best-run cash, followed by Claude Fable 5.2, GPT-6.2 Astra, Gemini 4 Carbon, and GPT-6 Astra.</strong> The plots show cash balances over time; the table summarizes best-run cash and mean ± standard deviation across runs.</p>
       </article>
       <figure class="chart-panel results-overview-plot tight-caption-figure" id="benchmark">
         <div id="cash-plot" class="cash-plot" data-cash-plot="best" data-legend-id="cash-legend" aria-label="Cash versus day for each model's best run and the rule-based baseline"></div>
@@ -577,16 +577,22 @@
       </figure>
       <div class="figure-block cash-grid-block tight-caption-figure">
         <div class="frame-wrap" data-label="Cash trajectories per model">
-          <iframe src="assets/figures/cash-trajectories-grid.html?v=28" title="Cash trajectories per model" data-auto-height="true" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
+          <iframe src="assets/figures/cash-trajectories-grid.html?v=29" title="Cash trajectories per model" data-auto-height="true" data-width="740" data-height="741" loading="lazy" scrolling="no"></iframe>
         </div>
         <div class="fig-caption">Cash balance over time for all runs of each model.</div>
       </div>
 <figure class="results-table-block"><div class="table-scroll"><table class="results-table"><thead><tr><th scope="col">Model</th><th scope="col">Bankruptcy</th><th scope="col">Best-run cash</th><th scope="col">Mean ± std. cash</th><th scope="col">Max survival days</th><th scope="col">Mean survival days</th><th scope="col">Turns/week</th></tr></thead><tbody>
-<tr><th scope="row">Claude Fable 5.1</th><td>0/3</td><td>$1,743,558,616.28</td><td>$1,057,123,679.65 ± $552,879,564.66</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
-<tr><th scope="row">Gemini 4 Argon</th><td>2/3</td><td>$470,450,610.07</td><td>$156,816,870.02 ± $221,772,544.40</td><td>500</td><td>267.3 ± 167.1</td><td>—</td></tr>
-<tr><th scope="row">GPT-6 Sol</th><td>0/3</td><td>$144,010,103.37</td><td>$94,012,688.79 ± $35,369,575.21</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Gemini 4 Neon</th><td>0/3</td><td>$1,673,101,001.25</td><td>$1,268,912,017.83 ± $287,394,374.61</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Claude Fable 5.2</th><td>0/3</td><td>$1,561,408,536.51</td><td>$1,313,691,253.82 ± $181,427,130.98</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">GPT-6.2 Astra</th><td>1/3</td><td>$1,150,478,528.02</td><td>$671,769,767.77 ± $489,117,998.94</td><td>500</td><td>360.3 ± 197.5</td><td>—</td></tr>
+<tr><th scope="row">Gemini 4 Carbon</th><td>0/3</td><td>$1,122,171,559.19</td><td>$843,342,790.32 ± $257,234,625.87</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">GPT-6 Astra</th><td>0/3</td><td>$1,011,885,977.51</td><td>$770,129,388.37 ± $214,120,967.83</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Claude Fable 5.1</th><td>0/3</td><td>$924,127,611.61</td><td>$549,891,735.87 ± $312,943,119.57</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">GPT-6.1 Sol</th><td>1/3</td><td>$765,649,044.72</td><td>$414,854,674.07 ± $315,840,051.05</td><td>500</td><td>363.0 ± 193.7</td><td>—</td></tr>
+<tr><th scope="row">GPT-6.2 Sol</th><td>0/3</td><td>$624,269,342.39</td><td>$365,075,090.80 ± $183,420,995.41</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">Gemini 4 Argon</th><td>1/3</td><td>$424,909,447.25</td><td>$205,417,422.14 ± $173,753,811.33</td><td>500</td><td>365.3 ± 190.4</td><td>—</td></tr>
 <tr><th scope="row">Claude Opus 5.5</th><td>0/3</td><td>$114,261,692.61</td><td>$84,108,035.20 ± $21,972,523.69</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
-<tr><th scope="row">GPT-6 Astra</th><td>0/3</td><td>$79,244,641.66</td><td>$42,844,154.61 ± $26,230,018.75</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
+<tr><th scope="row">GPT-6 Sol</th><td>0/3</td><td>$37,895,930.69</td><td>$17,390,282.05 ± $15,388,277.25</td><td>500</td><td>500.0 ± 0.0</td><td>—</td></tr>
 <tr><th scope="row">Kimi K3</th><td>1/3</td><td>$22,148,357.00</td><td>$9,487,456.00 ± $9,316,311.66</td><td>500</td><td>386.0 ± 161.2</td><td>14.81</td></tr>
 <tr><th scope="row">Claude Fable 5</th><td>1/3</td><td>$12,630,078.02</td><td>$4,302,629.74 ± $5,889,487.30</td><td>500</td><td>461.7 ± 54.2</td><td>9.86</td></tr>
 <tr><th scope="row">GPT-5.6 Sol</th><td>2/3</td><td>$11,313,982.45</td><td>$3,771,327.48 ± $5,333,462.48</td><td>500</td><td>294.0 ± 145.7</td><td>25.96</td></tr>
@@ -779,7 +785,7 @@
         <p>We release all experiment trajectories in the interactive trajectory viewer. Click to view full trajectories.</p>
       </article>
 
-      <div class="trajectory-card-row" aria-label="Highlighted model trajectories"><div class="trajectory-model-card"><h3>GPT-6 Astra</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=native-11c9979e066e&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 310 actions</span><span class="trajectory-run-cash">$79.24M</span></a><a href="trajectory-viewer/run.html?run=native-5e7724be6473&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 265 actions</span><span class="trajectory-run-cash">$30.83M</span></a><a href="trajectory-viewer/run.html?run=native-d56ba4d5436c&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 500d · 508 actions</span><span class="trajectory-run-cash">$18.46M</span></a></div></div><div class="trajectory-model-card"><h3>Claude Fable 5.1</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=native-00af2b447bfc&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 454 actions</span><span class="trajectory-run-cash">$1.74B</span></a><a href="trajectory-viewer/run.html?run=native-fac1c37cb96f&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 493 actions</span><span class="trajectory-run-cash">$1.04B</span></a><a href="trajectory-viewer/run.html?run=native-db295aed8bd6&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 500d · 280 actions</span><span class="trajectory-run-cash">$389.69M</span></a></div></div><div class="trajectory-model-card"><h3>Kimi K3</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=b5601d9b&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 2,213 actions</span><span class="trajectory-run-cash">$22.15M</span></a><a href="trajectory-viewer/run.html?run=9b8fa6a4&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 1,918 actions</span><span class="trajectory-run-cash">$6.31M</span></a><a href="trajectory-viewer/run.html?run=bae92e25&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 158d · 609 actions</span><span class="trajectory-run-cash">BANKRUPTED</span></a></div></div></div>
+      <div class="trajectory-card-row" aria-label="Highlighted model trajectories"><div class="trajectory-model-card"><h3>GPT-6 Astra</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=native-0bee7271b70e&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 2593 actions</span><span class="trajectory-run-cash">$1.01B</span></a><a href="trajectory-viewer/run.html?run=native-dedf8e48b582&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 3130 actions</span><span class="trajectory-run-cash">$807.17M</span></a><a href="trajectory-viewer/run.html?run=native-a93296afe684&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 500d · 1558 actions</span><span class="trajectory-run-cash">$491.34M</span></a></div></div><div class="trajectory-model-card"><h3>Claude Fable 5.1</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=native-22eed4e59e0f&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 495 actions</span><span class="trajectory-run-cash">$924.13M</span></a><a href="trajectory-viewer/run.html?run=native-ed5c11cadd3d&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 450 actions</span><span class="trajectory-run-cash">$567.37M</span></a><a href="trajectory-viewer/run.html?run=native-c4eee3bb3bf8&amp;v=26" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 500d · 232 actions</span><span class="trajectory-run-cash">$158.17M</span></a></div></div><div class="trajectory-model-card"><h3>Kimi K3</h3><div class="trajectory-runs"><a href="trajectory-viewer/run.html?run=b5601d9b&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 1</span><span class="trajectory-run-meta">survived 500d · 2,213 actions</span><span class="trajectory-run-cash">$22.15M</span></a><a href="trajectory-viewer/run.html?run=9b8fa6a4&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 2</span><span class="trajectory-run-meta">survived 500d · 1,918 actions</span><span class="trajectory-run-cash">$6.31M</span></a><a href="trajectory-viewer/run.html?run=bae92e25&amp;v=25" class="trajectory-run-item"><span class="trajectory-run-id">Run 3</span><span class="trajectory-run-meta">survived 158d · 609 actions</span><span class="trajectory-run-cash">BANKRUPTED</span></a></div></div></div>
 
       <article class="prose trajectory-showcase-action">
         <p><a href="trajectory-viewer/" class="text-link">View more model trajectories</a></p>
@@ -831,8 +837,8 @@
     </d-appendix>
   </main>
 
-  <script src="assets/runs-data.js?v=27"></script>
-  <script src="assets/figures/runs-by-model.js?v=27"></script>
+  <script src="assets/runs-data.js?v=28"></script>
+  <script src="assets/figures/runs-by-model.js?v=28"></script>
   <script src="script.js?v=38"></script>
 </body>
 </html>
