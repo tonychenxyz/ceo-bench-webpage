@@ -82,13 +82,26 @@ function valueAtDay(points, day) {
   return left[1] + t * (right[1] - left[1]);
 }
 
+// Ranking uses each model's mean day-500 cash across its games (bankrupt games count as $0).
+function rankValue(run) {
+  return Number.isFinite(run.mean_cash) ? run.mean_cash : (Number(run.final_cash) || 0);
+}
+
+function compareRuns(a, b) {
+  const delta = rankValue(b) - rankValue(a);
+  return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
+}
+
+// All of a model's games (from the per-model figure data), for the hover view.
+function modelTrajectories(run) {
+  const byModel = typeof RUNS_BY_MODEL === "object" && RUNS_BY_MODEL ? RUNS_BY_MODEL : {};
+  return (byModel[run.pretty] || []).filter(game => Array.isArray(game.points) && game.points.length);
+}
+
 function drawCashPlot(runs, mount) {
   if (!mount) return;
   const legend = document.getElementById(mount.dataset.legendId || "cash-legend");
-  const rankedRuns = runs.slice().sort((a, b) => {
-    const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
-    return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
-  });
+  const rankedRuns = runs.slice().sort(compareRuns);
 
   mount.innerHTML = "";
   if (legend) {
@@ -96,9 +109,11 @@ function drawCashPlot(runs, mount) {
     legend.hidden = true;
   }
 
-  const W = 960;
+  const W = 1060;
   const H = 740;
-  const pad = { left: 78, right: 214, top: 54, bottom: 62 };
+  const pad = { left: 78, right: 314, top: 54, bottom: 62 };
+  const meanColumnX = W - 8;
+  const bestColumnX = W - 76;
   const innerW = W - pad.left - pad.right;
   const innerH = H - pad.top - pad.bottom;
   const plotRight = pad.left + innerW;
@@ -262,11 +277,11 @@ function drawCashPlot(runs, mount) {
       "stroke-linejoin": "round",
       opacity: baseOpacity
     }, lineGroup);
-    runElements.set(run, { path, baseStrokeWidth, baseOpacity });
 
     const last = run.points[run.points.length - 1];
+    let dot = null;
     if (!run.bankrupt) {
-      svgEl("circle", {
+      dot = svgEl("circle", {
         cx: x(last[0]),
         cy: y(last[1]),
         r: "4.6",
@@ -275,10 +290,12 @@ function drawCashPlot(runs, mount) {
         "stroke-width": "2"
       }, lineGroup);
     }
+    runElements.set(run, { path, dot, color, baseStrokeWidth, baseOpacity });
   });
+  // Drawn on hover: the hovered model's games, above the greyed-out curves.
+  const focusGroup = svgEl("g", { "aria-hidden": "true" }, svg);
 
   const labelsGroup = svgEl("g", { "aria-label": "Model labels" }, svg);
-
   const labelRows = rankedRuns.map((run, index) => {
     const last = run.points[run.points.length - 1];
     return {
@@ -288,8 +305,11 @@ function drawCashPlot(runs, mount) {
       y: y(last[1])
     };
   });
-  const minLabelGap = 27;
-  let cursorY = pad.top + 12;
+  // Rows stay below the column headers; spacing shrinks when many models are shown.
+  const firstRowY = 40;
+  const lastRowY = pad.top + innerH - 4;
+  const minLabelGap = Math.min(27, (lastRowY - firstRowY) / Math.max(1, labelRows.length - 1));
+  let cursorY = Math.max(pad.top + 12, firstRowY);
   labelRows.forEach(row => {
     row.y = Math.max(row.targetY, cursorY);
     cursorY = row.y + minLabelGap;
@@ -301,6 +321,16 @@ function drawCashPlot(runs, mount) {
       labelRows[i].y = Math.min(labelRows[i].y, labelRows[i + 1].y - minLabelGap);
     }
   }
+  const headerStyle = {
+    y: Math.min(pad.top - 14, labelRows.length ? labelRows[0].y - 18 : pad.top - 14),
+    "text-anchor": "end",
+    "font-family": "Inter, sans-serif",
+    "font-size": "11",
+    "font-weight": "600",
+    fill: "#4b5563"
+  };
+  svgEl("text", { x: bestColumnX, ...headerStyle }, labelsGroup).textContent = "Best";
+  svgEl("text", { x: meanColumnX, ...headerStyle }, labelsGroup).textContent = "Mean";
 
   labelRows.forEach(row => {
     const { run, index } = row;
@@ -332,8 +362,7 @@ function drawCashPlot(runs, mount) {
       label.textContent = name;
       svgEl('tspan', {x:plotRight+36, dy:12, 'font-size':8, 'font-weight':400}, label).textContent = details.join(' · ');
     } else appendModelName(label, run.pretty);
-    svgEl("text", {
-      x: W - 8,
+    const valueStyle = {
       y: row.y + 4,
       "text-anchor": "end",
       "font-family": "Inter, sans-serif",
@@ -343,21 +372,56 @@ function drawCashPlot(runs, mount) {
       stroke: "#ffffff",
       "stroke-width": "3.5",
       "paint-order": "stroke fill"
-    }, labelsGroup).textContent = run.bankrupt ? "Bankrupted" : formatCash(last[1]);
+    };
+    svgEl("text", { x: bestColumnX, ...valueStyle }, labelsGroup)
+      .textContent = run.bankrupt ? "Bankrupted" : formatCash(last[1]);
+    svgEl("text", { x: meanColumnX, ...valueStyle, "font-weight": "700" }, labelsGroup)
+      .textContent = formatCash(Math.max(0, rankValue(run)));
   });
 
+  const greyStroke = "#c3c9d2";
   function setCurveHighlight(activeRun) {
-    runElements.forEach(({ path, baseStrokeWidth, baseOpacity }, run) => {
+    focusGroup.innerHTML = "";
+    const games = activeRun ? modelTrajectories(activeRun) : [];
+    runElements.forEach(({ path, dot, color, baseStrokeWidth, baseOpacity }, run) => {
+      const isActive = run === activeRun;
       if (!activeRun) {
+        path.setAttribute("stroke", color);
         path.setAttribute("stroke-width", baseStrokeWidth);
         path.setAttribute("opacity", baseOpacity);
+        if (dot) { dot.setAttribute("fill", color); dot.setAttribute("stroke", color); dot.setAttribute("opacity", "1"); }
         return;
       }
-      const isActive = run === activeRun;
-      path.setAttribute("stroke-width", isActive ? "4.6" : baseStrokeWidth);
-      path.setAttribute("opacity", isActive ? "1" : "0.18");
-      if (isActive) {
+      // With per-game data, every curve (including the hovered model's best) is greyed and its games are redrawn on top.
+      if (isActive && !games.length) {
+        path.setAttribute("stroke", color);
+        path.setAttribute("stroke-width", "4.6");
+        path.setAttribute("opacity", "1");
         lineGroup.appendChild(path);
+        return;
+      }
+      path.setAttribute("stroke", greyStroke);
+      path.setAttribute("stroke-width", "1.6");
+      path.setAttribute("opacity", "0.55");
+      if (dot) { dot.setAttribute("fill", greyStroke); dot.setAttribute("stroke", greyStroke); dot.setAttribute("opacity", "0.55"); }
+    });
+    if (!games.length) return;
+    const color = MODEL_COLORS[activeRun.pretty] || "#0a2540";
+    games.forEach(game => {
+      const pts = game.points.filter(([day]) => day <= xMax);
+      if (!pts.length) return;
+      svgEl("path", {
+        d: pts.map(([day, cash], index) => `${index === 0 ? "M" : "L"} ${x(day).toFixed(2)} ${y(cash).toFixed(2)}`).join(" "),
+        fill: "none",
+        stroke: color,
+        "stroke-width": "2.6",
+        "stroke-linecap": "round",
+        "stroke-linejoin": "round",
+        opacity: "0.95"
+      }, focusGroup);
+      const end = pts[pts.length - 1];
+      if (end[1] > 0) {
+        svgEl("circle", { cx: x(end[0]), cy: y(end[1]), r: "4", fill: color, stroke: "#ffffff", "stroke-width": "1.4" }, focusGroup);
       }
     });
   }
@@ -518,10 +582,7 @@ function fitAllFrames() {
 }
 
 function orderRuns(runs) {
-  return runs.slice().sort((a, b) => {
-    const delta = (Number(b.final_cash) || 0) - (Number(a.final_cash) || 0);
-    return delta || modelNameHtml(a.pretty).localeCompare(modelNameHtml(b.pretty));
-  });
+  return runs.slice().sort(compareRuns);
 }
 
 function parseBaselineCsv(text) {
@@ -603,7 +664,24 @@ async function loadCashRuns() {
       })();
 
   const baseline = await loadBaselineRun();
-  return baseline ? runs.concat(baseline) : runs;
+  const stats = await loadModelStatistics();
+  const withMeans = runs.map(run => {
+    const mean = stats.get(run.pretty);
+    return Number.isFinite(mean) ? { ...run, mean_cash: mean } : run;
+  });
+  return baseline ? withMeans.concat(baseline) : withMeans;
+}
+
+// Mean day-500 cash per model (bankrupt games count as $0); missing stats fall back to the best run.
+async function loadModelStatistics() {
+  try {
+    const response = await fetch("assets/model-statistics.json");
+    if (!response.ok) return new Map();
+    const rows = await response.json();
+    return new Map(rows.map(row => [row.model, Number(row.mean)]));
+  } catch (_) {
+    return new Map();
+  }
 }
 
 const cashPlotMounts = Array.from(document.querySelectorAll(".cash-plot[data-cash-plot='best']"));
