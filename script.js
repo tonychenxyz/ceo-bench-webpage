@@ -472,7 +472,9 @@ function baselineRun(points) {
   };
 }
 
-const TOP_MODEL_CHOICES = [5, 10, Infinity];
+const TOP_MODEL_CHOICES = [5, 10, 15, 20, Infinity];
+// Scale each tab opens on: the leaders read best on a linear axis; wider views span many decades, so log.
+const DEFAULT_SCALE = limit => (limit <= 10 ? "linear" : "log");
 const DEFAULT_TOP_MODELS = 10;
 
 // Minimal top-N selector over all entries ranked by mean; the rule-based baseline is ranked like any model.
@@ -487,7 +489,7 @@ function mountTopModelsControl(orderedRuns, mount) {
   label.textContent = "Show";
   control.appendChild(label);
   let currentLimit = models.length > DEFAULT_TOP_MODELS ? DEFAULT_TOP_MODELS : Infinity;
-  let currentScale = "log";
+  let currentScale = DEFAULT_SCALE(currentLimit);
   const draw = (limit = currentLimit, scale = currentScale) => {
     currentLimit = limit; currentScale = scale;
     drawCashPlot(models.slice(0, limit), mount, scale);
@@ -503,7 +505,7 @@ function mountTopModelsControl(orderedRuns, mount) {
     button.type = "button";
     button.dataset.limit = String(limit);
     button.textContent = limit === Infinity ? "All" : `Top ${limit}`;
-    button.addEventListener("click", () => draw(limit));
+    button.addEventListener("click", () => draw(limit, DEFAULT_SCALE(limit)));
     control.appendChild(button);
   });
   const scaleLabel = document.createElement("span");
@@ -519,7 +521,7 @@ function mountTopModelsControl(orderedRuns, mount) {
     control.appendChild(button);
   });
   mount.parentNode.insertBefore(control, mount);
-  // Open on the top 10 models (by mean cash) on a log scale.
+  // Open on the top 10 models (by mean cash), on its default (linear) scale.
   draw();
 }
 
