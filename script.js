@@ -474,7 +474,7 @@ function baselineRun(points) {
 
 const TOP_MODEL_CHOICES = [5, 10, 15, 20, Infinity];
 // Scale each tab opens on: the leaders read best on a linear axis; wider views span many decades, so log.
-const DEFAULT_SCALE = limit => (limit <= 10 ? "linear" : "log");
+const DEFAULT_SCALE = limit => (limit <= 15 ? "linear" : "log");
 const DEFAULT_TOP_MODELS = 10;
 
 // Minimal top-N selector over all entries ranked by mean; the rule-based baseline is ranked like any model.
