@@ -1820,3 +1820,28 @@ d-article .trajectory-card-row {
     max-height: 320px;
   }
 }
+
+/* One line per row: model names (and the baseline label) never wrap; only the long upper-bound label may.
+   Tighter cells keep the table within the page width now that mean ± std values reach billions. */
+.results-table thead th:first-child,
+.results-table tbody tr:not(.estimate-row) th {
+  white-space: nowrap;
+}
+
+.results-table {
+  font-size: 14px;
+}
+
+.results-table th,
+.results-table td {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.results-table thead th:not(:first-child) {
+  white-space: normal;
+}
+
+.results-table td:nth-child(2) {
+  min-width: 0;
+}
