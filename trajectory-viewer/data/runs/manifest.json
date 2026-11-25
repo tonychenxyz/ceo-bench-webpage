@@ -121,6 +121,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 17,
+            "recovered": 17
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -330,6 +334,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 82,
+            "recovered": 82
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -549,6 +557,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 87,
+            "recovered": 87
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -747,6 +759,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 237,
+            "recovered": 66
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -871,6 +887,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 143,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1041,6 +1061,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 223,
+            "recovered": 64
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1183,6 +1207,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1381,6 +1409,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1480,6 +1512,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1628,6 +1664,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 24,
+            "recovered": 24
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -1832,6 +1872,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 22,
+            "recovered": 22
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2035,6 +2079,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 65,
+            "recovered": 65
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2243,6 +2291,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2451,6 +2503,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2627,6 +2683,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2827,6 +2887,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 255,
+            "recovered": 33
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -2954,6 +3018,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 222,
+            "recovered": 54
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3148,6 +3216,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. Days are assigned from the game's timestamped action history or the latest observed dashboard/status; source line and segment preserve ordering. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 106,
+            "recovered": 52
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3329,6 +3401,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3505,6 +3581,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3633,6 +3713,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3787,6 +3871,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -3980,6 +4068,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -4145,6 +4237,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -4338,6 +4434,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 15,
+            "recovered": 15
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -4546,6 +4646,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 42,
+            "recovered": 42
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -4673,6 +4777,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. The stream has no per-step timestamps, so days are assigned from the latest observed dashboard/status output; source line and segment preserve ordering. File write/edit contents come from the saved conversation where available; reasoning is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 11,
+            "recovered": 11
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -5163,6 +5271,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -5356,6 +5468,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {
@@ -5544,6 +5660,10 @@
           "simulator_llm": "AWS Bedrock Haiku",
           "trajectory_note": "Commands, outputs and available agent text exported from the agent stream JSON. File edits and timestamps are supplemented from the agent's saved rollout; days are assigned from the game's timestamped action history or the latest observed dashboard/status. Reasoning unavailable in the stream is not reconstructed.",
           "extended_time": false,
+          "full_outputs_recovered": {
+            "previews": 0,
+            "recovered": 0
+          },
           "customer_group_label": "SUBSCRIBERS",
           "subscriber_group_source": "Read-only archived subscriptions joined to customers; active individual subscribers counted from start_day <= day < end_day, lost leads excluded. Cash: cumulative daily ledger totals.",
           "subscriber_group_validation": {

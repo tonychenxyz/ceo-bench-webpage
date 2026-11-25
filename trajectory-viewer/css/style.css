@@ -526,3 +526,8 @@ svg text { font-family: 'Inter', sans-serif; }
 
 .run-provenance {margin:16px 0;padding:16px;border:1px solid #cbd5e1;background:#f8fafc;font-size:13px;line-height:1.5;overflow-wrap:anywhere;}
 .run-provenance pre {white-space:pre-wrap;}
+
+/* Full output recovered from the saved game (the agent saw only a preview or summary). */
+.full-output { margin-top: 8px; }
+.full-output > summary { cursor: pointer; font-size: 11px; color: #425466; font-weight: 600; }
+.full-output > .stdout { margin-top: 6px; }

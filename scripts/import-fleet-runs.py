@@ -138,8 +138,43 @@ def native_events(path, start_day, timeline, rollouts):
             else: add(t, {}, json.dumps(clean(i), ensure_ascii=False), line)
             if extra: out[-1]['timestamp'] = extra[0]
         elif typ == 'system' and d.get('subtype') == 'task_notification':
-            add('_background_task', {}, d.get('summary', ''), line)
+            add('_background_task', {'task_id': d.get('task_id'), 'status': d.get('status')}, d.get('summary', ''), line)
     return out
+
+
+FULL_CAP = 1 << 20   # 1 MB per recovered output
+AGY_PREVIEW = re.compile(r"The tool's output was truncated due to being too long\. You can find the full output in a file at \S*?"
+                         r"(brain/[^/\s]+/\.system_generated/steps/\d+/output\.txt)")
+CLAUDE_PERSISTED = re.compile(r'<persisted-output>\s*Output too large[^\n]*?saved to: \S*?(tool-results/[^/\s]+)')
+
+
+def attach_full_outputs(acts, folder):
+    """Add the full text behind previewed outputs, recovered from the saved game (folder/recovered).
+    The event's result stays exactly what the agent saw; the full text goes in full_output."""
+    root = folder / 'recovered'
+    if not root.exists(): return dict(previews=0, recovered=0)
+    files = {}
+    for f in root.rglob('*'):
+        if f.is_file():
+            rel = f.relative_to(root).as_posix()
+            m = re.search(r'(brain/[^/]+/\.system_generated/steps/\d+/output\.txt|tool-results/[^/]+|tasks/[^/]+\.output)$', rel)
+            if m: files[m.group(1)] = f
+    n = found = 0
+    for a in acts:
+        key = label = None; res = a.get('result') or ''
+        m = AGY_PREVIEW.search(res) or CLAUDE_PERSISTED.search(res)
+        if m:
+            key, label = m.group(1), 'Full output (saved to a file; the agent saw only the preview above)'
+        elif a['tool'] == '_background_task' and (a.get('arguments') or {}).get('task_id'):
+            key, label = f"tasks/{a['arguments']['task_id']}.output", 'Task output (written by the background command; the agent saw only this summary unless it read the file)'
+        if not key: continue
+        n += 1; f = files.get(key)
+        if not f: continue
+        text = f.read_text(errors='replace')
+        if not text.strip(): continue
+        if len(text) > FULL_CAP: text = text[:FULL_CAP] + f'\n[... {len(text) - FULL_CAP:,} more characters not shown]'
+        a['full_output'] = clean(text); a['full_output_label'] = label; found += 1
+    return dict(previews=n, recovered=found)
 
 
 def conversation_arguments(folder, conversation):
@@ -252,6 +287,7 @@ def export_game(folder, model, pretty, effort, number):
             a.pop('internal_source', None)
         acts += part
         sources.append(dict(game=number, file=f'logs/{path.name}', sha256=hashlib.sha256(path.read_bytes()).hexdigest(), lines=sum(1 for _ in path.open())))
+    recovery = attach_full_outputs(acts, folder)
     bankrupt = result['state'] == 'bankrupt'
     last = int(result['simulation']['current_day'])
     score = result['cash_day_500']['rows'][0]['cash_day_500'] if result.get('cash_day_500') else ex['cash_day_500']
@@ -274,7 +310,7 @@ def export_game(folder, model, pretty, effort, number):
              cash_series=[dict(day=d, cash=round(c, 4)) for d, c in sorted(points.items())], sub_series=[], seat_series=[],
              seat_series_by_group=[], group_discovery=[], days=days, days_list=sorted(map(int, days)), weeks_index=[],
              curve_source=CURVE_SOURCE_BANKRUPT if bankrupt else CURVE_SOURCE, sources=sources, simulator_llm='AWS Bedrock Haiku',
-             trajectory_note=NOTES[agent], extended_time=False)
+             trajectory_note=NOTES[agent], extended_time=False, full_outputs_recovered=recovery)
     enrich(r, history, agent); subscribers(r, ex)
     r = agy.scrub(clean(r)); acts = agy.scrub(clean(acts))
     native.dump(P / 'trajectory-viewer/data/runs' / f'{rid}.json', r)

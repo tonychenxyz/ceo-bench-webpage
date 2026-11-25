@@ -13,6 +13,7 @@ SUBS = [
     (re.compile(r'-scratch-gpfs-ZHUANGL-hc5019'), '-workspace'),
     (re.compile(r'/scratch/gpfs/ZHUANGL/hc5019'), '/workspace'),
     (re.compile(r'ZHUANGL-hc5019'), 'workspace'),
+    (re.compile(r'/scratch/gpfs/ZHUANGL\b'), '/workspace'),
     (re.compile(r'\b22d4c14be3e5271d4691247274d660cd1a4b2ccc\b'), '[release]'),
 ]
 

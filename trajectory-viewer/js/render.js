@@ -537,6 +537,12 @@ function renderAction(action, idx, key = idx, marker = idx + 1) {
     if (result) bodyHtml = `<div class="stdout">${escHTML(suppressLong(String(result), 60))}</div>`;
   }
 
+  // Full text that the agent's stream only previewed (or summarised), recovered from the saved game.
+  if (action.full_output) {
+    bodyHtml += `<details class="full-output"><summary>${escHTML(action.full_output_label || 'Full output')}</summary>`
+      + `<div class="stdout">${escHTML(String(action.full_output))}</div></details>`;
+  }
+
   // Default-collapsed for verbose tools
   const defaultCollapsed = (tool === 'read_file');
   const collapsedCls = defaultCollapsed ? 'collapsed' : '';
