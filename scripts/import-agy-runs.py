@@ -4,6 +4,7 @@ Reuses the native exporter's cleaning, day observation, rationale, workspace-edi
 No credentials, internal agy databases, or account metadata are exported.
 """
 import argparse, collections, hashlib, importlib.util, json, math, pathlib, re
+from local_sources import to_public
 P=pathlib.Path(__file__).resolve().parents[1]
 def load(name,file):
     spec=importlib.util.spec_from_file_location(name,P/'scripts'/file);mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod);return mod
@@ -22,7 +23,7 @@ def clean(x):
     if isinstance(x,list):return [clean(v) for v in x]
     if isinstance(x,str):
         x=re.sub(r'\b(?:AIza[0-9A-Za-z_-]{30,}|ya29\.[0-9A-Za-z._-]+|1//[0-9A-Za-z_-]{30,})','[REDACTED]',x)
-        return x.replace('\r\n','\n').replace('/scratch/gpfs/ZHUANGL/hc5019','/workspace')
+        return to_public(x.replace('\r\n','\n'))
     return x
 
 def db_arguments(folder,conversation):
@@ -44,7 +45,7 @@ def scrub(x):
     """Replace local run paths everywhere, including fields added after clean()."""
     if isinstance(x,dict):return {k:scrub(v) for k,v in x.items()}
     if isinstance(x,list):return [scrub(v) for v in x]
-    if isinstance(x,str):return x.replace('/scratch/gpfs/ZHUANGL/hc5019','/workspace')
+    if isinstance(x,str):return to_public(x)
     return x
 
 def arguments(tool,p):

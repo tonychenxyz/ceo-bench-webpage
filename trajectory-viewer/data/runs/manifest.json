@@ -5730,7 +5730,6 @@
           "reasoning_effort": "max",
           "seed": 42,
           "session_id": "f9b3e7a86b8d",
-          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep2",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 22148357.0
         },
@@ -5757,7 +5756,6 @@
           "reasoning_effort": "max",
           "seed": 42,
           "session_id": "834ef2316e2f",
-          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep1",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 6314011.0
         },
@@ -5784,7 +5782,6 @@
           "reasoning_effort": "max",
           "seed": 42,
           "session_id": "e757e3654576",
-          "volume_name": "ceobench-kimi-k3-modal-max-20260731-rep2",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 0
         }
@@ -6606,7 +6603,6 @@
           "harness": "Bash Agent",
           "seed": 42,
           "session_id": "a1fcc2492581",
-          "volume_name": "ceobench-grok46-xhigh-seed42-runs",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 246418.91
         },
@@ -6634,7 +6630,6 @@
           "harness": "Bash Agent",
           "seed": 42,
           "session_id": "b9ef67d756dc",
-          "volume_name": "ceobench-grok46-xhigh-seed42-runs",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 60489.48
         },
@@ -6662,7 +6657,6 @@
           "harness": "Bash Agent",
           "seed": 42,
           "session_id": "3a854a950c58",
-          "volume_name": "ceobench-grok46-xhigh-seed42-runs",
           "simulator_llm": "Amazon Bedrock",
           "display_cash": 0
         }

@@ -4,6 +4,7 @@ import argparse, difflib, importlib.util, json, pathlib, re, shlex
 ROOT=pathlib.Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('exporter', ROOT/'scripts/import-native-runs.py')
 exporter=importlib.util.module_from_spec(spec);spec.loader.exec_module(exporter)
+from local_sources import LOCAL
 
 def shell(action):
     args=action.get('arguments',{})
@@ -66,9 +67,9 @@ def edits(action,state):
 
 def histories(source):
     found={}
-    for batch,pattern in [('20260928-integrity-rerun','audit-final/*/archive/sessions/*/history.jsonl'),('20260929-sol-fable','audit/sol-hc5019/archive/sessions/*/history.jsonl'),('20260929-sol-fable','audit-final/capture/local/workspace/run-ceobench/sessions/*/history.jsonl')]:
+    for batch,pattern in [('20260928-integrity-rerun','audit-final/*/archive/sessions/*/history.jsonl'),('20260929-sol-fable',LOCAL['native_sol_audit_glob']),('20260929-sol-fable','audit-final/capture/local/workspace/run-ceobench/sessions/*/history.jsonl')]:
         for p in (source/batch).glob(pattern):found[p.parent.name]=[json.loads(x) for x in p.read_text().splitlines() if x.strip()]
-    ids={'fable-hc5019-cs':'00af2b447bfc','sol-hc5019':'5c316339369a','sol-tonychenxyz':'be64f4730513'}
+    ids=LOCAL['native_extra_evidence']   # source folder name -> session id
     for name,sid in ids.items():
         p=source/'20260929-sol-fable-extra-four/audit-20261001'/f'{name}-evidence.json'
         found[sid]=[json.loads(x) for x in json.loads(p.read_text())['history'].splitlines() if x.strip()]

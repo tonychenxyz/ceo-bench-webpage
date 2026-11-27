@@ -10,17 +10,14 @@ const EXPECTED = {
   '9b8fa6a4': {
     cash: 6314011, day: 500, bankrupt: false, session: '834ef2316e2f',
     subscribers: 44, enterpriseSeats: 0, sourceDay: 497,
-    volume: 'ceobench-kimi-k3-modal-max-20260731-rep1',
   },
   'bae92e25': {
     cash: 0, day: 158, bankrupt: true, session: 'e757e3654576',
     subscribers: 8798, enterpriseSeats: 0, sourceDay: 158,
-    volume: 'ceobench-kimi-k3-modal-max-20260731-rep2',
   },
   'b5601d9b': {
     cash: 22148357, day: 500, bankrupt: false, session: 'f9b3e7a86b8d',
     subscribers: 43664, enterpriseSeats: 0, sourceDay: 497,
-    volume: 'ceobench-kimi-k3-modal-max-20260731-rep2',
   },
 };
 
@@ -207,7 +204,7 @@ for (const id of LIVE_IDS) {
   check(detail.reasoning_effort === 'max', `${id}: reasoning effort mismatch`);
   check(detail.seed === 42, `${id}: seed mismatch`);
   check(detail.session_id === expected.session, `${id}: session mismatch`);
-  check(detail.volume_name === expected.volume, `${id}: volume mismatch`);
+  check(!('volume_name' in detail), `${id}: storage volume name must not be published`);
   check(detail.simulator_llm === 'Amazon Bedrock', `${id}: simulator LLM mismatch`);
   check(detail.current_day === expected.day && detail.survival_days === expected.day, `${id}: terminal day mismatch`);
   check(detail.cash === expected.cash && detail.bankrupt === expected.bankrupt, `${id}: terminal state mismatch`);

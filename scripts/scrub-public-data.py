@@ -3,22 +3,35 @@
 
 - Run labels become '<model> · Game N' everywhere (grid hover, viewer manifest, run summary, run records), with no
   account, batch or continuation wording.
-- Local agent project-folder names and the release revision are replaced in run records and transcripts.
+- Local agent project-folder names and the release revision are replaced in run records and transcripts, as are
+  personal or machine paths and usernames, hosted-volume ids and names, and sandbox-internal directory prefixes.
 Content written by the agents is otherwise unchanged.
 """
 import json, pathlib, re
 P = pathlib.Path(__file__).resolve().parents[1]
-SUBS = [
-    (re.compile(r'-scratch-gpfs-ZHUANGL-hc5019-ceobench-runtime-'), '-workspace-'),
-    (re.compile(r'-scratch-gpfs-ZHUANGL-hc5019'), '-workspace'),
-    (re.compile(r'/scratch/gpfs/ZHUANGL/hc5019'), '/workspace'),
-    (re.compile(r'ZHUANGL-hc5019'), 'workspace'),
-    (re.compile(r'/scratch/gpfs/ZHUANGL\b'), '/workspace'),
-    (re.compile(r'\b22d4c14be3e5271d4691247274d660cd1a4b2ccc\b'), '[release]'),
+from local_sources import scrub_patterns
+# Patterns naming people, accounts or local paths come from the untracked local file; generic ones follow.
+SUBS = scrub_patterns() + [
+    # Hosted-volume mounts and ids.
+    (re.compile(r'/__modal/volumes/vo-[A-Za-z0-9]+'), '/workspace'),
+    (re.compile(r'\bvo-[A-Za-z0-9]{20,}\b'), '[volume]'),
+    # Agent sandbox layout: workspace, agent home and temp directories under plain names.
+    (re.compile(r'-workspace-local-workspace-'), '-workspace-'),
+    (re.compile(r'/workspace/(?:ceobench_)?runtime/local/workspace\b'), '/workspace'),
+    (re.compile(r'/workspace/(?:ceobench_)?runtime/local/home\b'), '/home/agent'),
+    (re.compile(r'/workspace/(?:ceobench_)?runtime/local\b'), '/workspace'),
+    (re.compile(r'/workspace/local/workspace\b'), '/workspace'),
+    (re.compile(r'/workspace/local/home\b'), '/home/agent'),
+    (re.compile(r'/workspace/local/tmp\b'), '/tmp'),
+    (re.compile(r'/workspace/local\b'), '/workspace'),
+    (re.compile(r'\bclaude-1001\b'), 'claude'),
+    # Model-transport errors name the provider route rather than the model API.
+    (re.compile(r'Message: Kaggle (credential unavailable or expired|transport unavailable)'), r'Message: model provider \1'),
 ]
 
 
-DROP = ('public_revision', 'restart_note', 'original_outcome')   # release hashes and resume details
+DROP = ('public_revision', 'restart_note', 'original_outcome', 'volume_name')   # release hashes, resume and storage details
+UNLISTED = ('5a26f818',)   # hidden run file not linked from the site; removed
 
 
 def scrub_record(r):
@@ -52,9 +65,13 @@ def main():
         if r.get('run_id') in labels: r['label'] = labels[r['run_id']]
         scrub_record(r)
     summary_path.write_text(json.dumps(summary, ensure_ascii=False, separators=(',', ':')) + '\n')
+    for run_id in UNLISTED:
+        for f in (P / f'trajectory-viewer/data/runs/{run_id}.json', P / f'trajectory-viewer/data/transcripts/{run_id}.jsonl'):
+            f.unlink(missing_ok=True)
     changed = 0
-    for f in list((P / 'trajectory-viewer/data/runs').glob('*.json')) + list((P / 'trajectory-viewer/data/transcripts').glob('*.jsonl')):
-        if f.name == 'manifest.json': continue
+    archive = list((P / 'trajectory-viewer/data/archive').glob('*/*.json'))
+    for f in list((P / 'trajectory-viewer/data/runs').glob('*.json')) + list((P / 'trajectory-viewer/data/transcripts').glob('*.jsonl')) + archive:
+        if f.name == 'manifest.json' and f not in archive: continue
         text = f.read_text(); new = scrub_text(text)
         if f.suffix == '.json':
             run = json.loads(new)

@@ -3,6 +3,7 @@
 No credentials, internal authentication logs, or encrypted reasoning signatures are exported.
 """
 import argparse, bisect, collections, datetime, hashlib, json, pathlib, re, shlex
+from local_sources import LOCAL, to_public
 P=pathlib.Path(__file__).resolve().parents[1]
 MODELS={'claude-opus-5-5':'Claude Opus 5.5','gpt-6-astra':'GPT-6 Astra','claude-fable-5-1':'Claude Fable 5.1','gpt-6-sol':'GPT-6 Sol'}
 BATCHES=['20260928-integrity-rerun','20260929-sol-fable','20260929-sol-fable-extra-four']
@@ -14,7 +15,7 @@ def clean(x):
     if isinstance(x,str):
         x=re.sub(r'\b(?:sk-ant-[A-Za-z0-9_-]+|sk-[A-Za-z0-9_-]{20,}|gh[pousr]_[A-Za-z0-9_]{20,}|AKIA[A-Z0-9]{16})\b','[REDACTED]',x)
         x=re.sub(r'(?i)(Bearer\s+)[A-Za-z0-9._~-]{20,}',r'\1[REDACTED]',x)
-        x=x.replace('/scratch/gpfs/ZHUANGL/hc5019/ceobench_runtime','/workspace/runtime')
+        x=to_public(x)
         return x
     return x
 
@@ -133,7 +134,7 @@ def main(source):
             r=dict(run_id=rid,model=model,model_display=pretty,label=f'{folder.name} · {batch}',harness=harness,reasoning_effort='xhigh',provider='Modal',seed=42,session_id=sid,public_revision=spec['commit'],total_days=500,current_day=504,survival_days=500,status='complete',bankrupt=False,dnf=False,cash=score,final_cash=score,terminal_cash=result['simulation']['cash'],subscribers=None,mrr=None,founder_dividends=0,agent_turns=None,action_count=sum(not a['tool'].startswith('_') for a in acts),tool_calls_count=sum(not a['tool'].startswith('_') for a in acts),cash_series=[dict(day=d,cash=c) for d,c in points.items()],sub_series=[],seat_series=[],seat_series_by_group=[],group_discovery=[],days=days,days_list=sorted(map(int,days)),weeks_index=[],curve_source=curve_source,sources=sources,simulator_llm='AWS Bedrock Haiku',restart_note='No simulator restart found in reviewed run records.',trajectory_note='Commands, outputs and available agent text exported from harness JSONL. Days are assigned from timestamped committed monitor snapshots or the latest observed dashboard/status; source line and segment preserve ordering. Codex file edits and timestamps are supplemented from the matching harness-saved internal rollout. Reasoning unavailable in the harness stream is not reconstructed.',extended_time=bool(ext))
             if ext:
                 r.update(restart_note='Simulator restarted once to resume the same saved game at day 455 in a new container.',original_outcome=dict(status=original['state'],day=455,cash=original['simulation']['cash'],reason=original['reason']),continuation_day=455)
-            if folder.name=='fable-hc5019':r['artifact_note']='Complete agent trace recovered; original full workspace archive was incomplete. Curve uses saved committed snapshots.'
+            if folder.name==LOCAL.get('native_partial_archive_folder'):r['artifact_note']='Complete agent trace recovered; original full workspace archive was incomplete. Curve uses saved committed snapshots.'
             dump(P/'trajectory-viewer/data/runs'/f'{rid}.json',r)
             # Readable downloadable projection retains every displayed event, without auth metadata/signatures.
             dest=P/'trajectory-viewer/data/transcripts'/f'{rid}.jsonl';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(''.join(json.dumps(a,ensure_ascii=False)+'\n' for a in acts))
