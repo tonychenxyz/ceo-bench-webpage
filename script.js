@@ -32,6 +32,14 @@ const MODEL_COLORS = {
   "Gemini 3 Flash": "#697386",
   "Kimi K3": "#3f8f8f",
   "Grok 4.20": "#6b3fc8",
+  "DeepSeek V4.1 Flash 1017": "#06b6d4",
+  "Muse Spark Open 816B A42B": "#f43f5e",
+  "Qwen4 Max": "#a855f7",
+  "GLM 5.3": "#9d174d",
+  "Kimi K3.1 Pro": "#0f766e",
+  "Tencent Hy4": "#1e40af",
+  "Inkling 2 Small": "#57534e",
+  "Beam 1.0 501B A23B": "#ca8a04",
   "Rule-Based Baseline": "#6b6b6b"
 };
 

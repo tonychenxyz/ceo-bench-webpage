@@ -108,6 +108,18 @@
     "turns": "\u2014"
   },
   {
+    "model": "DeepSeek V4.1 Flash 1017",
+    "best": 238324373.6947494,
+    "mean": 135872032.63649634,
+    "std": 94112204.94239749,
+    "effort": "max",
+    "bankruptcy": "0/3",
+    "max_survival": 500,
+    "mean_survival": 500.0,
+    "std_survival": 0.0,
+    "turns": "\u2014"
+  },
+  {
     "model": "Claude Opus 5.5",
     "best": 114261692.61139654,
     "mean": 84108035.1964265,
@@ -178,6 +190,18 @@
     "mean_survival": 378,
     "std_survival": 172.5340546095176,
     "turns": "16.64"
+  },
+  {
+    "model": "Muse Spark Open 816B A42B",
+    "best": 699437.93,
+    "mean": 169971.78856666668,
+    "std": 264109.3560315231,
+    "effort": "xhigh",
+    "bankruptcy": "4/6",
+    "max_survival": 500,
+    "mean_survival": 277.0,
+    "std_survival": 173.54730383001248,
+    "turns": "\u2014"
   },
   {
     "model": "Qwen 3.7 Max",
@@ -312,6 +336,18 @@
     "turns": "30.41"
   },
   {
+    "model": "Qwen4 Max",
+    "best": 21603.73313912876,
+    "mean": 7201.244379709587,
+    "std": 10184.097467748323,
+    "effort": "max",
+    "bankruptcy": "2/3",
+    "max_survival": 500,
+    "mean_survival": 442.6666666666667,
+    "std_survival": 68.74752520798275,
+    "turns": "\u2014"
+  },
+  {
     "model": "Grok 4.5",
     "best": 15909.15,
     "mean": 5303.05,
@@ -370,5 +406,65 @@
     "mean_survival": 36,
     "std_survival": 18.384776310850235,
     "turns": "13.49"
+  },
+  {
+    "model": "Tencent Hy4",
+    "best": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "effort": "max",
+    "bankruptcy": "3/3",
+    "max_survival": 336,
+    "mean_survival": 195.0,
+    "std_survival": 122.18292297480309,
+    "turns": "\u2014"
+  },
+  {
+    "model": "GLM 5.3",
+    "best": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "effort": "max",
+    "bankruptcy": "3/3",
+    "max_survival": 173,
+    "mean_survival": 120.66666666666667,
+    "std_survival": 37.11543554312081,
+    "turns": "\u2014"
+  },
+  {
+    "model": "Inkling 2 Small",
+    "best": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "effort": "max",
+    "bankruptcy": "3/3",
+    "max_survival": 193,
+    "mean_survival": 120.33333333333333,
+    "std_survival": 51.38957957493804,
+    "turns": "\u2014"
+  },
+  {
+    "model": "Beam 1.0 501B A23B",
+    "best": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "effort": "max",
+    "bankruptcy": "3/3",
+    "max_survival": 155,
+    "mean_survival": 118.66666666666667,
+    "std_survival": 27.956315128349008,
+    "turns": "\u2014"
+  },
+  {
+    "model": "Kimi K3.1 Pro",
+    "best": 0.0,
+    "mean": 0.0,
+    "std": 0.0,
+    "effort": "max",
+    "bankruptcy": "3/3",
+    "max_survival": 145,
+    "mean_survival": 115.0,
+    "std_survival": 22.73030282830976,
+    "turns": "\u2014"
   }
 ]

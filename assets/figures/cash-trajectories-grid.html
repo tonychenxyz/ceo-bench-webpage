@@ -158,7 +158,7 @@
   <div id="grid" class="grid"></div>
 </div>
 
-<script src="runs-by-model.js?v=28"></script>
+<script src="runs-by-model.js?v=29"></script>
 <script>
 const SVG_NS='http://www.w3.org/2000/svg';
 function el(t,a={},p){const n=document.createElementNS(SVG_NS,t);for(const k in a)n.setAttribute(k,a[k]);if(p)p.appendChild(n);return n;}
@@ -199,12 +199,20 @@ const PALETTE = {
   'Gemini 3 Flash':    {c:'#697386'},
   'Kimi K3':           {c:'#3f8f8f'},
   'Grok 4.20':         {c:'#6f52c1'},
+  'DeepSeek V4.1 Flash 1017': {c:'#06b6d4'},
+  'Muse Spark Open 816B A42B': {c:'#f43f5e'},
+  'Qwen4 Max': {c:'#a855f7'},
+  'GLM 5.3': {c:'#9d174d'},
+  'Kimi K3.1 Pro': {c:'#0f766e'},
+  'Tencent Hy4': {c:'#1e40af'},
+  'Inkling 2 Small': {c:'#57534e'},
+  'Beam 1.0 501B A23B': {c:'#ca8a04'},
 };
 // All runs use solid lines.
 const RUN_DASH = ['', '', ''];
 
 // Match the leaderboard table order, excluding non-run summary rows.
-const MODEL_ORDER = ["Gemini 4 Neon", "Claude Fable 5.2", "GPT-6.2 Astra", "Gemini 4 Carbon", "GPT-6 Astra", "Claude Fable 5.1", "GPT-6.1 Sol", "GPT-6.2 Sol", "Gemini 4 Argon", "Claude Opus 5.5", "GPT-6 Sol", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Qwen 3.7 Max", "Gemini 3.8 Flash", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20"];
+const MODEL_ORDER = ["Gemini 4 Neon", "Claude Fable 5.2", "GPT-6.2 Astra", "Gemini 4 Carbon", "GPT-6 Astra", "Claude Fable 5.1", "GPT-6.1 Sol", "GPT-6.2 Sol", "Gemini 4 Argon", "DeepSeek V4.1 Flash 1017", "Claude Opus 5.5", "GPT-6 Sol", "Kimi K3", "Claude Fable 5", "GPT-5.6 Sol", "Claude Opus 4.8", "Muse Spark Open 816B A42B", "Qwen 3.7 Max", "Gemini 3.8 Flash", "Grok 4.6", "Gemini 3.5 Flash", "Claude Opus 4.7", "Claude Sonnet 5", "Claude Haiku 4.5", "GLM 5.2", "Kimi K2.6", "Claude Sonnet 4.6", "GPT-5.5", "Qwen4 Max", "Grok 4.5", "DeepSeek V4 Pro", "GLM 5.1", "Gemini 3 Flash", "Grok 4.20", "Tencent Hy4", "GLM 5.3", "Inkling 2 Small", "Beam 1.0 501B A23B", "Kimi K3.1 Pro"];
 
 // ---- Per-tile layout ----------------------------------------------------
 // Tile inner SVG dims tuned for ~263px column on 816px page.
@@ -305,7 +313,7 @@ function placeDetailBox(selectedX, preferredTop) {
 }
 
 MODEL_ORDER.forEach(modelName => {
-  const runs = (RUNS_BY_MODEL[modelName] || []).slice(0, 3);
+  const runs = RUNS_BY_MODEL[modelName] || [];   // every game of the model (most have three)
   const color = (PALETTE[modelName] || {c:'#0a2540'}).c;
 
   // tile shell

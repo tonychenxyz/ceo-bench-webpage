@@ -77,3 +77,19 @@ Then run `update-results-html.py` (results table, summary sentence, featured car
 grid order) and `scrub-public-data.py` (neutral "Model · Game N" labels; local paths
 and release revisions removed; agent-written text otherwise unchanged). The harness
 name appears only on trajectory pages, next to the model name.
+
+## November 2026 open-model games
+
+`import-open-model-runs.py --source <extracted games>` adds eight open models, each played with Codex CLI as the agent
+harness at the highest reasoning level the model accepts (seed 42, 500 days, same simulator release as the other
+November games): DeepSeek V4.1 Flash 1017, Muse Spark Open 816B A42B, Qwen4 Max, GLM 5.3, Kimi K3.1 Pro, Tencent Hy4,
+Inkling 2 Small and Beam 1.0 501B A23B. Each model has three games except Muse Spark Open, which has six; every game
+of a model is published and counted in its statistics, so its bankruptcy count reads out of six. Nothing already on
+the site is replaced. Two DeepSeek games continue in a second agent-log segment after the game machine was renewed:
+the same game and the same conversation resume. Codex's hosted web search tool is not offered to these models. The
+reasoning level shown is the one sent to the model; Codex's own setting reads `xhigh`, its highest, in every game.
+
+Sources, cash curves, subscriber groups, day assignment and weekly rationales follow the November update above.
+Machine paths, sandbox directory names, model-route settings and catalogue-style model ids are replaced with neutral
+text using patterns kept in the untracked `scripts/local-sources.json`; then run `update-results-html.py` and
+`scrub-public-data.py` as before.
